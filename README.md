@@ -15,3 +15,5 @@ You may use the included `chocolate_data_download.R` to download, to use it:
 ```
 Rscript data/chocolate_data_download.R --url = https://github.com/rfordatascience/tidytuesday/raw/master/data/2022/2022-01-18/chocolate.csv --file_path = data/raw/chocolate.csv
 ```
+
+A `train_test_split.Rmd` is provided that processes the `chocolate.csv` into `train_df.csv` and `test_df.csv`.
