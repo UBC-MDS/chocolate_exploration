@@ -84,7 +84,9 @@ We will treat influencing or leading such activities the same way we treat the a
 
 ## Reporting
 
-The project is initiated with support from the teaching team of the Masters of Data Science at the University of British Columbia. If you believe you’re experiencing unacceptable behavior that will not be tolerated as outlined above, please contact the [teaching team](https://masterdatascience.ubc.ca/contact-us). An alternative contact person is [Bruce Dunham](https://www.stat.ubc.ca/users/bruce-dunham), Professor of Teaching in the Department of Statistics at the UBC.
+The project is initiated with support from the teaching team of the Masters of Data Science at the University of British Columbia. If you believe you’re experiencing unacceptable behavior that will not be tolerated as outlined above, please contact the [teaching team](https://masterdatascience.ubc.ca/contact-us). The team is obligated to maintain confidentiality with regard to the reporter of an incident. The team will review and investigate all complaints and will respond in a way that it deems appropriate to the circumstances. An alternative contact person outside of the teaching team is [Bruce Dunham](https://www.stat.ubc.ca/users/bruce-dunham), Professor of Teaching in the Department of Statistics at the UBC.
+
+Project maintainers who do not follow or enforce the Code of Conduct in good faith may face temporary or permanent repercussions as determined by other members of the project's leadership.
 
 ## About
 
