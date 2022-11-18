@@ -23,7 +23,7 @@ head(eda_data)
 tail(eda_data)
 ```
 
-Looks like the data has been read properly. We have 1771 examples over 9 features and 1 target. Below we see check the structure and the summary statistics for our data
+##### Looks like the data has been read properly. We have 1771 examples over 9 features and 1 target. Below we see check the structure and the summary statistics for our data
 
 ```{r}
 str(eda_data)
@@ -34,14 +34,14 @@ str(eda_data)
 - the columns "manufacturer","company_location","country_of_bean_origin","ingredients","most_memorable_characteristics" are all read as character columns but should ideally be factors (categorical columns)
 - "cocoa_percent" is read as a character and should be numeric
 
-We need  convert all the columns to the correct data types but we will do that later
+##### We need  convert all the columns to the correct data types but we will do that later
 
 
 ```{r}
 length(unique(eda_data$most_memorable_characteristics))
 ```
 
-We can see that the most_memorable_characteristics seem to be very unique for each kind of chocolate and have 1755 different unique values, so we can drop this feature. Additionally, the ingredients column has 2 components to it - the number of ingredients and the actual ingredients.  So we can split this column into 2 and have 2 separate features. into So we now have total 7 features. We further check our columns for nulls
+##### We can see that the most_memorable_characteristics seem to be very unique for each kind of chocolate and have 1755 different unique values, so we can drop this feature. Additionally, the ingredients column has 2 components to it - the number of ingredients and the actual ingredients.  So we can split this column into 2 and have 2 separate features. into So we now have total 7 features. We further check our columns for nulls
 
 ```{r}
 eda_data_converted <- eda_data |> select(-c(ref,specific_bean_origin_or_bar_name,most_memorable_characteristics)) |> 
@@ -54,7 +54,7 @@ eda_data_converted |> summarise(across(everything(), ~ sum(is.na(.))))
 we see that there are 66 examples with missing values in our ingredients and num_of_ingredients columns
 
 
-#### Exploring factor like columns further
+##### Exploring factor like columns further
 
 ```{r}
 eda_data_converted |> group_by(company_manufacturer) |> summarize(count = n()) |> arrange(-count) 
@@ -64,7 +64,7 @@ eda_data_converted |> group_by(ingredients) |> summarize(count = n()) |> arrange
 
 ```
 
-For all the factors there are many levels. We can reduce the number of levels for different factors as follows :
+##### For all the factors there are many levels. We can reduce the number of levels for different factors as follows :
 - for company_manufacturer keep only the top 20 manufacturers and combine all other manufacturers into "Other"
 - for company_location keep only the top 10 locations and combine all other locations into "Other"
 - for country_of_bean_origin keep only the top 15 countries and combine all other into "Other"
