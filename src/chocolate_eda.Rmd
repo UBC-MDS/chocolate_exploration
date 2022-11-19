@@ -21,7 +21,7 @@ library(kableExtra)
 
 The data set is provided by the [Manhattan Chocolate Society](http://flavorsofcacao.com/chocolate_database.html), and was found and retrieved from the [tidytuesday data project](https://github.com/rfordatascience/tidytuesday), specifically through [this link](https://github.com/rfordatascience/tidytuesday/blob/master/data/2022/2022-01-18/readme.md). The data set contains observations for different types of dark chocolate, including the manufacturing company, origin of the cocoa beans used to make the chocolate, the other ingredients in the chocolate, and the amount of cocoa. They have also provided a feature column that contains descriptive words relating to the characteristics of the chocolate flavor, and a final rating.
 
-We have split the original data set into training and testing data sets. The following data processing and EDA analysis have been performed on the training set, which contains originally contains 1771 observations with 9 features and 1 target. After data processing and analysis, we have 7 features that we will use for modelling.
+We have split the original data set into training and testing data sets using a 70%-30% split. The following data processing and EDA analysis have been performed on the training set, which contains originally contains 1771 observations with 9 features and 1 target. After data processing and analysis, we have 7 features that we will use for modelling.
 
 ### Glimpsing the Data
 
@@ -104,7 +104,7 @@ eda_data_converted <- eda_data_converted |>
 
 ```
 
-#### Converting Data Types: 
+#### Converting Data Types:
 
 Now we can convert our character columns into factors and also convert cocoa_percent column into a numeric column. The first few rows of our final, processed training data set is shown in Table 1.
 
@@ -175,8 +175,7 @@ Figure 1, Distributions for numerical and discrete features in the training data
 
 The `company_manufacturer`, `company_location`, `country_of_bean_origin`, and `ingredients` features are all categorical features. Figure 2 shows these feature distributions.
 
-```{r categ_plotgrid, echo=FALSE, message=FALSE}
-options(repr.plot.width = 10, repr.plot.height = 25)
+```{r categ_plotgrid, echo=FALSE, message=FALSE, fig.height = 8, fig.width = 5}
 location_plot <- eda_data_final |>
   add_count(company_location) |>
   ggplot(aes(y=reorder(company_location, -n))) +
@@ -202,7 +201,9 @@ ingred_plot <- eda_data_final |>
        x= "Count")
 
 categ_plots <- plot_grid(location_plot, bean_origin_plot, 
-                         ingred_plot, ncol=1)
+                         ingred_plot, ncol=1, 
+                         rel_heights = c(1, 1.5, 0.5), 
+                         rel_widths = c(0.8, 1, 0.8))
 categ_plots
 ```
 
