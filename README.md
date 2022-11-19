@@ -17,3 +17,17 @@ Rscript data/src/chocolate_data_download.R --url = https://github.com/rfordatasc
 ```
 
 A `train_test_split.Rmd` in the src/ folder is provided that processes the `chocolate.csv` into `train_df.csv` and `test_df.csv`.
+
+## Copyright and Licensing
+
+The CSV files under `data/raw/` directories are works/direct derivative of works from the [Chocolate Bar Ratings database](http://flavorsofcacao.com/chocolate_database.html).
+
+Copyright (c) 2011-2022 Brady Brelinski
+
+Unless otherwise specified, the materials in this repository are covered under this copyright statement:
+
+Copyright (c) 2022 Manvir Kohli, Julie Song, Kelvin Wong
+
+The software and associated documentation files are licensed under the MIT License. You may find a copy of the license as [`LICENSE.md`](./LICENSE.md).
+
+The report texts are licensed under Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 (CC BY-NC-ND 4.0) License. A copy of the license can be found as [`LICENSE-CC-BYNCND.md`](./LICENSE-CC-BYNCND.md).
