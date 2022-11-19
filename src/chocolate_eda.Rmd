@@ -104,7 +104,7 @@ eda_data_converted <- eda_data_converted |>
 
 ```
 
-#### Converting Data Types: 
+#### Converting Data Types:
 
 Now we can convert our character columns into factors and also convert cocoa_percent column into a numeric column. The first few rows of our final, processed training data set is shown in Table 1.
 
@@ -175,8 +175,7 @@ Figure 1, Distributions for numerical and discrete features in the training data
 
 The `company_manufacturer`, `company_location`, `country_of_bean_origin`, and `ingredients` features are all categorical features. Figure 2 shows these feature distributions.
 
-```{r categ_plotgrid, echo=FALSE, message=FALSE}
-options(repr.plot.width = 10, repr.plot.height = 25)
+```{r categ_plotgrid, echo=FALSE, message=FALSE, fig.height = 8, fig.width = 5}
 location_plot <- eda_data_final |>
   add_count(company_location) |>
   ggplot(aes(y=reorder(company_location, -n))) +
@@ -202,7 +201,9 @@ ingred_plot <- eda_data_final |>
        x= "Count")
 
 categ_plots <- plot_grid(location_plot, bean_origin_plot, 
-                         ingred_plot, ncol=1)
+                         ingred_plot, ncol=1, 
+                         rel_heights = c(1, 1.5, 0.5), 
+                         rel_widths = c(0.8, 1, 0.8))
 categ_plots
 ```
 
