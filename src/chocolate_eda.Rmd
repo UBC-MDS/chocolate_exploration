@@ -27,7 +27,6 @@ We have split the original data set into training and testing data sets using a 
 
 ```{r reading_data, echo=FALSE, message=FALSE}
 eda_data <- read_csv("../data/raw/train_df.csv")
-
 glimpse(eda_data)
 ```
 
@@ -43,7 +42,23 @@ We have 1771 observations with 9 features and 1 target. After checking the struc
 
 -   We need to convert all the columns to the correct data types, but we will do this as the last step in our data processing.
 
--   The ingredients column has two components in each cell - the number of ingredients and the actual ingredients. So we can split this column into two and have two separate features( `num_of_ingredients` and `ingredients)`
+-   The ingredients column has two components in each cell - the number of ingredients and the actual ingredients. We can split this column into two separate features ( `num_of_ingredients` and `ingredients).`
+
+-   Note that `ingredients` uses the following symbols, as defined by [Flavours of Cacao](http://flavorsofcacao.com/chocolate_database.html):
+
+    -   B = Beans
+
+    -   S = Sugar
+
+    -   S\* = Sweetener other than white cane or beet sugar
+
+    -   C = Cocoa Butter
+
+    -   V = Vanilla
+
+    -   L = Lecithin
+
+    -   Sa = Salt
 
 -   Thus after dropping we `ref` and `specific_bean_origin_or_bar_name` we have an overall total of 8 features with 1 target.
 
@@ -53,23 +68,23 @@ We have 1771 observations with 9 features and 1 target. After checking the struc
 eda_data_converted <- eda_data|> 
   select(-c(ref,specific_bean_origin_or_bar_name)) |>
   separate(col=ingredients, sep ="-", into = c('num_of_ingredients','ingredients'))
-# kable(head(eda_data_converted), format="latex", booktabs=TRUE, 
-#       col.names = c("Manufacturing Company", "Company Location", "Review Date", 
-#                     "Country of Bean Origin", "Amount of Cocoa (%)", 
-#                     "Number of Ingredients", "Ingredients Present", 
-#                     "Most Memorable Characteristics", "Rating (1-5)"),
-#       caption = "Preliminary Features and Target in the Chocolate Dataset") |>
-#   kable_styling(latex_options="scale_down")
 
 check_null <- eda_data_converted |> summarise(across(everything(), ~ sum(is.na(.))))
 check_null <-  t(check_null)
-colnames(check_null) <- 'Null Count'
+colnames(check_null) <- 'Null_Count'
+rownames(check_null) <- NULL
 
+null_table <- cbind(Variable = c("Manufacturing Company", "Company Location", "Review Date", 
+                    "Country of Bean Origin", "Amount of Cocoa (%)",
+                    "Number of Ingredients", "Ingredients Present",
+                    "Most Memorable Characteristics", "Rating (1-5)"), 
+                    check_null)
 
-kable(check_null, format="latex", booktabs=TRUE, 
-      col.names = "Null Count",
+kable(null_table, format="latex", booktabs=TRUE, 
+      col.names = c("Feature", "Null Count"),
       caption = "Null Count by Feature") |>
-  kable_styling(latex_options=c("scale_down", "HOLD_position"))
+  kable_styling(latex_options=c("HOLD_position"),
+                font_size = 10)
 ```
 
 #### Exploring Categorical Columns Further:
@@ -128,7 +143,7 @@ eda_data_converted <- eda_data_converted |>
 
 #### Converting Data Types:
 
-Now we can convert our character columns into factors and also convert cocoa_percent column into a numeric column. Below is the glimpse of our final data after converting the column data types
+Now we can convert our character columns into factors and also convert cocoa_percent column into a numeric column. Below is the glimpse of our data after converting the column data types
 
 ```{r final_eda_table, echo=FALSE, message=FALSE}
 eda_data_final <-   eda_data_converted |> mutate(
@@ -187,6 +202,8 @@ numeric_plots
 
 *Figure 1, Distributions for numerical and discrete features in the training data set.*
 
+It seems that these numerical features are fairly well-distributed, and suitable for modelling.
+
 #### Categorical Features
 
 The `company_manufacturer`, `company_location`, `country_of_bean_origin`, and `ingredients` features are all categorical features. Figure 2 shows these feature distributions.
@@ -224,9 +241,10 @@ manufactuer_plot <- eda_data_final |>
   labs(y="Manufacturer", 
        x= "Count")
 
-categ_plots <- plot_grid(location_plot, bean_origin_plot, 
-                         ingred_plot, manufactuer_plot,ncol=1, 
-                         rel_heights = c(1, 1.5, 1,3 )
+categ_plots <- plot_grid(ingred_plot, location_plot, 
+                         manufactuer_plot, bean_origin_plot, ncol=2, 
+                         rel_widths = c(1, 0.75),
+                         rel_heights = c(0.3, 1)
                          )
 categ_plots
 ```
@@ -240,19 +258,27 @@ eda_data_final <- eda_data_final |> select(-company_manufacturer)
 
 ```
 
-So our final dataset has the following 7 features with "rating" as our target:
+Table 2 shows the final features and their corresponding data types in our final data set, with "Rating" as our target:
 
-| Feature                        | Type                 |
-|--------------------------------|----------------------|
-| company_location               | Factor               |
-| review_date                    | Numeric - Continuous |
-| country_of_bean_origin         | Factor               |
-| cocoa_percent                  | Numeric - Continuous |
-| num_of_ingredients             | Numeric - Discrete   |
-| ingredients                    | Factor               |
-| most_memorable_characteristics | Character(Text)      |
+```{r final_feature_types, echo=FALSE, message=FALSE}
+ftypes <- cbind(Feature = c("Company Location", "Review Date", 
+                    "Country of Bean Origin", "Amount of Cocoa (%)",
+                    "Number of Ingredients", "Ingredients Present",
+                    "Most Memorable Characteristics"),
+                Type = c("Factor", "Numeric - Continuous", "Factor", 
+                "Numeric - Continuous", "Numeric - Discrete", 
+                "Factor", "Character(Text)"))
 
-And below are the first 10 rows of our final processed training dataset
+kable(ftypes, format="latex", booktabs=TRUE, 
+      col.names = c("Feature", "Type"),
+      caption = "Final Features and Data Types") |>
+  kable_styling(latex_options=c("HOLD_position"),
+                font_size = 10)
+
+
+```
+
+And Table 3 below shows the first 10 rows of our final processed training data set:
 
 ```{r final_eda_table_preview, echo=FALSE, message=FALSE}
 
