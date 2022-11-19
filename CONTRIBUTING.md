@@ -10,7 +10,7 @@ You should illustrate your problem with a [minimal reproducble example (reprex)]
 
 ## Pull Request (PR)
 
-If you want to contribute a feature or bug fix, you can fork our repo and submit a pull request. But before you make a substantial pull request, you should file an issue first and make sure someone from the team agrees that it's a problem.
+If you want to contribute a feature or bug fix, you can fork our repo and submit a pull request (PR). The team will review your PR in a timely matter. But before you make a substantial PR, you should file an issue first and make sure someone from the team agrees that it's a problem.
 
 You are advised to use a separate branch for each issue.
 
