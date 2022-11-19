@@ -23,8 +23,23 @@ cd chocolate_exploration
 The EDAs are written in R, and the packages can be installed by:
 
 ```{bash}
-R -e 'install.packages(c("docopt", "tidyverse", "dplyr", "caTools"))'
+R -e 'install.packages(c("docopt", "tidyverse", "dplyr", "caTools", "cowplot", "knitr", "kableExtra"))'
 ```
+
+The versions used in the development can be confirmed by:
+
+```{bash}
+R -e 'for (p in c("docopt", "tidyverse", "dplyr", "caTools", "cowplot", "knitr", "kableExtra")) { print(paste0(p, "==", packageVersion(p)))}'
+[1] "docopt==0.7.1"
+[1] "tidyverse==1.3.2"
+[1] "dplyr==1.0.10"
+[1] "caTools==1.18.2"
+[1] "cowplot==1.1.1"
+[1] "knitr==1.41"
+[1] "kableExtra==1.3.4"
+```
+
+The actual analyses are written in Python. A conda file can be found at `src/environment.yml` (TBD in Milestone 2)
 
 ### Download the data set
 
