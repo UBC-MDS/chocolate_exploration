@@ -231,8 +231,7 @@ categ_plots <- plot_grid(location_plot, bean_origin_plot,
 categ_plots
 ```
 
-*Figure 2, Distributions for categorical features in the training data set.*
-## \newline
+*Figure 2, Distributions for categorical features in the training data set.* \## \newline
 
 Based on the last plot above, it seems that there many distinct companies that manufacture chocolate in this data set, such that this feature acts more like an identifier. Therefore we can choose to drop this feature column, as the values are too unique, and we would have an overwhelming Other category even if we considered the top 50 companies.
 
