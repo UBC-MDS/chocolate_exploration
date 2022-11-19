@@ -1,5 +1,4 @@
 # Chocolate Exploration
-authors: Manvir Kohli, Julie Song, Kelvin Wong
 
 
 > Project complete in accordance with DSCI 522 for the UBC MDS Program 2022-23 for Group 15
