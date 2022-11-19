@@ -1,7 +1,9 @@
 # Chocolate Exploration
 
-
+> Authors: Manvir Kohli, Julie Song, Kelvin Wong
+>
 > Project complete in accordance with DSCI 522 for the UBC MDS Program 2022-23 for Group 15
+
 ## Introduction
 
 "Given the characteristics of a new dark chocolate, what will be its predicted rating on a scale of 1 to 5?" This is the predictive research question that we have set out to answer. Using this information, perhaps we can predict how well-received a new chocolate may be.
@@ -48,9 +50,7 @@ The data set is from [Flavors of Cacao](http://flavorsofcacao.com/chocolate_data
 
 A copy of the file can be found from [TidyTuesday project from the R4DS Community](https://github.com/rfordatascience/tidytuesday) using the following raw URL:
 
-```
-https://github.com/rfordatascience/tidytuesday/raw/master/data/2022/2022-01-18/chocolate.csv
-```
+    https://github.com/rfordatascience/tidytuesday/raw/master/data/2022/2022-01-18/chocolate.csv
 
 You may also use the included `chocolate_data_download.R` to download the dataset, using the following:
 
@@ -64,10 +64,11 @@ A `train_test_split.Rmd` file is provided in the `src/` folder, which processes 
 
 ## Analysis
 
-During our exploratory data analysis (EDA), we aim to check if the dataset is read correctly and if the features are read in the correct data types. If features are read as incorrect data types, we will have to convert them into the correct types. Using a table, we will check if any of the features contain nulls. Further, we will aim to identify features that are relevant and irrelevant to our problem statement of predicting the chocolate rating (for example we may drop identifier columns). We will also look at the distributions of our numeric and categorical columns by plotting graphs (histograms for numeric features and barplots for categorical features)
+During our exploratory data analysis (EDA), we aim to check if the data set is read correctly and if the features have the correct data types. If the features are originally read with incorrect data types, we will have to convert them into the correct types. Using a table, we will check if any of the features contain null values. Further, we will aim to identify features that are relevant and irrelevant to our problem statement of predicting the chocolate rating (for example we may drop identifier columns). We will also look at the distributions of our numeric and categorical columns by creating histograms and bar charts for our numeric and categorical features.
 
-To answer our research question,since our target variable is continuous, we have a regression problem. To make our predictions we will be using different regressors on our training dataset like Ridge regression, SVM RBF, KNN Regressor and Decision Tree Regressor. We will compare the performance of each of these models by carrying out cross validation on the training dataset. Based on the cross-validation scores we will decide on the best performing model and will then tune the hyperparameters of this model with the aim of getting better predictions. Once the hyperparameters have been optimized using cross validation on the training dataset, we will use the optimized model to make predictions on the test data set. Finally we will assess our model performance based on the test data predictions, using regression metrics like R^2, MSE, RMSE and MAPE.
+To answer our research question, we first assume that our target variable is continuous, and so we will focus on a regression problem. To make our predictions, we will be testing different regression models on our training data set such as Ridge Regression, SVM RBF, KNN Regression and Decision Tree Regression. We will compare the performance of each of these models by carrying out cross-validation on the training data set. Based on the cross-validation scores, we will decide on the best performing model and will then tune the hyperparameters to improve the model. Once the hyperparameters have been optimized on the training data set, we will use the optimized model to make predictions on the test data set. Finally we will assess our model performance based on the test data predictions, using regression metrics such as the $R^2$ score, and the MSE, RMSE, and MAPE values.
 
+It is worth noting that our training data set contains the ratings as discrete values (i.e. 2.5, 2.75, 3 and so on). As a result, it is possible that a classification model would also work with this data set. We can test this using a classification model such as Naive Bayes, and compare the model performance with the regression models. If it becomes apparent that this data set is more similar to a classification problem, we may proceed with a classification modelling approach instead. Most of the models mentioned above are also suitable for classification problems.
 
 ## Copyright and Licensing
 
@@ -82,3 +83,9 @@ Copyright (c) 2022 Manvir Kohli, Julie Song, Kelvin Wong
 The software and associated documentation files are licensed under the MIT License. You may find a copy of the license as [`LICENSE.md`](./LICENSE.md).
 
 The report texts are licensed under Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 (CC BY-NC-ND 4.0) License. A copy of the license can be found as [`LICENSE-CC-BYNCND.md`](./LICENSE-CC-BYNCND.md).
+
+## References
+
+The Manhattan Chocolate Society, 2022, "Chocolate Bar Ratings", Flavors of Cacao [Online]. Available: <http://flavorsofcacao.com/chocolate_database.html>
+
+Thomas Mock (2022). Tidy Tuesday: A weekly data project aimed at the R ecosystem. <https://github.com/rfordatascience/tidytuesday>. 
