@@ -14,7 +14,6 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r Reading libraries}
 ## NOTE: uncomment the line below if you don't have the caTools library installs
 library(dplyr)
-#install.packages("caTools")
 library(tidyverse)
 library(caTools)
 ```
