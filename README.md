@@ -83,4 +83,3 @@ Copyright (c) 2022 Manvir Kohli, Julie Song, Kelvin Wong
 The software and associated documentation files are licensed under the MIT License. You may find a copy of the license as [`LICENSE.md`](./LICENSE.md).
 
 The report texts are licensed under Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 (CC BY-NC-ND 4.0) License. A copy of the license can be found as [`LICENSE-CC-BYNCND.md`](./LICENSE-CC-BYNCND.md).
-<!-- #endregion -->
