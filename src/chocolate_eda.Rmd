@@ -19,7 +19,7 @@ library(kableExtra)
 
 ### Summary of the Data Set
 
-The data set is provided by the [Manhattan Chocolate Society](http://flavorsofcacao.com/chocolate_database.html), and was found and retrieved from the [tidytuesday data project](https://github.com/rfordatascience/tidytuesday), specifically through [this link](https://github.com/rfordatascience/tidytuesday/blob/master/data/2022/2022-01-18/readme.md). The data set contains observations for different types of dark chocolate, including the manufacturing company, origin of the cocoa beans used to make the chocolate, the other ingredients in the chocolate, and the amount of cocoa. They have also provided a feature column that contains descriptive words relating to the characteristics of the chocolate flavor, and a final rating.
+The data set is provided by the [Manhattan Chocolate Society](http://flavorsofcacao.com/chocolate_database.html), and was found and retrieved from the [tidytuesday data project](https://github.com/rfordatascience/tidytuesday), specifically through [this link](https://github.com/rfordatascience/tidytuesday/blob/master/data/2022/2022-01-18/readme.md). The data set contains observations for different types of dark chocolate, including the manufacturing company, company location, origin of the cocoa beans used to make the chocolate, the other ingredients in the chocolate, the amount of cocoa in the chocolate, and others. They have also provided a feature column that contains descriptive words relating to the characteristics of the chocolate flavor, and a final rating.
 
 We have split the original data set into training and testing data sets using a 70%-30% split. The following data processing and EDA analysis have been performed on the training set, which contains originally contains 1771 observations with 9 features and 1 target. After data processing and analysis, we have 7 features that we will use for modelling.
 
@@ -44,7 +44,7 @@ We have 1771 observations with 9 features and 1 target. After checking the struc
 
 -   The ingredients column has two components in each cell - the number of ingredients and the actual ingredients. We can split this column into two separate features ( `num_of_ingredients` and `ingredients).`
 
--   Note that `ingredients` uses the following symbols, as defined by [Flavours of Cacao](http://flavorsofcacao.com/chocolate_database.html):
+-   Note that `ingredients` uses the following symbols, as defined by [Flavors of Cacao](http://flavorsofcacao.com/chocolate_database.html):
 
     -   B = Beans
 
@@ -290,3 +290,9 @@ kable(head(eda_data_final,10), format="latex", booktabs=TRUE,
       caption = "Final Features and Target in the Chocolate Dataset") |>
   kable_styling(latex_options=c("scale_down", "HOLD_position"))
 ```
+
+## References
+
+The Manhattan Chocolate Society, 2022, "Chocolate Bar Ratings", Flavors of Cacao [Online]. Available: <http://flavorsofcacao.com/chocolate_database.html>
+
+Thomas Mock (2022). Tidy Tuesday: A weekly data project aimed at the R ecosystem. <https://github.com/rfordatascience/tidytuesday>. 
