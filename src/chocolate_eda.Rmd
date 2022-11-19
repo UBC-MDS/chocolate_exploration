@@ -27,23 +27,29 @@ We have split the original data set into training and testing data sets using a 
 
 ```{r reading_data, echo=FALSE, message=FALSE}
 eda_data <- read_csv("../data/raw/train_df.csv")
+
+glimpse(eda_data)
 ```
 
 We have 1771 observations with 9 features and 1 target. After checking the structure and summary statistics for our data, we find the following:
 
 -   Our target variable is `rating`
 -   The columns `ref` and `specific_bean_origin_or_bar_name` are identifier columns and should be dropped
--   The columns `company_manufacturer`, `company_location`, and `country_of_bean_origin`, are all read as character columns but should ideally be factors (i.e. categorical columns)
+-   The columns `company_manufacturer`, `company_location`, `country_of_bean_origin` and `ingredients` are all read as character columns but should ideally be factors (i.e. categorical columns)
 -   `most_memorable_characteristics` is likely a text column, containing many unique words
 -   `cocoa_percent` is read as a character column while it should be numeric
 
 ### Data Processing
 
-We need to convert all the columns to the correct data types, but we will do this as the last step in our data processing.
+-   We need to convert all the columns to the correct data types, but we will do this as the last step in our data processing.
 
-The ingredients column has two components in each cell - the number of ingredients and the actual ingredients. So we can split this column into two and have two separate features. Now we have an overall total of 8 features with 1 target. We also checked our columns for null values, and found that there were 55 observations with missing values in our `ingredients` and `num_of_ingredients` columns.
+-   The ingredients column has two components in each cell - the number of ingredients and the actual ingredients. So we can split this column into two and have two separate features( `num_of_ingredients` and `ingredients)`
 
-```{r ingred_separate, echo=FALSE}
+-   Thus after dropping we `ref` and `specific_bean_origin_or_bar_name` we have an overall total of 8 features with 1 target.
+
+-   We also checked our columns for null values, and found that there were 55 observations with missing values in our `ingredients` and `num_of_ingredients` columns.
+
+```{r ingred_separate, echo=FALSE, message=FALSE}
 eda_data_converted <- eda_data|> 
   select(-c(ref,specific_bean_origin_or_bar_name)) |>
   separate(col=ingredients, sep ="-", into = c('num_of_ingredients','ingredients'))
@@ -56,14 +62,25 @@ eda_data_converted <- eda_data|>
 #   kable_styling(latex_options="scale_down")
 
 check_null <- eda_data_converted |> summarise(across(everything(), ~ sum(is.na(.))))
+check_null <-  t(check_null)
+colnames(check_null) <- 'Null Count'
+
+
+kable(check_null, format="latex", booktabs=TRUE, 
+      col.names = "Null Count",
+      caption = "Null Count by Feature") |>
+  kable_styling(latex_options=c("scale_down", "HOLD_position"))
 ```
 
 #### Exploring Categorical Columns Further:
 
 ```{r summary_categ, echo=FALSE, message=FALSE}
 manufacturer_groups <- eda_data_converted |> group_by(company_manufacturer) |> summarize(count = n()) |> arrange(-count) 
+
 location_groups <- eda_data_converted |> group_by(company_location) |> summarize(count = n()) |> arrange(-count)
+
 bean_origin_groups <- eda_data_converted |> group_by(country_of_bean_origin) |> summarize(count = n()) |> arrange(-count)
+
 ingred_groups <- eda_data_converted |> group_by(ingredients) |> summarize(count = n()) |> arrange(-count)
 
 ```
@@ -73,7 +90,7 @@ For all the factors there are many levels. We can reduce the number of levels fo
 -   For `company_location` keep only the top 10 locations and combine all other locations into "Other"
 -   For `country_of_bean_origin` keep only the top 25 countries and combine all other into "Other"
 -   For `ingredients` keep the top 5 ingredients and combine all other into "Other"
--   For `company_manufacturer`, it seems that there many distinct companies that manufacture chocolate in this data set, such that this feature acts more like an identifier. We choose to drop this feature column, as the values are too unique, and we would have an overwhelming `Other` category even if we considered the top 50 companies.
+-   For `company_manufacturer`, keep the top 50 manufacturers and combine all other into "Other" (50 was chosen because this categorical feature has too many levels)
 
 ```{r top_categories, echo=FALSE, message=FALSE}
 top_10_locations <-  eda_data_converted |> group_by(company_location) |> summarize(count = n()) |> arrange(-count) |> 
@@ -85,13 +102,16 @@ top_25_countries <-  eda_data_converted |> group_by(country_of_bean_origin) |> s
 top_5_ingredients <-  eda_data_converted |> group_by(ingredients) |> summarize(count = n()) |> arrange(-count) |> 
             top_n(5) |> pull(ingredients)
 
+top_50_manufacturers <-  eda_data_converted |> group_by(company_manufacturer) |> summarize(count = n()) |> arrange(-count) |> 
+            top_n(50) |> pull(company_manufacturer)
+
+
 top_10_locations <-  as.vector(top_10_locations)
 top_25_countries <-  as.vector(top_25_countries)
 top_5_ingredients <- as.vector(top_5_ingredients)
+top_50_manufacturers <- as.vector(top_50_manufacturers)
 
-```
 
-```{r correct_table, echo=FALSE, message=FALSE}
 eda_data_converted <- eda_data_converted |>
     mutate(
       company_location = case_when(!company_location %in% top_10_locations ~ "Other",
@@ -99,14 +119,16 @@ eda_data_converted <- eda_data_converted |>
       country_of_bean_origin = case_when(!country_of_bean_origin %in% top_25_countries ~ "Other",
                              TRUE ~ country_of_bean_origin),
       ingredients = case_when(!ingredients %in% top_5_ingredients ~ "Other",
-                             TRUE ~ ingredients)) 
-
+                             TRUE ~ ingredients),
+      company_manufacturer = case_when(!company_manufacturer 
+                                       %in% top_50_manufacturers ~ "Other",
+                                       TRUE ~ company_manufacturer)) 
 
 ```
 
 #### Converting Data Types:
 
-Now we can convert our character columns into factors and also convert cocoa_percent column into a numeric column. The first few rows of our final, processed training data set is shown in Table 1.
+Now we can convert our character columns into factors and also convert cocoa_percent column into a numeric column. Below is the glimpse of our final data after converting the column data types
 
 ```{r final_eda_table, echo=FALSE, message=FALSE}
 eda_data_final <-   eda_data_converted |> mutate(
@@ -114,16 +136,10 @@ eda_data_final <-   eda_data_converted |> mutate(
             country_of_bean_origin = as.factor(country_of_bean_origin),
             cocoa_percent = str_replace(cocoa_percent,"%",""),
             cocoa_percent = as.numeric(cocoa_percent)/100,
-            ingredients = as.factor(ingredients)) |>
-  select(-c(company_manufacturer))
-
-kable(head(eda_data_final), format="latex", booktabs=TRUE, 
-      col.names = c("Company Location", "Review Date", 
-                    "Country of Bean Origin", "Amount of Cocoa (%)", 
-                    "Number of Ingredients", "Ingredients Present", 
-                    "Most Memorable Characteristics", "Rating (1-5)"),
-      caption = "Final Features and Target in the Chocolate Dataset") |>
-  kable_styling(latex_options=c("scale_down", "HOLD_position"))
+            ingredients = as.factor(ingredients),
+            company_manufacturer = as.factor(company_manufacturer))
+  
+glimpse(eda_data_final)
 ```
 
 ### Data Distributions
@@ -169,13 +185,13 @@ numeric_plots
 
 ```
 
-Figure 1, Distributions for numerical and discrete features in the training data set.
+*Figure 1, Distributions for numerical and discrete features in the training data set.*
 
 #### Categorical Features
 
 The `company_manufacturer`, `company_location`, `country_of_bean_origin`, and `ingredients` features are all categorical features. Figure 2 shows these feature distributions.
 
-```{r categ_plotgrid, echo=FALSE, message=FALSE, fig.height = 8, fig.width = 5}
+```{r categ_plotgrid, echo=FALSE, message=FALSE, fig.height = 10.5, fig.width = 8}
 location_plot <- eda_data_final |>
   add_count(company_location) |>
   ggplot(aes(y=reorder(company_location, -n))) +
@@ -200,11 +216,51 @@ ingred_plot <- eda_data_final |>
   labs(y="Ingredients", 
        x= "Count")
 
+manufactuer_plot <- eda_data_final |>
+  add_count(company_manufacturer) |>
+  ggplot(aes(y=reorder(company_manufacturer, -n))) +
+  geom_bar() +
+  theme_bw() +
+  labs(y="Manufacturer", 
+       x= "Count")
+
 categ_plots <- plot_grid(location_plot, bean_origin_plot, 
-                         ingred_plot, ncol=1, 
-                         rel_heights = c(1, 1.5, 0.5), 
-                         rel_widths = c(0.8, 1, 0.8))
+                         ingred_plot, manufactuer_plot,ncol=1, 
+                         rel_heights = c(1, 1.5, 1,3 )
+                         )
 categ_plots
 ```
 
-Figure 2, Distributions for categorical features in the training data set.
+*Figure 2, Distributions for categorical features in the training data set.* \## \newline
+
+Based on the last plot above, it seems that there many distinct companies that manufacture chocolate in this data set, such that this feature acts more like an identifier. Therefore we can choose to drop this feature column, as the values are too unique, and we would have an overwhelming Other category even if we considered the top 50 companies.
+
+```{r drop_manufacturers, echo = FALSE}
+eda_data_final <- eda_data_final |> select(-company_manufacturer)
+
+```
+
+So our final dataset has the following 7 features with "rating" as our target:
+
+| Feature                        | Type                 |
+|--------------------------------|----------------------|
+| company_location               | Factor               |
+| review_date                    | Numeric - Continuous |
+| country_of_bean_origin         | Factor               |
+| cocoa_percent                  | Numeric - Continuous |
+| num_of_ingredients             | Numeric - Discrete   |
+| ingredients                    | Factor               |
+| most_memorable_characteristics | Character(Text)      |
+
+And below are the first 10 rows of our final processed training dataset
+
+```{r final_eda_table_preview, echo=FALSE, message=FALSE}
+
+kable(head(eda_data_final,10), format="latex", booktabs=TRUE, 
+      col.names = c("Company Location", "Review Date", 
+                    "Country of Bean Origin", "Amount of Cocoa (%)", 
+                    "Number of Ingredients", "Ingredients Present", 
+                    "Most Memorable Characteristics", "Rating (1-5)"),
+      caption = "Final Features and Target in the Chocolate Dataset") |>
+  kable_styling(latex_options=c("scale_down", "HOLD_position"))
+```
