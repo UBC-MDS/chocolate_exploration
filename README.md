@@ -42,7 +42,27 @@ R -e 'for (p in c("docopt", "tidyverse", "dplyr", "caTools", "cowplot", "knitr",
 [1] "kableExtra==1.3.4"
 ```
 
-The actual analyses are written in Python. A conda file can be found at `src/environment.yml` (TBD in Milestone 2)
+The actual analyses are written in Python. A Conda environment file can be found at [`environment.yml`](./environment.yaml).
+
+To create the environment, run this at the project root:
+
+```{bash}
+conda env create -f environment.yaml
+```
+
+To activate the environment:
+
+```{bash}
+conda activate chocolate_exploration
+```
+
+To deactivate the environment:
+
+```{bash}
+conda deactivate
+```
+
+For more information, please refer to the [conda documentation](https://conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html).
 
 ### Download the data set
 
