@@ -2,7 +2,7 @@ from sklearn.base import TransformerMixin
 from sklearn.compose import make_column_transformer
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.pipeline import make_pipeline
-from sklearn.preprocessing import FunctionTransformer, MultiLabelBinarizer, OneHotEncoder, StandardScaler
+from sklearn.preprocessing import FunctionTransformer, MultiLabelBinarizer, OneHotEncoder, OrdinalEncoder, StandardScaler
 
 
 # Ingredient list:
@@ -40,7 +40,7 @@ preprocessor = make_column_transformer(
         ]
     ),
     (
-        StandardScaler(),
+        OrdinalEncoder(),
         [
             'review_date'
         ]
