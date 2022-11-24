@@ -40,17 +40,13 @@ preprocessor = make_column_transformer(
         ]
     ),
     (
-        # pipeline-1
-        make_pipeline(
-            OrdinalEncoder(),
-            StandardScaler()
-        ),
+        OrdinalEncoder(),
         [
             'review_date'
         ]
     ),
     (
-        # pipeline-2
+        # pipeline-1
         make_pipeline(
             # convert ingredients to set
             FunctionTransformer(lambda df: [set(x[3:].split(',')) if isinstance(x, str) else set({}) for x in df['ingredients']]),
@@ -61,7 +57,7 @@ preprocessor = make_column_transformer(
         ]
     ),
     (
-        # pipeline-3
+        # pipeline-2
         make_pipeline(
             # drop the '%' from the strings
             FunctionTransformer(lambda df: df.apply(lambda x: x.str[:-1], axis=1)),
