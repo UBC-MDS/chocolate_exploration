@@ -2,7 +2,7 @@ from sklearn.base import TransformerMixin
 from sklearn.compose import make_column_transformer
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.pipeline import make_pipeline
-from sklearn.preprocessing import FunctionTransformer, MultiLabelBinarizer, OneHotEncoder, StandardScaler
+from sklearn.preprocessing import FunctionTransformer, MultiLabelBinarizer, OneHotEncoder, OrdinalEncoder, StandardScaler
 
 
 # Ingredient list:
@@ -40,13 +40,17 @@ preprocessor = make_column_transformer(
         ]
     ),
     (
-        StandardScaler(),
+        # pipeline-1
+        make_pipeline(
+            OrdinalEncoder(),
+            StandardScaler()
+        ),
         [
             'review_date'
         ]
     ),
     (
-        # pipeline-1
+        # pipeline-2
         make_pipeline(
             # convert ingredients to set
             FunctionTransformer(lambda df: [set(x[3:].split(',')) if isinstance(x, str) else set({}) for x in df['ingredients']]),
@@ -57,7 +61,7 @@ preprocessor = make_column_transformer(
         ]
     ),
     (
-        # pipeline-2
+        # pipeline-3
         make_pipeline(
             # drop the '%' from the strings
             FunctionTransformer(lambda df: df.apply(lambda x: x.str[:-1], axis=1)),

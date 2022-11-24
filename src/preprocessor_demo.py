@@ -22,4 +22,4 @@ pipe = make_pipeline(
 # TODO: Replace with `RandomizedSearchCV`
 transformed = pipe.fit_transform(X_train)
 print(transformed.shape)
-print(pipe.named_steps['columntransformer'].named_transformers_['pipeline-1'].named_steps['mymultilabelbinarizer'].encoder.classes)
+print(pipe.named_steps['columntransformer'].named_transformers_['pipeline-2'].named_steps['mymultilabelbinarizer'].encoder.classes)
