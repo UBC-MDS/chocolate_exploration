@@ -26,20 +26,23 @@ cd chocolate_exploration
 The EDAs are written in R, and the packages can be installed by:
 
 ```{bash}
-R -e 'install.packages(c("docopt", "tidyverse", "dplyr", "caTools", "cowplot", "knitr", "kableExtra"))'
+R -e 'install.packages(c("docopt", "tidyverse", "dplyr", "caTools", "cowplot", "knitr", "kableExtra", "rmarkdown","magick","webshot"))'
 ```
 
 The versions used in the development can be confirmed by:
 
 ```{bash}
-R -e 'for (p in c("docopt", "tidyverse", "dplyr", "caTools", "cowplot", "knitr", "kableExtra")) { print(paste0(p, "==", packageVersion(p)))}'
+R -e 'for (p in c("docopt", "tidyverse", "dplyr", "caTools", "cowplot", "knitr", "kableExtra", "rmarkdown","magick","webshot")) { print(paste0(p, "==", packageVersion(p)))}'
 [1] "docopt==0.7.1"
 [1] "tidyverse==1.3.2"
-[1] "dplyr==1.0.10"
+[1] "dplyr==1.0.9"
 [1] "caTools==1.18.2"
 [1] "cowplot==1.1.1"
-[1] "knitr==1.41"
+[1] "knitr==1.40"
 [1] "kableExtra==1.3.4"
+[1] "rmarkdown==2.18"
+[1] "magick==2.7.3"
+[1] "webshot==0.5.4"
 ```
 
 The actual analyses are written in Python. A Conda environment file can be found at [`environment.yml`](./environment.yaml).
