@@ -176,13 +176,17 @@ main <- function() {
     labs(y="Manufacturer", 
          x= "Count")
   
+  cat_title = "Categorical Plots"
+  
   categ_plots <- plot_grid(ingred_plot, location_plot, 
-                           manufactuer_plot, bean_origin_plot, ncol=2, 
+                           manufactuer_plot, bean_origin_plot, 
+                           ncol=2,
                            rel_widths = c(1, 0.75),
                            rel_heights = c(0.3, 1)
   )
   
-  ggsave(filename="src/eda_files/Categorical_Plots.png", plot=categ_plots)
+  ggsave(filename="src/eda_files/Categorical_Plots.png", plot=categ_plots,
+         width = 8, height = 10, units = "in")
   
   eda_data_final <- eda_data_final |> select(-company_manufacturer)
   

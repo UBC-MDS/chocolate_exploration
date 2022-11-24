@@ -165,7 +165,7 @@ Now let us examine the distributions for each of our numerical and categorical f
 
 The only numerical feature we have is `percent_cocoa`. The `num_of_ingredients` and `review_date` features are discrete, and our target `rating` column is also discrete, as it has values between 1 and 5 in 0.25 intervals. Figure 1 shows the distributions for these features.
 
-```{r numeric_plotgrid, echo=FALSE, message=FALSE}
+```{r numeric_plotgrid, echo=FALSE, message=FALSE, fig.cap= "Numeric Plots"}
 cocoa_plot <- eda_data_final |>
   ggplot(aes(x=cocoa_percent)) +
   geom_histogram(bins=25) +
@@ -208,45 +208,45 @@ It seems that these numerical features are fairly well-distributed, and suitable
 
 The `company_manufacturer`, `company_location`, `country_of_bean_origin`, and `ingredients` features are all categorical features. Figure 2 shows these feature distributions.
 
-```{r categ_plotgrid, echo=FALSE, message=FALSE, fig.height = 10.5, fig.width = 8}
+```{r categ_plotgrid, echo=FALSE, message=FALSE, fig.height = 10.5, fig.width = 8, fig.cap="Categorical Plots"}
 location_plot <- eda_data_final |>
-  add_count(company_location) |>
-  ggplot(aes(y=reorder(company_location, -n))) +
-  geom_bar() +
-  theme_bw() +
-  labs(y="Company Location", 
-       x= "Count")
+    add_count(company_location) |>
+    ggplot(aes(y=reorder(company_location, -n))) +
+    geom_bar() +
+    theme_bw() +
+    labs(y="Company Location", 
+         x= "Count")
+  
+  bean_origin_plot <- eda_data_final |>
+    add_count(country_of_bean_origin) |>
+    ggplot(aes(y=reorder(country_of_bean_origin, -n))) +
+    geom_bar() +
+    theme_bw() +
+    labs(y="Country of Bean Origin", 
+         x= "Count")
+  
+  ingred_plot <- eda_data_final |>
+    add_count(ingredients) |>
+    ggplot(aes(y=reorder(ingredients, -n))) +
+    geom_bar() +
+    theme_bw() +
+    labs(y="Ingredients", 
+         x= "Count")
+  
+  manufactuer_plot <- eda_data_final |>
+    add_count(company_manufacturer) |>
+    ggplot(aes(y=reorder(company_manufacturer, -n))) +
+    geom_bar() +
+    theme_bw() +
+    labs(y="Manufacturer", 
+         x= "Count")
+  
+  categ_plots <- plot_grid(ingred_plot, location_plot, 
+                           manufactuer_plot, bean_origin_plot, ncol=2, 
+                           rel_widths = c(1, 0.75),
+                           rel_heights = c(0.3, 1)
+  )
 
-bean_origin_plot <- eda_data_final |>
-  add_count(country_of_bean_origin) |>
-  ggplot(aes(y=reorder(country_of_bean_origin, -n))) +
-  geom_bar() +
-  theme_bw() +
-  labs(y="Country of Bean Origin", 
-       x= "Count")
-
-ingred_plot <- eda_data_final |>
-  add_count(ingredients) |>
-  ggplot(aes(y=reorder(ingredients, -n))) +
-  geom_bar() +
-  theme_bw() +
-  labs(y="Ingredients", 
-       x= "Count")
-
-manufactuer_plot <- eda_data_final |>
-  add_count(company_manufacturer) |>
-  ggplot(aes(y=reorder(company_manufacturer, -n))) +
-  geom_bar() +
-  theme_bw() +
-  labs(y="Manufacturer", 
-       x= "Count")
-
-categ_plots <- plot_grid(ingred_plot, location_plot, 
-                         manufactuer_plot, bean_origin_plot, ncol=2, 
-                         rel_widths = c(1, 0.75),
-                         rel_heights = c(0.3, 1)
-                         )
-categ_plots
 ```
 
 *Figure 2, Distributions for categorical features in the training data set.* \## \newline
@@ -280,16 +280,7 @@ kable(ftypes, format="latex", booktabs=TRUE,
 
 And Table 3 below shows the first 10 rows of our final processed training data set:
 
-```{r final_eda_table_preview, echo=FALSE, message=FALSE}
-
-kable(head(eda_data_final,10), format="latex", booktabs=TRUE, 
-      col.names = c("Company Location", "Review Date", 
-                    "Country of Bean Origin", "Amount of Cocoa (%)", 
-                    "Number of Ingredients", "Ingredients Present", 
-                    "Most Memorable Characteristics", "Rating (1-5)"),
-      caption = "Final Features and Target in the Chocolate Dataset") |>
-  kable_styling(latex_options=c("scale_down", "HOLD_position"))
-```
+`{<- <-}`
 
 ## References
 
