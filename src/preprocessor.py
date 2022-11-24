@@ -32,7 +32,7 @@ class MyMultiLabelBinarizer(TransformerMixin):
 # To use in the models, use `from preprocessor import preprocessor`
 preprocessor = make_column_transformer(
     (
-        OneHotEncoder(drop='if_binary'),
+        OneHotEncoder(drop='if_binary', handle_unknown="ignore"),
         [
             'company_manufacturer',
             'company_location',
