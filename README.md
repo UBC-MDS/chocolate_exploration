@@ -26,20 +26,23 @@ cd chocolate_exploration
 The EDAs are written in R, and the packages can be installed by:
 
 ```{bash}
-R -e 'install.packages(c("docopt", "tidyverse", "dplyr", "caTools", "cowplot", "knitr", "kableExtra"))'
+R -e 'install.packages(c("docopt", "tidyverse", "dplyr", "caTools", "cowplot", "knitr", "kableExtra", "rmarkdown","magick","webshot"))'
 ```
 
 The versions used in the development can be confirmed by:
 
 ```{bash}
-R -e 'for (p in c("docopt", "tidyverse", "dplyr", "caTools", "cowplot", "knitr", "kableExtra")) { print(paste0(p, "==", packageVersion(p)))}'
+R -e 'for (p in c("docopt", "tidyverse", "dplyr", "caTools", "cowplot", "knitr", "kableExtra", "rmarkdown","magick","webshot")) { print(paste0(p, "==", packageVersion(p)))}'
 [1] "docopt==0.7.1"
 [1] "tidyverse==1.3.2"
-[1] "dplyr==1.0.10"
+[1] "dplyr==1.0.9"
 [1] "caTools==1.18.2"
 [1] "cowplot==1.1.1"
-[1] "knitr==1.41"
+[1] "knitr==1.40"
 [1] "kableExtra==1.3.4"
+[1] "rmarkdown==2.18"
+[1] "magick==2.7.3"
+[1] "webshot==0.5.4"
 ```
 
 The actual analyses are written in Python. A Conda environment file can be found at [`environment.yml`](./environment.yaml).
@@ -75,13 +78,14 @@ A copy of the file can be found from [TidyTuesday project from the R4DS Communit
 You may also use the included `chocolate_data_download.R` to download the dataset, using the following:
 
 ```{bash}
-Rscript src/chocolate_data_download.R --url = https://github.com/rfordatascience/tidytuesday/raw/master/data/2022/2022-01-18/chocolate.csv --file_path = data/raw/chocolate.csv
-```
+Rscript src/chocolate_data_download.R --url = https://github.com/rfordatascience/tidytuesday/raw/master/data/2022/2022-01-18/chocolate.csv --download_dir = data/raw --file_name = chocolate.csv```
 
 ### Split the data set
 
-A `train_test_split.Rmd` file is provided in the `src/` folder, which processes the `chocolate.csv` into a `train_df.csv` and a `test_df.csv` using a 70%-30% split.
-
+Running the script train_test_split.R in the 'src' folder as shown below processes the `chocolate.csv` into a `train_df.csv` and a `test_df.csv` using a 70%-30% split.
+```bash
+Rscript src/train_test_split.R --input_file = data/raw/chocolate.csv
+```
 ## Analysis
 
 During our exploratory data analysis (EDA), we aim to check if the data set is read correctly and if the features have the correct data types. If the features are originally read with incorrect data types, we will have to convert them into the correct types. Using a table, we will check if any of the features contain null values. Further, we will aim to identify features that are relevant and irrelevant to our problem statement of predicting the chocolate rating (for example we may drop identifier columns). We will also look at the distributions of our numeric and categorical columns by creating histograms and bar charts for our numeric and categorical features.
@@ -89,6 +93,23 @@ During our exploratory data analysis (EDA), we aim to check if the data set is r
 To answer our research question, we first assume that our target variable is continuous, and so we will focus on a regression problem. To make our predictions, we will be testing different regression models on our training data set such as Ridge Regression, SVM RBF, KNN Regression and Decision Tree Regression. We will compare the performance of each of these models by carrying out cross-validation on the training data set. Based on the cross-validation scores, we will decide on the best performing model and will then tune the hyperparameters to improve the model. Once the hyperparameters have been optimized on the training data set, we will use the optimized model to make predictions on the test data set. Finally we will assess our model performance based on the test data predictions, using regression metrics such as the $R^2$ score, and the MSE, RMSE, and MAPE values, and present the results in a table.
 
 It is worth noting that our training data set contains the ratings as discrete values (i.e. 2.5, 2.75, 3 and so on). As a result, it is possible that a classification model would also work with this data set. We can test this using a classification model such as Naive Bayes, and compare the model performance with the regression models. If it becomes apparent that this data set is more similar to a classification problem, we may proceed with a classification modelling approach instead. Most of the models mentioned above are also suitable for classification problems.
+
+You can run the EDA using the  chocolate_eda_automated.R script in the'src' folder. Running the command below saves the results of EDA in the src/eda_files folder. 
+```bash
+Rscript src/chocolate_eda_automated.R
+```
+
+EDA Results stored by the above script include: 
+ - Summary of null values ("Nulls_table.html")
+ - Summary of final features used for modelling ("Final_Features_Table.html")
+ - View of the final dataset ("Final_Dataset_View.html")
+ - Plots for categorical variables ("Numerical_Plots.png")
+ - Plots for categorical variables ("Categorical_Plots.png")
+
+You can also view the complete EDA summary as a PDF using the below script which renders  src/chocolate_eda.Rmd file as a PDF
+```bash
+Rscript src/chocolate_eda_rmd_to_pdf_renderer.R --input_file_path = src/chocolate_eda.Rmd
+```
 
 ## Copyright and Licensing
 
