@@ -1,40 +1,36 @@
-# author: Julie Song ,Kelvin Wong, Manvir Kohli
+# author: Julie,Kelvin, Manvir
 # date: 2022-11-17
 
-"This script takes the url of a dataset as an input and saves it to the specified 
+"This script takes the url as a dataset as an input and saves it to the specified 
 filepath .
 
-Usage: chocolate_data_download.R --url = <url> --file_path = <file_path>
+Usage: chocolate_data_download.R --url = <url> --download_dir = <download_dir> --file_name = <file_name>
 
 Options:
---url = <url>              URL from wher to download file
---file_path = <file_path>  Destination folder and name of the file (example: data/raw/filename.csv)
+--url = <url>                    URL from wher to download file
+--download_dir = <download_dir>  Destination folder of the file (example data/raw)
+--file_name = <file_name>        Name of the file (example chocolate.csv)
 " -> doc
 
 library(docopt)
 library(tidyverse)
 library(dplyr)
-library(testthat)
 
 opt <- docopt(doc)
 
-#' Function to download and save dataset
-#'
-#' @param url url to the dataset to be downlaoded 
-#' @param file_path file path where the downloaded dataset must be saved
-#'
-#' @return None
-#' @export
-#'
-#' @examples main('http://flavorsofcacao.com/chocolate_database.html','data/chocolate.csv')
-main <- function(url, file_path) {
+main <- function(url, download_dir,file_name) {
   
+  ## creating directory where data dwill be donwloaded
+  if (!dir.exists(download_dir)){
+    dir.create(download_dir,recursive = TRUE)}
+    
   # read in data
   data <- read_csv(url)
   
   # save data to specified file_path
-  write_csv(data,file_path)
+  setwd(download_dir)
+  write_csv(data,file_name)
   
 }
 
-main(opt$url, opt$file_path)
+main(opt$url, opt$download_dir, opt$file_name)

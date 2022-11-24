@@ -20,7 +20,10 @@ library(webshot)
 opt <- docopt(doc)
 
 main <- function() {
-
+  ## creating directory where results will be saved
+  if (!dir.exists("src/eda_files")){
+    dir.create("src/eda_files")
+  }
   ##Glimpsing the Data
   
   eda_data <- read_csv("data/raw/train_df.csv")
