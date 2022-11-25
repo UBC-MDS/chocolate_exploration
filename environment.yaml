@@ -25,3 +25,5 @@ dependencies:
     - psutil>=5.7.2
     - docopt-ng
     - dill
+    - pycodestyle
+    - autopep8
