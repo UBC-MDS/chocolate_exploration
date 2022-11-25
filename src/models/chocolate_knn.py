@@ -25,6 +25,7 @@ class ChocolateKNNTuner(BaseChocolateModelTuner):
     def __init__(self):
         super().__init__()
         self.tuned_file_name = "tuned_knn.joblib"
+        self.cv_file_name = "cv_results_knn.csv"
 
     def create_pipeline(self):
         """
@@ -48,7 +49,9 @@ class ChocolateKNNTuner(BaseChocolateModelTuner):
         """
         # `columntransformer__countvectorizer__max_features` is inherited
         return super().param_distribution() | {
-            "kneighborsregressor__leaf_size": uniform(5, 500)
+            "kneighborsregressor__leaf_size": uniform(5, 500),
+            "kneighborsregressor__n_neighbors": uniform(1, 100),
+            "kneighborsregressor__weights": ['uniform', 'distance']
         }
 
 
