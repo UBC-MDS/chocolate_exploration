@@ -93,6 +93,8 @@ To tune the models, run the following commands at the project root:
 
 ```{bash}
 python -m src.models.chocolate_decision_tree --train=data/raw/train_df.csv --output=results/models/
+python -m src.models.chocolate_knn --train=data/raw/train_df.csv --output=results/models/
+python -m src.models.chocolate_ridge --train=data/raw/train_df.csv --output=results/models/
 python -m src.models.chocolate_svm_rbf --train=data/raw/train_df.csv --output=results/models/
 ```
 
