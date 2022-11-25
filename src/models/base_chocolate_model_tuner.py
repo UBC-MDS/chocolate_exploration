@@ -24,13 +24,16 @@ class BaseChocolateModelTuner():
         Number of slices in CV, defaulted to 5
     tuned_file_name : str
         Name of the tuned model file, defaulted to `"model.joblib"`
+    cv_file_name : str
+        Name of the model cross-validation results file, defaulted to `"cv.csv"`
     """
 
     def __init__(self):
         self.pipeline = None
-        self.search_n_iter = 20
+        self.search_n_iter = 100
         self.search_cv = 5
         self.tuned_file_name = 'model.joblib'
+        self.cv_file_name = 'cv.csv'
 
     def tune_and_dump(self, train_df_path, model_dump_dir):
         """
@@ -78,6 +81,16 @@ class BaseChocolateModelTuner():
         # Save the model
         with open(f'{model_dump_dir}/{self.tuned_file_name}', 'wb') as file:
             dill.dump(random_search_cv, file)
+        
+        # Create a dataframe with the cross-validation results
+        cv_all_results = (
+            pd.DataFrame(random_search_cv.cv_results_)
+            .set_index("rank_test_score")
+            .sort_index()
+        )
+        
+        # Save the cross-validation results
+        cv_all_results.to_csv(f'{model_dump_dir}/{self.cv_file_name}')  
 
     def create_pipeline(self):
         """
