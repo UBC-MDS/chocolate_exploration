@@ -86,6 +86,18 @@ Running the script train_test_split.R in the 'src' folder as shown below process
 ```bash
 Rscript src/train_test_split.R --input_file = data/raw/chocolate.csv
 ```
+
+### Tune the models
+
+To tune the models, run the following commands at the project root:
+
+```{bash}
+python -m src.models.chocolate_decision_tree --train=data/raw/train_df.csv --output=results/models/
+python -m src.models.chocolate_svm_rbf --train=data/raw/train_df.csv --output=results/models/
+```
+
+These commands generate `tuned_{model_name}.joblib` under the folder `results/models/`.
+
 ## Analysis
 
 During our exploratory data analysis (EDA), we aim to check if the data set is read correctly and if the features have the correct data types. If the features are originally read with incorrect data types, we will have to convert them into the correct types. Using a table, we will check if any of the features contain null values. Further, we will aim to identify features that are relevant and irrelevant to our problem statement of predicting the chocolate rating (for example we may drop identifier columns). We will also look at the distributions of our numeric and categorical columns by creating histograms and bar charts for our numeric and categorical features.
