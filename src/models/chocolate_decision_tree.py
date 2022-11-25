@@ -66,7 +66,7 @@ def main(train, output):
         pass
     
     # Save the model
-    with open(f'{output}/BestDecisionTreeModel.joblib', 'wb') as file:
+    with open(f'{output}/tuned_decision_tree.joblib', 'wb') as file:
         dill.dump(random_search_dt, file)
     
 if __name__ == "__main__":

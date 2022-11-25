@@ -65,7 +65,7 @@ def main(train, output):
         pass
     
     # Save the model
-    with open(f'{output}/BestSVMRBFmodel.joblib', 'wb') as file:
+    with open(f'{output}/tuned_svm_rbf.joblib', 'wb') as file:
         dill.dump(random_search_svc, file)
     
 if __name__ == "__main__":
