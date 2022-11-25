@@ -25,6 +25,7 @@ class ChocolateSvmRbfTuner(BaseChocolateModelTuner):
     def __init__(self):
         super().__init__()
         self.tuned_file_name = "tuned_svm_rbf.joblib"
+        self.cv_file_name = 'cv_results_svm_rbf.csv'
 
     def create_pipeline(self):
         """
