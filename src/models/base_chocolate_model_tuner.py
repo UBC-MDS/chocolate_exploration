@@ -30,7 +30,7 @@ class BaseChocolateModelTuner():
 
     def __init__(self):
         self.pipeline = None
-        self.search_n_iter = 20
+        self.search_n_iter = 100
         self.search_cv = 5
         self.tuned_file_name = 'model.joblib'
         self.cv_file_name = 'cv.csv'

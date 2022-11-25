@@ -49,7 +49,8 @@ class ChocolateSvmRbfTuner(BaseChocolateModelTuner):
         """
         # `columntransformer__countvectorizer__max_features` is inherited
         return super().param_distribution() | {
-            "svr__C": loguniform(1e-3, 1e4)
+            "svr__C": loguniform(1e-3, 1e4),
+            "svr__gamma": loguniform(1e-3, 1e4)
         }
 
 
