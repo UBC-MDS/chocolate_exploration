@@ -25,6 +25,7 @@ class ChocolateDecisionTreeTuner(BaseChocolateModelTuner):
     def __init__(self):
         super().__init__()
         self.tuned_file_name = "tuned_decision_tree.joblib"
+        self.cv_file_name = "cv_results_decision_tree.csv"
 
     def create_pipeline(self):
         """
