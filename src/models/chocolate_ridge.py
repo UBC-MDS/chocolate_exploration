@@ -24,6 +24,7 @@ class ChocolateRidgeTuner(BaseChocolateModelTuner):
     def __init__(self):
         super().__init__()
         self.tuned_file_name = "tuned_ridge.joblib"
+        self.cv_file_name = "cv_results_ridge.csv"
 
     def create_pipeline(self):
         """
