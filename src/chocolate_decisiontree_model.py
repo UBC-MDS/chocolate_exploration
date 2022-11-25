@@ -12,7 +12,7 @@ Options:
 """ 
 
 from docopt import docopt
-from preprocessor import preprocessor
+from preprocessor.chocolate import preprocessor
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.model_selection import cross_validate
 from sklearn.pipeline import make_pipeline
