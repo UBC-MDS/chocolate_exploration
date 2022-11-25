@@ -1,10 +1,10 @@
 # author: Manvir Kohli, Julie Song, Kelvin Wong
 # date: 2022-11-26
 
-"""This script creates an SVM RBF (Support Vector Machine with Radial Basis Function kernel) model using the preprocessed input features from the chocolate exploration dataset.
-It outputs a tuned SVM RBF model.
+"""This script creates a Decision Tree model using the preprocessed input features from the chocolate exploration dataset.
+It outputs a tuned decision tree model.
 
-Usage: src/chocolate_svmrbf_model.py --train=<training_ds> --output=<output_folder>
+Usage: src/chocolate_decisiontree_model.py --train=<training_ds> --output=<output_folder>
 
 Options:
 --train=<training_ds>          Path to the training dataset, which is a .csv file
@@ -12,16 +12,17 @@ Options:
 """ 
 
 from docopt import docopt
-from preprocessor.chocolate import preprocessor
-from sklearn.svm import SVR
+from ..preprocessor.chocolate import preprocessor
+from sklearn.tree import DecisionTreeRegressor
 from sklearn.model_selection import cross_validate
 from sklearn.pipeline import make_pipeline
 from sklearn.model_selection import RandomizedSearchCV
-from scipy.stats import randint, loguniform
+from scipy.stats import randint
 import pickle
 import dill
 import pandas as pd
 import os
+
 
 opt = docopt(__doc__)
 
@@ -32,7 +33,7 @@ def main(train, output):
     y_train = train_df["rating"]
     
     # Create the pipeline for modelling
-    pipe = make_pipeline(preprocessor, SVR())
+    pipe = make_pipeline(preprocessor, DecisionTreeRegressor())
     pipe.fit(X_train, y_train)
     
     # Tune hyperparameters
@@ -43,11 +44,11 @@ def main(train, output):
     )
     
     param_dist = {
-    "svr__C": loguniform(1e-3, 1e4),
+    "decisiontreeregressor__max_depth": randint(low=1, high=30),
     "columntransformer__countvectorizer__max_features": randint(low=100, high=len_vocab)
     }
     
-    random_search_svc = RandomizedSearchCV(
+    random_search_dt = RandomizedSearchCV(
         pipe,
         param_distributions=param_dist,
         n_iter=20,
@@ -56,7 +57,7 @@ def main(train, output):
         random_state=522
     )
     
-    random_search_svc.fit(X_train, y_train);
+    random_search_dt.fit(X_train, y_train);
     
     # Check if the directory already exists
     try:
@@ -65,8 +66,8 @@ def main(train, output):
         pass
     
     # Save the model
-    with open(f'{output}/BestSVMRBFmodel.joblib', 'wb') as file:
-        dill.dump(random_search_svc, file)
+    with open(f'{output}/BestDecisionTreeModel.joblib', 'wb') as file:
+        dill.dump(random_search_dt, file)
     
 if __name__ == "__main__":
     main(opt["--train"], opt["--output"])
