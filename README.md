@@ -12,6 +12,10 @@
 
 Before we start, make sure your computer has R and Python development environment set up. IDEs like [R Studio](https://posit.co/products/open-source/rstudio/) and [Visual Studio Code](https://code.visualstudio.com/) are optional but recommended.
 
+The following flowchart gives an overview for the script workflow:
+
+![Figure 1, Flowchart for scripts and workflow](flowchart.png)
+
 ### Download the code
 
 The latest copy of this code can be downloaded by:
@@ -83,7 +87,6 @@ Rscript src/chocolate_data_download.R --url = https://github.com/rfordatascience
 ### Split the data set
 
 Running the script train_test_split.R in the 'src' folder as shown below processes the `chocolate.csv` into a `train_df.csv` and a `test_df.csv` using a 70%-30% split.
-```bash
 Rscript src/train_test_split.R --input_file = data/raw/chocolate.csv
 ```
 
@@ -106,20 +109,17 @@ To answer our research question, we first assume that our target variable is con
 
 It is worth noting that our training data set contains the ratings as discrete values (i.e. 2.5, 2.75, 3 and so on). As a result, it is possible that a classification model would also work with this data set. We can test this using a classification model such as Naive Bayes, and compare the model performance with the regression models. If it becomes apparent that this data set is more similar to a classification problem, we may proceed with a classification modelling approach instead. Most of the models mentioned above are also suitable for classification problems.
 
-You can run the EDA using the  chocolate_eda_automated.R script in the'src' folder. Running the command below saves the results of EDA in the src/eda_files folder. 
-```bash
+You can run the EDA using the chocolate_eda_automated.R script in the'src' folder. Running the command below saves the results of EDA in the src/eda_files folder.
+
+``` bash
 Rscript src/chocolate_eda_automated.R
 ```
 
-EDA Results stored by the above script include: 
- - Summary of null values ("Nulls_table.html")
- - Summary of final features used for modelling ("Final_Features_Table.html")
- - View of the final dataset ("Final_Dataset_View.html")
- - Plots for categorical variables ("Numerical_Plots.png")
- - Plots for categorical variables ("Categorical_Plots.png")
+EDA Results stored by the above script include: - Summary of null values ("Nulls_table.html") - Summary of final features used for modelling ("Final_Features_Table.html") - View of the final dataset ("Final_Dataset_View.html") - Plots for categorical variables ("Numerical_Plots.png") - Plots for categorical variables ("Categorical_Plots.png")
 
-You can also view the complete EDA summary as a PDF using the below script which renders  src/chocolate_eda.Rmd file as a PDF
-```bash
+You can also view the complete EDA summary as a PDF using the below script which renders src/chocolate_eda.Rmd file as a PDF
+
+``` bash
 Rscript src/chocolate_eda_rmd_to_pdf_renderer.R --input_file_path = src/chocolate_eda.Rmd
 ```
 
