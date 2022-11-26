@@ -21,10 +21,14 @@ INGREDIENTS = [
 
 preprocessor = make_column_transformer(
     (
-        OneHotEncoder(drop='if_binary', handle_unknown="ignore"),
+        OneHotEncoder(handle_unknown='ignore', min_frequency=20),
         [
-            'company_manufacturer',
-            'company_location',
+            'company_location'
+        ]
+    ),
+    (
+        OneHotEncoder(handle_unknown='ignore', min_frequency=10),
+        [
             'country_of_bean_origin'
         ]
     ),
