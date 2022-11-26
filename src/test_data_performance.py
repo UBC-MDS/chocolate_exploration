@@ -9,6 +9,23 @@ Usage: ./src/test_data_performance.py
 """
 
 def main():
+    """
+    Checks model performance on test data for 
+    Decision Tree, KNN, SVM RBF and Ridge Regression. 
+    The function takes no inputs and stores the output to /results
+
+    Parameters
+    ----------
+    None
+    Returns
+    -------
+    A summary of cross validation scores under 'results/'cv_scores_summary.csv'
+    A summary of model performanceon test data  under 'test_data_results.csv'
+
+    Examples
+    --------
+    >>> main()
+    """
     import numpy as np
     import pandas as pd
     from docopt import docopt

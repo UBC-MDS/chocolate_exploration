@@ -22,9 +22,9 @@ opt <- docopt(doc)
 #' @param input_file_path file path of the .Rmd file to be rendered as pdf
 #'
 #' @return None
-#' @export
+#' @export 
 #'
-#' @examples
+#' @examples main("/src/chocolate_eda.rmd")
 main <- function(input_file_path) {
   
   if (!dir.exists("src/eda_files")){

@@ -26,7 +26,7 @@ opt <- docopt(doc)
 #' @return None
 #' @export
 #'
-#' @examples
+#' @examples main("chocolate_exploration_results_report.rmd")
 main <- function(input_file_path) {
   if (!dir.exists("doc/")){
     dir.create("doc/") }

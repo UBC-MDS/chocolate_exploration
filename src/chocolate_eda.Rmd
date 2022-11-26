@@ -118,11 +118,17 @@ kable(null_table, format="latex", booktabs=TRUE,
 #### Exploring Categorical Columns Further:
 
 ```{r summary_categ, echo=FALSE, message=FALSE}
-manufacturer_groups <- eda_data_converted |> group_by(company_manufacturer) |> summarize(count = n()) |> arrange(-count) 
+manufacturer_groups <- eda_data_converted |> group_by(company_manufacturer) |>
+                                  summarize(count = n()) |> 
+                                  arrange(-count) 
 
-location_groups <- eda_data_converted |> group_by(company_location) |> summarize(count = n()) |> arrange(-count)
+location_groups <- eda_data_converted |> group_by(company_location) |> 
+                              summarize(count = n()) |> 
+                              arrange(-count)
 
-bean_origin_groups <- eda_data_converted |> group_by(country_of_bean_origin) |> summarize(count = n()) |> arrange(-count)
+bean_origin_groups <- eda_data_converted |> 
+                      group_by(country_of_bean_origin) |> 
+                      summarize(count = n()) |> arrange(-count)
 
 
 ```
@@ -288,7 +294,7 @@ eda_data_final_feats <-  eda_data_final |> select(-rating)
 ftypes <- cbind(Feature =colnames(eda_data_final_feats),
                 Type = c("Factor", "Numeric", "Factor", 
                 "Numeric", "Numeric", 
-                 "Character(Text)",rep(c("Factor (Binary"),7)))
+                 "Character(Text)",rep(c("Factor (Binary)"),7)))
 
 kable(ftypes, format="latex", booktabs=TRUE, 
       col.names = c("Feature", "Type"),
