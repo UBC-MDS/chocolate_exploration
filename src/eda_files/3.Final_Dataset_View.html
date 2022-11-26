@@ -280,18 +280,24 @@ border: 0;
 
 </head>
 <body>
-<table class=" lightable-classic-2" style="font-family: &quot;Arial Narrow&quot;, &quot;Source Sans Pro&quot;, sans-serif; margin-left: auto; margin-right: auto;">
-<caption>Final Features and Target in the Chocolate Dataset</caption>
+<table style="width:60%; font-family: &quot;Arial Narrow&quot;, &quot;Source Sans Pro&quot;, sans-serif; margin-left: auto; margin-right: auto;" class=" lightable-classic-2">
+<caption>Preview of Final Dataset</caption>
  <thead>
   <tr>
-   <th style="text-align:left;"> Company Location </th>
-   <th style="text-align:right;"> Review Date </th>
-   <th style="text-align:left;"> Country of Bean Origin </th>
-   <th style="text-align:right;"> Amount of Cocoa (%) </th>
-   <th style="text-align:left;"> Number of Ingredients </th>
-   <th style="text-align:left;"> Ingredients Present </th>
-   <th style="text-align:left;"> Most Memorable Characteristics </th>
-   <th style="text-align:right;"> Rating (1-5) </th>
+   <th style="text-align:left;"> company_location </th>
+   <th style="text-align:right;"> review_date </th>
+   <th style="text-align:left;"> country_of_bean_origin </th>
+   <th style="text-align:right;"> cocoa_percent </th>
+   <th style="text-align:left;"> num_of_ingredients </th>
+   <th style="text-align:left;"> most_memorable_characteristics </th>
+   <th style="text-align:right;"> rating </th>
+   <th style="text-align:left;"> beans </th>
+   <th style="text-align:left;"> sugar </th>
+   <th style="text-align:left;"> sweetener_other </th>
+   <th style="text-align:left;"> cocoa_butter </th>
+   <th style="text-align:left;"> vanilla </th>
+   <th style="text-align:left;"> lecithin </th>
+   <th style="text-align:left;"> salt </th>
   </tr>
  </thead>
 <tbody>
@@ -301,9 +307,15 @@ border: 0;
    <td style="text-align:left;"> Tanzania </td>
    <td style="text-align:right;"> 0.76 </td>
    <td style="text-align:left;"> 3 </td>
-   <td style="text-align:left;"> B,S,C </td>
    <td style="text-align:left;"> rich cocoa, fatty, bready </td>
    <td style="text-align:right;"> 3.25 </td>
+   <td style="text-align:left;"> 1 </td>
+   <td style="text-align:left;"> 1 </td>
+   <td style="text-align:left;"> 0 </td>
+   <td style="text-align:left;"> 1 </td>
+   <td style="text-align:left;"> 0 </td>
+   <td style="text-align:left;"> 0 </td>
+   <td style="text-align:left;"> 0 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> U.S.A. </td>
@@ -311,9 +323,15 @@ border: 0;
    <td style="text-align:left;"> Dominican Republic </td>
    <td style="text-align:right;"> 0.76 </td>
    <td style="text-align:left;"> 3 </td>
-   <td style="text-align:left;"> B,S,C </td>
    <td style="text-align:left;"> cocoa, vegetal, savory </td>
    <td style="text-align:right;"> 3.50 </td>
+   <td style="text-align:left;"> 1 </td>
+   <td style="text-align:left;"> 1 </td>
+   <td style="text-align:left;"> 0 </td>
+   <td style="text-align:left;"> 1 </td>
+   <td style="text-align:left;"> 0 </td>
+   <td style="text-align:left;"> 0 </td>
+   <td style="text-align:left;"> 0 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> U.S.A. </td>
@@ -321,19 +339,31 @@ border: 0;
    <td style="text-align:left;"> Madagascar </td>
    <td style="text-align:right;"> 0.76 </td>
    <td style="text-align:left;"> 3 </td>
-   <td style="text-align:left;"> B,S,C </td>
    <td style="text-align:left;"> cocoa, blackberry, full body </td>
    <td style="text-align:right;"> 3.75 </td>
+   <td style="text-align:left;"> 1 </td>
+   <td style="text-align:left;"> 1 </td>
+   <td style="text-align:left;"> 0 </td>
+   <td style="text-align:left;"> 1 </td>
+   <td style="text-align:left;"> 0 </td>
+   <td style="text-align:left;"> 0 </td>
+   <td style="text-align:left;"> 0 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> U.S.A. </td>
    <td style="text-align:right;"> 2021 </td>
-   <td style="text-align:left;"> Other </td>
+   <td style="text-align:left;"> Fiji </td>
    <td style="text-align:right;"> 0.68 </td>
    <td style="text-align:left;"> 3 </td>
-   <td style="text-align:left;"> B,S,C </td>
    <td style="text-align:left;"> chewy, off, rubbery </td>
    <td style="text-align:right;"> 3.00 </td>
+   <td style="text-align:left;"> 1 </td>
+   <td style="text-align:left;"> 1 </td>
+   <td style="text-align:left;"> 0 </td>
+   <td style="text-align:left;"> 1 </td>
+   <td style="text-align:left;"> 0 </td>
+   <td style="text-align:left;"> 0 </td>
+   <td style="text-align:left;"> 0 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> U.S.A. </td>
@@ -341,19 +371,31 @@ border: 0;
    <td style="text-align:left;"> Venezuela </td>
    <td style="text-align:right;"> 0.72 </td>
    <td style="text-align:left;"> 3 </td>
-   <td style="text-align:left;"> B,S,C </td>
    <td style="text-align:left;"> fatty, earthy, moss, nutty,chalky </td>
    <td style="text-align:right;"> 3.00 </td>
+   <td style="text-align:left;"> 1 </td>
+   <td style="text-align:left;"> 1 </td>
+   <td style="text-align:left;"> 0 </td>
+   <td style="text-align:left;"> 1 </td>
+   <td style="text-align:left;"> 0 </td>
+   <td style="text-align:left;"> 0 </td>
+   <td style="text-align:left;"> 0 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> U.S.A. </td>
    <td style="text-align:right;"> 2021 </td>
-   <td style="text-align:left;"> Other </td>
+   <td style="text-align:left;"> Uganda </td>
    <td style="text-align:right;"> 0.80 </td>
    <td style="text-align:left;"> 3 </td>
-   <td style="text-align:left;"> B,S,C </td>
    <td style="text-align:left;"> mildly bitter, basic cocoa, fatty </td>
    <td style="text-align:right;"> 3.25 </td>
+   <td style="text-align:left;"> 1 </td>
+   <td style="text-align:left;"> 1 </td>
+   <td style="text-align:left;"> 0 </td>
+   <td style="text-align:left;"> 1 </td>
+   <td style="text-align:left;"> 0 </td>
+   <td style="text-align:left;"> 0 </td>
+   <td style="text-align:left;"> 0 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> U.S.A. </td>
@@ -361,9 +403,15 @@ border: 0;
    <td style="text-align:left;"> India </td>
    <td style="text-align:right;"> 0.68 </td>
    <td style="text-align:left;"> 3 </td>
-   <td style="text-align:left;"> B,S,C </td>
    <td style="text-align:left;"> milk brownie, macadamia,chewy </td>
    <td style="text-align:right;"> 3.50 </td>
+   <td style="text-align:left;"> 1 </td>
+   <td style="text-align:left;"> 1 </td>
+   <td style="text-align:left;"> 0 </td>
+   <td style="text-align:left;"> 1 </td>
+   <td style="text-align:left;"> 0 </td>
+   <td style="text-align:left;"> 0 </td>
+   <td style="text-align:left;"> 0 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> France </td>
@@ -371,9 +419,15 @@ border: 0;
    <td style="text-align:left;"> Bolivia </td>
    <td style="text-align:right;"> 0.70 </td>
    <td style="text-align:left;"> 4 </td>
-   <td style="text-align:left;"> B,S,C,L </td>
    <td style="text-align:left;"> vegetal, nutty </td>
    <td style="text-align:right;"> 3.50 </td>
+   <td style="text-align:left;"> 1 </td>
+   <td style="text-align:left;"> 1 </td>
+   <td style="text-align:left;"> 0 </td>
+   <td style="text-align:left;"> 1 </td>
+   <td style="text-align:left;"> 0 </td>
+   <td style="text-align:left;"> 1 </td>
+   <td style="text-align:left;"> 0 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> France </td>
@@ -381,9 +435,15 @@ border: 0;
    <td style="text-align:left;"> Peru </td>
    <td style="text-align:right;"> 0.63 </td>
    <td style="text-align:left;"> 4 </td>
-   <td style="text-align:left;"> B,S,C,L </td>
    <td style="text-align:left;"> fruity, melon, roasty </td>
    <td style="text-align:right;"> 3.75 </td>
+   <td style="text-align:left;"> 1 </td>
+   <td style="text-align:left;"> 1 </td>
+   <td style="text-align:left;"> 0 </td>
+   <td style="text-align:left;"> 1 </td>
+   <td style="text-align:left;"> 0 </td>
+   <td style="text-align:left;"> 1 </td>
+   <td style="text-align:left;"> 0 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> France </td>
@@ -391,9 +451,15 @@ border: 0;
    <td style="text-align:left;"> Colombia </td>
    <td style="text-align:right;"> 0.70 </td>
    <td style="text-align:left;"> 4 </td>
-   <td style="text-align:left;"> B,S,C,L </td>
    <td style="text-align:left;"> burnt rubber,alkalyzed notes </td>
    <td style="text-align:right;"> 2.75 </td>
+   <td style="text-align:left;"> 1 </td>
+   <td style="text-align:left;"> 1 </td>
+   <td style="text-align:left;"> 0 </td>
+   <td style="text-align:left;"> 1 </td>
+   <td style="text-align:left;"> 0 </td>
+   <td style="text-align:left;"> 1 </td>
+   <td style="text-align:left;"> 0 </td>
   </tr>
 </tbody>
 </table>
