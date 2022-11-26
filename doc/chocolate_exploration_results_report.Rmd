@@ -70,7 +70,7 @@ The distributions for the numerical and categorical features were first analyzed
 
 ![Numerical feature distributions](../src/eda_files/Numeric_Plots.png){width=50%, height=50%}
 
-Table 2 shows the optimal hyperparameters, their associated values, and the resulting validation scores for each model. The hyperparameter optimization and cross-validation was performed for each of the models in this regression problem. The scoring metric was chosen to be the negative mean absolute percentage error. It can be seen that the KNN model may be overfitting 
+Table 2 shows the optimal hyperparameters, their associated values, and the resulting validation scores for each model. The scoring metric was chosen to be the negative mean absolute percentage error. It can be seen that the KNN model may be overfitting, since its training score is 0 (i.e. a perfect model), while its validation score indicates 10.6% error.
 
 ```{r optimized hyperparamter table, echo=FALSE, message=FALSE}
 knn_cv <- read_csv("../results/cv_scores/cv_results_knn.csv")
@@ -90,22 +90,42 @@ opt_params <- tibble(Model = c("KNN", "KNN","KNN", "KNN",
                                         437, 1,
                                         262, 39.5, 1.4e-03,
                                         331, 11),
-                  "Mean Validation Score" = c(-0.109, -0.109, -0.109, -0.109,
-                                         -0.091, -0.091,
-                                         -0.089, -0.089, -0.089,
-                                         -0.109, -0.109), 
-                  "Mean Training Score" = c(0, 0, 0, 0,
-                                       -0.068, -0.068,
-                                       -0.069, -0.069, -0.069,
-                                       -0.079, -0.079))
+                  "Mean Validation MAPE (%)" = c(10.9, 10.9, 10.9, 10.9,
+                                         9.1, 9.1,
+                                         8.9, 8.9, 8.9,
+                                         10.9, 10.9), 
+                  "Mean Training MAPE (%)" = c(0, 0, 0, 0,
+                                       6.8, 6.8,
+                                       6.9, 6.9, 6.9,
+                                       7.9, 7.9))
 
 collapse_rows(kable(opt_params, format="latex", booktabs=TRUE,
-      caption = "Optimized Hyperparameters With Validation Scores")) |>
+      caption = "Optimized Hyperparameters With MAPE Values")) |>
   kable_styling(latex_options=c("HOLD_position"),
                 font_size = 10)
 ```
 
-The models performed \_\_\_\_\_ on the test datasets (how they compare with the validation results, how they compare with each other, were they accurate) Table 3 shows a comparison of scores for the models. The scoring metric used was the negative mean absolute percentage error metric, hence the scores are negative. Looking only at their magnitudes, \_\_\_\_model had the smallest error (so was the best model, \_\_\_% difference compared to the actual rating)
+The models performed well on the test data sets, with similar results compared to the validation scores (how they compare with the validation results, how they compare with each other, were they accurate) Table 3 shows a comparison of scores for the models. The scoring metric used was the negative mean absolute percentage error metric, hence the scores are negative. Looking only at their magnitudes, \_\_\_\_model had the smallest error (so was the best model, \_\_\_% difference compared to the actual rating)
+
+```{r tests table, echo=FALSE, message=FALSE}
+
+test_results <- read_csv("../results/test_data_results.csv") |>
+  rename(Model= ...1) |>
+  mutate(Model = replace(Model, Model == "Decision_Tree", "Decision Tree"))
+order_m <- c("KNN", "Ridge", "SVM RBF", "Decision Tree")
+
+test_results <- test_results |>
+  slice(match(order_m, Model))
+kable(test_results, format="latex", booktabs=TRUE,
+      col.names = c("Model", "Test MAPE (%)"),
+      caption = "Test Results for Each Model") |>
+  kable_styling(latex_options=c("HOLD_position"),
+                font_size = 10)
+
+
+```
+
+
 
 There are several areas for improvement with these models. For instance, perhaps we could use a sentiment analysis package on the memorable characteristics text feature, and manually aggregate some of the similar terminology (such as "acidic" and "acid"). Since most of our features are categorical features, we could also do some feature crosses and determine if there are any relations between the features. This might require some more careful examination of the data, but for instance, we could begin with some crosses of the ingredients present in the chocolate. As well, we could introduce a noise attribute for regularization, as it may help us identify exactly how well the model is actually performing with these features. Finally, we may also do some feature selection based on coefficient weightings, for instance for the Ridge model. Perhaps these can allow us to make the models more generalizable, and able to predict well for brand-new types of chocolate, which is the ultimate goal for the project.
 
