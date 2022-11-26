@@ -49,7 +49,7 @@ main <- function() {
                       check_null)
   
   null_table <- kable(null_table, format = "html",  booktabs=TRUE,
-                      col.names = c("Feature", "Null Count"),
+                      col.names = c("Feature", "Null Count"), table.attr = "style='width:60%;'",
                       caption = "Null Count by Feature") |> kable_classic_2()
   
   save_kable(x = null_table,file = 'src/eda_files/Nulls_table.html')   
@@ -211,6 +211,7 @@ main <- function() {
                       "Country of Bean Origin", "Amount of Cocoa (%)", 
                       "Number of Ingredients", "Ingredients Present", 
                       "Most Memorable Characteristics", "Rating (1-5)"),
+                               table.attr = "style='width:60%;'",
         caption = "Final Features and Target in the Chocolate Dataset") |>
     kable_classic_2()
   
