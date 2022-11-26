@@ -31,10 +31,39 @@ main <- function() {
   
   
   ##Data Processing    
-  eda_data_converted <- eda_data |> 
-  select(-c(ref,specific_bean_origin_or_bar_name)) |>
-  separate(col=ingredients, sep ="-", into = c('num_of_ingredients','ingredients'))
-
+  eda_data_converted <- eda_data|> 
+    select(-c(ref,specific_bean_origin_or_bar_name)) |>
+    separate(col=ingredients, sep ="-", into = c('num_of_ingredients','ingredients'))
+  
+  
+  
+  eda_data_converted <- eda_data_converted |>  
+    mutate(ingred_new = gsub("S*","O",ingredients,fixed = T),
+           ingred_new = gsub("Sa","Na",ingred_new,fixed = T)) |>
+    
+    mutate(beans = case_when(grepl("B",ingred_new)==TRUE~1,
+                             !grepl("B",ingred_new)==TRUE~0),
+           
+           sugar = case_when(grepl("S",ingred_new)==TRUE~1,
+                             !grepl("S",ingred_new)==TRUE~0),
+           
+           sweetener_other = case_when(grepl("O",ingred_new)==TRUE~1,
+                                       !grepl("O",ingred_new)==TRUE~0),
+           
+           cocoa_butter = case_when(grepl("C",ingred_new)==TRUE~1,
+                                    !grepl("C",ingred_new)==TRUE~0),
+           
+           vanilla = case_when(grepl("V",ingred_new)==TRUE~1,
+                               !grepl("V",ingred_new)==TRUE~0),
+           
+           lecithin = case_when(grepl("L",ingred_new)==TRUE~1,
+                                !grepl("L",ingred_new)==TRUE~0),
+           
+           salt = case_when(grepl("Na",ingred_new)==TRUE~1,
+                            !grepl("Na",ingred_new)==TRUE~0)
+           
+    ) |> select (-c(ingredients,ingred_new))
+  
   
   check_null <- eda_data_converted |> summarise(across(everything(), ~ sum(is.na(.))))
   check_null <-  t(check_null)
@@ -42,14 +71,11 @@ main <- function() {
   rownames(check_null) <- NULL
   
   
-  null_table <- cbind(Variable = c("Manufacturing Company", "Company Location", "Review Date", 
-                                   "Country of Bean Origin", "Amount of Cocoa (%)",
-                                   "Number of Ingredients", "Ingredients Present",
-                                   "Most Memorable Characteristics", "Rating (1-5)"), 
+  null_table <- cbind(Variable =colnames(eda_data_converted),
                       check_null)
   
   null_table <- kable(null_table, format = "html",  booktabs=TRUE,
-                      col.names = c("Feature", "Null Count"), table.attr = "style='width:60%;'",
+                      col.names = c("Feature", "Null Count"),
                       caption = "Null Count by Feature") |> kable_classic_2()
   
   save_kable(x = null_table,file = 'src/eda_files/Nulls_table.html')   
@@ -211,7 +237,6 @@ main <- function() {
                       "Country of Bean Origin", "Amount of Cocoa (%)", 
                       "Number of Ingredients", "Ingredients Present", 
                       "Most Memorable Characteristics", "Rating (1-5)"),
-                               table.attr = "style='width:60%;'",
         caption = "Final Features and Target in the Chocolate Dataset") |>
     kable_classic_2()
   
