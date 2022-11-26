@@ -19,7 +19,7 @@ class BaseChocolateModelTuner():
         The pipeline object to run the training with
     search_n_iter : int
         Number of iterations to run our `RandomizedSearchCV` with, defaulted
-        to 100
+        to 200
     search_cv : int
         Number of slices in CV, defaulted to 5
     tuned_file_name : str
@@ -30,8 +30,9 @@ class BaseChocolateModelTuner():
 
     def __init__(self):
         self.pipeline = None
-        self.search_n_iter = 100
+        self.search_n_iter = 200
         self.search_cv = 5
+        self.search_metric = 'neg_mean_absolute_percentage_error'
         self.tuned_file_name = 'model.joblib'
         self.cv_file_name = 'cv.csv'
 
@@ -65,11 +66,13 @@ class BaseChocolateModelTuner():
         # Perform `RandomizedSearchCV`
         random_search_cv = RandomizedSearchCV(
             self.pipeline,
+            random_state=522,
             param_distributions=param_dist,
-            n_iter=self.search_n_iter,
             cv=self.search_cv,
+            scoring=self.search_metric,
+            n_iter=self.search_n_iter,
             n_jobs=-1,
-            random_state=522
+            return_train_score=True
         )
 
         random_search_cv.fit(X_train, y_train)
