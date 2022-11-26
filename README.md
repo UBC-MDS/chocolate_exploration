@@ -98,7 +98,7 @@ python -m src.models.chocolate_ridge --train=data/raw/train_df.csv --output=resu
 python -m src.models.chocolate_svm_rbf --train=data/raw/train_df.csv --output=results/models/ --output-cv=results/cv_scores/
 ```
 
-These commands generate `tuned_{model_name}.joblib` under the folder `results/models/`.
+These commands generate `tuned_{model_name}.joblib` under the folder `results/models/` and `cv_results_{model_name}.csv` under the folder `results/cv_scores`.
 
 ## Analysis
 
