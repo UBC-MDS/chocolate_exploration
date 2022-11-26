@@ -83,9 +83,10 @@ main <- function() {
   
   null_table <- kable(null_table, format = "html",  booktabs=TRUE,
                       col.names = c("Feature", "Null Count"),
+                      table.attr = "style='width:50%;'",
                       caption = "Null Count by Feature") |> kable_classic_2()
   
-  save_kable(x = null_table,file = 'src/eda_files/Nulls_table.html')   
+  save_kable(x = null_table,file = 'src/eda_files/1.Nulls_table.html')   
    
   ## Exploring Categorical Columns Further
   
@@ -127,14 +128,14 @@ main <- function() {
   
   
   eda_data_converted <- eda_data_converted |>
-                        mutate(
-      company_location = case_when(!company_location %in% top_locations ~ "Other",
-                                   TRUE ~ company_location) ,
-      country_of_bean_origin = case_when(!country_of_bean_origin %in% top_countries ~ "Other",
-                                         TRUE ~ country_of_bean_origin),
-      company_manufacturer = case_when(!company_manufacturer 
-                                       %in% top_50_manufacturers ~ "Other",
-                                       TRUE ~ company_manufacturer)) 
+                      mutate(
+    company_location = case_when(!company_location %in% top_locations ~ "Other",
+                                 TRUE ~ company_location) ,
+    country_of_bean_origin = case_when(!country_of_bean_origin %in% top_countries ~ "Other",
+                                   TRUE ~ country_of_bean_origin),
+    company_manufacturer = case_when(!company_manufacturer 
+                                     %in% top_50_manufacturers ~ "Other",
+                                     TRUE ~ company_manufacturer)) 
   
   ## Converting Data Types
   
@@ -190,7 +191,7 @@ main <- function() {
     draw_label("Figure 1: Numeric Plots", fontface='bold',size = 15)
   
   numeric_plots <- plot_grid(num_title,plot_grid(cocoa_plot, rating_plot, 
-                                                 num_ingred_plot, year_plot),ncol=1,rel_heights = c(0.2,1))
+                     num_ingred_plot, year_plot),ncol=1,rel_heights = c(0.2,1))
   
   
   ggsave(filename="src/eda_files/Numeric_Plots.png", plot=numeric_plots)
@@ -243,7 +244,7 @@ main <- function() {
   ftypes <- cbind(Feature =colnames(eda_data_final_feats),
                   Type = c("Factor", "Numeric", "Factor", 
                            "Numeric", "Numeric", 
-                           "Character(Text)",rep(c("Factor (Binary"),7)))
+                           "Character(Text)",rep(c("Factor (Binary)"),7)))
   
   
   final_features_table <- kable(ftypes, format="html", booktabs=TRUE, 
@@ -251,13 +252,14 @@ main <- function() {
         caption = "Final Features and Data Types") |> kable_classic_2()
     
   
-  save_kable(x = final_features_table,file = 'src/eda_files/Final_Features_Table.html')   
+  save_kable(x = final_features_table,file = 'src/eda_files/2.Final_Features_Table.html')   
   
   
   final_dataset_table <- kable(head(eda_data_final,10), format="html", booktabs=TRUE, 
-        col.names = col.names = colnames(eda_data_final)) |> kable_classic_2()
+        col.names = colnames(eda_data_final), table.attr = "style='width:70%;'",
+        caption = "Preview of final train_data")|> kable_classic_2()
   
-  save_kable(x = final_dataset_table,file = 'src/eda_files/Final_Dataset_View.html')
+  save_kable(x = final_dataset_table,file = 'src/eda_files/3.Final_Dataset_View.html')
   
 }
 

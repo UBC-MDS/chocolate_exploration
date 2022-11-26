@@ -294,7 +294,7 @@ eda_data_final_feats <-  eda_data_final |> select(-rating)
 ftypes <- cbind(Feature =colnames(eda_data_final_feats),
                 Type = c("Factor", "Numeric", "Factor", 
                 "Numeric", "Numeric", 
-                 "Character(Text)",rep(c("Factor (Binary"),7)))
+                 "Character(Text)",rep(c("Factor (Binary)"),7)))
 
 kable(ftypes, format="latex", booktabs=TRUE, 
       col.names = c("Feature", "Type"),
