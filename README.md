@@ -100,6 +100,25 @@ python -m src.models.chocolate_svm_rbf --train=data/raw/train_df.csv --output=re
 
 These commands generate `tuned_{model_name}.joblib` under the folder `results/models/` and `cv_results_{model_name}.csv` under the folder `results/cv_scores`.
 
+### Check model performance on test data
+To score the model on test data, run the following commands at the project root:
+
+```{bash}
+python -m src.test_data_performance
+```
+
+The command does the following 
+    - aggregates and exports the mean of cross validation results as a csv file under 'results/cv_scores_summary.csv'
+    - scores all the models' performance on the test data
+    - exports the scores for all the models as a csv file under 'results/test_data_results.csv'
+
+### Get the final report as PDF
+The final report of the analysis is already included as a PDF under "doc/chocolate_exploration_results_report.pdf". However in case it is not available, you can run the below command to generate a PDF report under "doc/chocolate_exploration_results_report.pdf" :
+
+```{bash}
+Rscript doc/chocolate_exploration_results_pdf_renderer.R --input_file_path = doc/chocolate_exploration_results_report.rmd
+```
+
 ## Analysis
 
 During our exploratory data analysis (EDA), we aim to check if the data set is read correctly and if the features have the correct data types. If the features are originally read with incorrect data types, we will have to convert them into the correct types. Using a table, we will check if any of the features contain null values. Further, we will aim to identify features that are relevant and irrelevant to our problem statement of predicting the chocolate rating (for example we may drop identifier columns). We will also look at the distributions of our numeric and categorical columns by creating histograms and bar charts for our numeric and categorical features.

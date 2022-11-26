@@ -27,6 +27,9 @@ opt <- docopt(doc)
 #' @examples
 main <- function(input_file_path) {
   
+  if (!dir.exists("src/eda_files")){
+    dir.create("src/eda_files",recursive = T) }
+  
   # knitting function
   render(input = input_file_path,
          output_format = "pdf_document",
