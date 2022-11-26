@@ -70,13 +70,34 @@ The distributions for the numerical and categorical features were first analyzed
 
 ![Numerical feature distributions](../src/eda_files/Numeric_Plots.png){width=50%, height=50%}
 
-Table 2 shows the optimal hyperparameters, their associated values, and the resulting validation scores for each model. The hyperparameter optimization and cross-validation was performed for each of the models in this regression problem. <comment about how well/not well the models performed>
+Table 2 shows the optimal hyperparameters, their associated values, and the resulting validation scores for each model. The hyperparameter optimization and cross-validation was performed for each of the models in this regression problem. The scoring metric was chosen to be the negative mean absolute percentage error. It can be seen that the KNN model may be overfitting 
 
 ```{r optimized hyperparamter table, echo=FALSE, message=FALSE}
-opt_params <- tibble(Model = c("KNN","KNN", "KNN", "Ridge", "SVM RBF", "SVM RBF", "Decision Tree"),
-                  Hyperparameter = c("Leaf Size", "Number of Neighbors", "Weights",
-                                     "Alpha", "C", "Gamma", "Max Depth"),
-                  "Optimized Value" = c(1, 2, 3, 4, 5, 6, 7))
+knn_cv <- read_csv("../results/cv_scores/cv_results_knn.csv")
+ridge_cv <- read_csv("../results/cv_scores/cv_results_ridge.csv")
+svmrbf_cv <- read_csv("../results/cv_scores/cv_results_svm_rbf.csv")
+dt_cv <- read_csv("../results/cv_scores/cv_results_decision_tree.csv")
+
+opt_params <- tibble(Model = c("KNN", "KNN","KNN", "KNN", 
+                               "Ridge", "Ridge", 
+                               "SVM RBF", "SVM RBF", "SVM RBF",
+                               "Decision Tree", "Decision Tree"),
+                  Hyperparameter = c("Max Text Features", "Leaf Size", "Number of Neighbors", "Weights",
+                                     "Max Text Features", "Alpha", 
+                                     "Max Text Features", "C", "Gamma", 
+                                     "Max Text Features", "Max Depth"),
+                  "Optimized Value" = c(395, 450, 13, "Distance", 
+                                        437, 1,
+                                        262, 39.5, 1.4e-03,
+                                        331, 11),
+                  "Mean Validation Score" = c(-0.109, -0.109, -0.109, -0.109,
+                                         -0.091, -0.091,
+                                         -0.089, -0.089, -0.089,
+                                         -0.109, -0.109), 
+                  "Mean Training Score" = c(0, 0, 0, 0,
+                                       -0.068, -0.068,
+                                       -0.069, -0.069, -0.069,
+                                       -0.079, -0.079))
 
 collapse_rows(kable(opt_params, format="latex", booktabs=TRUE,
       caption = "Optimized Hyperparameters With Validation Scores")) |>
