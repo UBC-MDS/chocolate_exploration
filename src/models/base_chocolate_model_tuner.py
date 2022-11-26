@@ -19,7 +19,7 @@ class BaseChocolateModelTuner():
         The pipeline object to run the training with
     search_n_iter : int
         Number of iterations to run our `RandomizedSearchCV` with, defaulted
-        to 20
+        to 100
     search_cv : int
         Number of slices in CV, defaulted to 5
     tuned_file_name : str
@@ -35,7 +35,7 @@ class BaseChocolateModelTuner():
         self.tuned_file_name = 'model.joblib'
         self.cv_file_name = 'cv.csv'
 
-    def tune_and_dump(self, train_df_path, model_dump_dir):
+    def tune_and_dump(self, train_df_path, model_dump_dir, cv_score_output_dir):
         """
         Tune a model and then dump to specific directory
 
@@ -45,13 +45,15 @@ class BaseChocolateModelTuner():
             Path to the training dataframe CSV file
         model_dump_dir : str
             Path to dump the model to
+        cv_score_output_dir : str
+            Path to save the CV scores to
         """
         TARGET = 'rating'
 
         # Load data and split into features and target
         train_df = pd.read_csv(train_df_path)
-        X_train = train_df.drop(columns=["rating"])
-        y_train = train_df["rating"]
+        X_train = train_df.drop(columns=[TARGET])
+        y_train = train_df[TARGET]
 
         # Create the pipeline for modelling
         self.pipeline = self.create_pipeline()
@@ -72,7 +74,7 @@ class BaseChocolateModelTuner():
 
         random_search_cv.fit(X_train, y_train)
 
-        # Check if the directory already exists
+        # Check if the model directory already exists
         try:
             os.makedirs(model_dump_dir)
         except FileExistsError:
@@ -89,8 +91,14 @@ class BaseChocolateModelTuner():
             .sort_index()
         )
         
+        # Check if the CV result directory already exists
+        try:
+            os.makedirs(cv_score_output_dir)
+        except FileExistsError:
+            pass
+
         # Save the cross-validation results
-        cv_all_results.to_csv(f'{model_dump_dir}/{self.cv_file_name}')  
+        cv_all_results.to_csv(f'{cv_score_output_dir}/{self.cv_file_name}')  
 
     def create_pipeline(self):
         """

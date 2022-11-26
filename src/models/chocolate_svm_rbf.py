@@ -5,11 +5,12 @@
 Function kernel) using the preprocessed input features from the chocolate
 exploration dataset. It dumps a tuned SVM RBF model.
 
-Usage: ./src/models/chocolate_svm_rbf.py --train=<training_ds> --output=<output_folder>
+Usage: ./src/models/chocolate_svm_rbf.py --train=<training_ds> --output=<output_folder> --output-cv=<output_cv_folder>
 
 Options:
---train=<training_ds>       Path to the training dataset, which is a .csv file
---output=<output_folder>    Path to the folder to save the modelling output to
+--train=<training_ds>          Path to the training dataset, which is a .csv file
+--output=<output_folder>       Path to the folder to save the modelling output to
+--output-cv=<output_cv_folder> Path to the folder to save the CV score files to
 """
 
 from docopt import docopt
@@ -25,7 +26,7 @@ class ChocolateSvmRbfTuner(BaseChocolateModelTuner):
     def __init__(self):
         super().__init__()
         self.tuned_file_name = "tuned_svm_rbf.joblib"
-        self.cv_file_name = 'cv_results_svm_rbf.csv'
+        self.cv_file_name = "cv_results_svm_rbf.csv"
 
     def create_pipeline(self):
         """
@@ -59,4 +60,5 @@ opt = docopt(__doc__)
 if __name__ == "__main__":
     tuner = ChocolateSvmRbfTuner()
     tuner.tune_and_dump(
-        train_df_path=opt["--train"], model_dump_dir=opt["--output"])
+        train_df_path=opt["--train"], model_dump_dir=opt["--output"],
+        cv_score_output_dir=opt["--output-cv"])
