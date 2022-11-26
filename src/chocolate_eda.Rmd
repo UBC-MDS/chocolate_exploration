@@ -118,11 +118,17 @@ kable(null_table, format="latex", booktabs=TRUE,
 #### Exploring Categorical Columns Further:
 
 ```{r summary_categ, echo=FALSE, message=FALSE}
-manufacturer_groups <- eda_data_converted |> group_by(company_manufacturer) |> summarize(count = n()) |> arrange(-count) 
+manufacturer_groups <- eda_data_converted |> group_by(company_manufacturer) |>
+                                  summarize(count = n()) |> 
+                                  arrange(-count) 
 
-location_groups <- eda_data_converted |> group_by(company_location) |> summarize(count = n()) |> arrange(-count)
+location_groups <- eda_data_converted |> group_by(company_location) |> 
+                              summarize(count = n()) |> 
+                              arrange(-count)
 
-bean_origin_groups <- eda_data_converted |> group_by(country_of_bean_origin) |> summarize(count = n()) |> arrange(-count)
+bean_origin_groups <- eda_data_converted |> 
+                      group_by(country_of_bean_origin) |> 
+                      summarize(count = n()) |> arrange(-count)
 
 
 ```

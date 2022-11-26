@@ -18,6 +18,14 @@ library(caTools)
 opt <- docopt(doc)
 
 
+#' Function to split dataset into 70-30 train-test split
+#'
+#' @param file_path file path of the complete dataset to be split into train and test
+#'
+#' @return None
+#' @export
+#'
+#' @examples main("data/raw/chocolate.csv")
 main <- function(file_path) {
     chocolate_data = read_csv(file= file_path)
     head(chocolate_data)

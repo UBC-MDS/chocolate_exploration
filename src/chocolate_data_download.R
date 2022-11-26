@@ -18,6 +18,16 @@ library(dplyr)
 
 opt <- docopt(doc)
 
+#' Function to download CSV file 
+#'
+#' @param url url of the CSV file to be downloaded
+#' @param download_dir folder name of where to save the downloaded file
+#' @param file_name name with which to save the downloaded file
+#'
+#' @return None
+#' @export 
+#'
+#' @examples main("www.fileurl.com/file.csv","src/","myfile.csv")
 main <- function(url, download_dir,file_name) {
   
   ## creating directory where data dwill be donwloaded
