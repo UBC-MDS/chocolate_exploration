@@ -49,7 +49,8 @@ collapse_rows(kable(hparams, format="latex", booktabs=TRUE,
                 font_size = 10)
 
 ```
-**The initial exploratory data analysis for this dataset was performed in R using the following packages: dplyr, tidyverse, cowplot, knitr, and kableExtra. **
+The initial exploratory data analysis for this dataset was performed in R (@R) using the following packages: dplyr (@dplyr), tidyverse (@tidy), cowplot (@cow), knitr (@knitr), and kableExtra (@kableEx).
+
 **The modelling was performed in Python using the following packages, available in the provided environment file: ipykernel, ipython>=7.15, matplotlib>=3.2.2, scikit-learn>=1.1.3, requests>=2.24.0, graphviz, python-graphviz, eli5, shap, jinja2, altair_saver, selenium<4.3.0, pandas<1.5, imbalanced-learn, pip, lightgbm, joblib==1.1.0, mglearn, psutil>=5.7.2, docopt-ng, dill, pycodestyle, and autopep8.**
 
 ## Results and Discussions
