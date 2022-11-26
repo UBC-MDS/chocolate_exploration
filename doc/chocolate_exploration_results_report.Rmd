@@ -5,6 +5,8 @@ date: "2022-11-26"
 output: 
   pdf_document:
     toc: true
+    includes:
+      in_header: formatting.tex
 bibliography: chocolate_exploration_refs.bib
 ---
 
@@ -26,8 +28,9 @@ library(pandoc)
 Four regression models were built using decision tree, support vector machine, ridge (linear regression) and k-nearest neighbors algorithms, and compared to determine the best model for predicting a chocolate's rating based on characteristics such as the number and type of ingredients in the chocolate, its amount of cocoa, location for the manufacturing company, memorable characteristics, and several others. The ratings are predicted based on a scale of 1 to 5. Our models performed \_\_\_ on a test set containing \_\_\_\_ observations...
 
 # Introduction
+Chocolate is one of the most well-known foods in the world. Out of all the different types of chocolates, dark chocolate contains the most cocoa solids and is the closest to the original that was deemed the "Food of the Gods" by the Mayans thousands of years ago (@darkchoco). Indeed, dark chocolate has garnered more interest in recent years due to the many health benefits that it provides (@health).
 
-How well-recieved a new chocolate may be, can depend on a variety of factors. The project present here is interested in predicting the rating for a type of dark chocolate on a scale of 1 to 5, given some of its characteristics. This information can be useful for product analysis, and may be able to aide in predicting the popularity of a new product. It may also be useful for determining some important factors in the development of the chocolate, and suggest characteristics to focus on in order to develop a successful product.
+Nevertheless, popularity can vary between products, How well-recieved a new chocolate may be, can depend on a variety of factors. The project present here is interested in predicting the rating for a type of dark chocolate on a scale of 1 to 5, given some of its characteristics. This information can be useful for product analysis, and may be able to aide in predicting the popularity of a new product. It may also be useful for determining some important factors in the development of the chocolate, and suggest characteristics to focus on in order to develop a successful product.
 
 # Methods
 
@@ -63,24 +66,68 @@ The modelling was performed in Python (@Python) using the following packages, av
 
 The distributions for the numerical and categorical features were first analyzed to check for any unreasonable skewness. These distributions are present in Figures 1 and 2. The top company locations which had at least 20 observations and the top bean origin countries with at least 10 observations were kept, while the remaining categories in each feature were grouped as Other. It is revealed that the manufacturing company feature has an overwhelming number of categories, and even taking into considering only the top 50 companies, the Other category has far more points compared to the others. This feature was considered too unique to the observations, and was omitted from the modelling.
 
-<insert the figures here>
+![Categorical feature distributions](../src/eda_files/Categorical_Plots.png){width=70%, height=70%}
 
-Table 2 shows the optimal hyperparameters, their associated values, and the resulting validation scores for each model. The hyperparameter optimization and cross-validation was performed for each of the models in this regression problem. <comment about how well/not well the models performed>
+![Numerical feature distributions](../src/eda_files/Numeric_Plots.png){width=50%, height=50%}
+
+Table 2 shows the optimal hyperparameters, their associated values, and the resulting validation scores for each model. The scoring metric was chosen to be the negative mean absolute percentage error. It can be seen that the KNN model may be overfitting, since its training score is 0 (i.e. a perfect model), while its validation score indicates 10.6% error.
 
 ```{r optimized hyperparamter table, echo=FALSE, message=FALSE}
-opt_params <- tibble(Model = c("KNN","KNN", "KNN", "Ridge", "SVM RBF", "SVM RBF", "Decision Tree"),
-                  Hyperparameter = c("Leaf Size", "Number of Neighbors", "Weights",
-                                     "Alpha", "C", "Gamma", "Max Depth"),
-                  "Optimized Value" = c(1, 2, 3, 4, 5, 6, 7))
+knn_cv <- read_csv("../results/cv_scores/cv_results_knn.csv")
+ridge_cv <- read_csv("../results/cv_scores/cv_results_ridge.csv")
+svmrbf_cv <- read_csv("../results/cv_scores/cv_results_svm_rbf.csv")
+dt_cv <- read_csv("../results/cv_scores/cv_results_decision_tree.csv")
+
+opt_params <- tibble(Model = c("KNN", "KNN","KNN", "KNN", 
+                               "Ridge", "Ridge", 
+                               "SVM RBF", "SVM RBF", "SVM RBF",
+                               "Decision Tree", "Decision Tree"),
+                  Hyperparameter = c("Max Text Features", "Leaf Size", "Number of Neighbors", "Weights",
+                                     "Max Text Features", "Alpha", 
+                                     "Max Text Features", "C", "Gamma", 
+                                     "Max Text Features", "Max Depth"),
+                  "Optimized Value" = c(395, 450, 13, "Distance", 
+                                        437, 1,
+                                        262, 39.5, 1.4e-03,
+                                        331, 11),
+                  "Mean Validation MAPE (%)" = c(10.9, 10.9, 10.9, 10.9,
+                                         9.1, 9.1,
+                                         8.9, 8.9, 8.9,
+                                         10.9, 10.9), 
+                  "Mean Training MAPE (%)" = c(0, 0, 0, 0,
+                                       6.8, 6.8,
+                                       6.9, 6.9, 6.9,
+                                       7.9, 7.9))
 
 collapse_rows(kable(opt_params, format="latex", booktabs=TRUE,
-      caption = "Optimized Hyperparameters With Validation Scores")) |>
+      caption = "Optimized Hyperparameters With MAPE Values")) |>
   kable_styling(latex_options=c("HOLD_position"),
                 font_size = 10)
 ```
 
-The models performed \_\_\_\_\_ on the test datasets (how they compare with the validation results, how they compare with each other, were they accurate) Table 3 shows a comparison of scores for the models. The scoring metric used was the negative mean absolute percentage error metric, hence the scores are negative. Looking only at their magnitudes, \_\_\_\_model had the smallest error (so was the best model, \_\_\_% difference compared to the actual rating)
+The models performed well on the test data sets, with similar results compared to the validation scores, as shown in Table 3. The best-performing model was the SVM RBF model, as it only has an average of 8.6% error for its ratings, while the worst-performing model was the decision tree model, with an average of 11% error. This means, for example, that if the model predicted a rating to be 4, it is possible that the actual rating was around 3.7 or 4.3. Although this is not extremely different, since our rating scale is quite small, we would still prefer to decrease the error if possible.
 
-There are several ares for improvement with these models. For instance, perhaps we could use a sentiment analysis package on the memorable characteristics text feature, and manually aggregate some of the similar terminology (such as "acidic" and "acid"). Since most of our features are categorical features, we could also do some feature crosses and determine if there are any relations between the features. This might require some more careful examination of the data, but for instance, we could begin with some crosses of the ingredients present in the chocolate. As well, we could introduce a noise attribute for regularization, as it may help us identify exactly how well the model is actually performing with these features. Finally, we may also do some feature selection based on coefficient weightings, for instance for the Ridge model. Perhaps these can allow us to make the models more generalizable, and able to predict well for brand-new types of chocolate, which is the ultimate goal for the project.
+```{r tests table, echo=FALSE, message=FALSE}
+
+test_results <- read_csv("../results/test_data_results.csv") |>
+  rename(Model= ...1) |>
+  mutate(Model = replace(Model, Model == "Decision_Tree", "Decision Tree")) |>
+  mutate(`MAPE (%)` = round(`MAPE (%)`, 1))
+
+order_m <- c("KNN", "Ridge", "SVM RBF", "Decision Tree") 
+
+test_results <- test_results |>
+  slice(match(order_m, Model))
+kable(test_results, format="latex", booktabs=TRUE,
+      col.names = c("Model", "Test MAPE (%)"),
+      caption = "Test Results for Each Model") |>
+  kable_styling(latex_options=c("HOLD_position"),
+                font_size = 10)
+
+
+```
+
+
+There are several areas for improvement with these models. For instance, perhaps we could use a sentiment analysis package on the memorable characteristics text feature, and manually aggregate some of the similar terminology (such as "acidic" and "acid"). Since most of our features are categorical features, we could also do some feature crosses and determine if there are any relations between the features. This might require some more careful examination of the data, but for instance, we could begin with some crosses of the ingredients present in the chocolate. As well, we could introduce a noise attribute for regularization, as it may help us identify exactly how well the model is actually performing with these features. Finally, we may also do some feature selection based on coefficient weightings, for instance for the Ridge model. Perhaps these can allow us to make the models more generalizable, and able to predict well for brand-new types of chocolate, which is the ultimate goal for the project.
 
 # References
