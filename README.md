@@ -92,13 +92,13 @@ Rscript src/train_test_split.R --input_file = data/raw/chocolate.csv
 To tune the models, run the following commands at the project root:
 
 ```{bash}
-python -m src.models.chocolate_decision_tree --train=data/raw/train_df.csv --output=results/models/
-python -m src.models.chocolate_knn --train=data/raw/train_df.csv --output=results/models/
-python -m src.models.chocolate_ridge --train=data/raw/train_df.csv --output=results/models/
-python -m src.models.chocolate_svm_rbf --train=data/raw/train_df.csv --output=results/models/
+python -m src.models.chocolate_decision_tree --train=data/raw/train_df.csv --output=results/models/ --output-cv=results/cv_scores/
+python -m src.models.chocolate_knn --train=data/raw/train_df.csv --output=results/models/ --output-cv=results/cv_scores/
+python -m src.models.chocolate_ridge --train=data/raw/train_df.csv --output=results/models/ --output-cv=results/cv_scores/
+python -m src.models.chocolate_svm_rbf --train=data/raw/train_df.csv --output=results/models/ --output-cv=results/cv_scores/
 ```
 
-These commands generate `tuned_{model_name}.joblib` under the folder `results/models/`.
+These commands generate `tuned_{model_name}.joblib` under the folder `results/models/` and `cv_results_{model_name}.csv` under the folder `results/cv_scores`.
 
 ## Analysis
 

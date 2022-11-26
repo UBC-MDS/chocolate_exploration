@@ -4,11 +4,12 @@
 """This script creates a kNN using the preprocessed input features from the
 chocolate exploration dataset. It dumps a tuned kNN model.
 
-Usage: ./src/models/chocolate_knn.py --train=<training_ds> --output=<output_folder>
+Usage: ./src/models/chocolate_knn.py --train=<training_ds> --output=<output_folder> --output-cv=<output_cv_folder>
 
 Options:
---train=<training_ds>       Path to the training dataset, which is a .csv file
---output=<output_folder>    Path to the folder to save the modelling output to
+--train=<training_ds>          Path to the training dataset, which is a .csv file
+--output=<output_folder>       Path to the folder to save the modelling output to
+--output-cv=<output_cv_folder> Path to the folder to save the CV score files to
 """
 
 import numpy as np
@@ -60,4 +61,5 @@ opt = docopt(__doc__)
 if __name__ == "__main__":
     tuner = ChocolateKNNTuner()
     tuner.tune_and_dump(
-        train_df_path=opt["--train"], model_dump_dir=opt["--output"])
+        train_df_path=opt["--train"], model_dump_dir=opt["--output"],
+        cv_score_output_dir=opt["--output-cv"])
