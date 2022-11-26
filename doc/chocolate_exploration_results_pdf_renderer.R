@@ -1,9 +1,10 @@
 # author: Julie Song ,Kelvin Wong, Manvir Kohli
 # date: 2022-11-23
 
-"This script takes the path to the rmd file containing EDA findings as an input and renders it as a pdf in the same directory as the .Rmd file
+"This script takes the path to the rmd file containing analysis results as an input
+and renders it as a pdf in the same directory as the .Rmd file
 
-Usage: chocolate_eda_rmd_to_pdf_renderer.R --input_file_path = <input_file_path>  
+Usage: chocolate_exploration_results_pdf_renderer.R --input_file_path = <input_file_path>  
 
 Options:
 --input_file_path = <input_file_path>  file path of the .rmd file to be rendered as pdf
@@ -14,6 +15,7 @@ library(tidyverse)
 library(dplyr)
 library(knitr)
 library(rmarkdown)
+library(pandoc)
 
 opt <- docopt(doc)
 
@@ -26,14 +28,13 @@ opt <- docopt(doc)
 #'
 #' @examples
 main <- function(input_file_path) {
-  
-  if (!dir.exists("src/eda_files")){
-    dir.create("src/eda_files",recursive = T) }
-  
+  if (!dir.exists("doc/")){
+    dir.create("doc/") }
+    
   # knitting function
   render(input = input_file_path,
          output_format = "pdf_document",
-        output_dir = "src/eda_files")
+         output_dir = "doc/")
   
 }
 

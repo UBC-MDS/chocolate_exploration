@@ -111,6 +111,26 @@ python -m src.models.chocolate_svm_rbf --train=data/raw/train_df.csv --output=re
 
 These commands generate `tuned_{model_name}.joblib` under the folder `results/models/` and `cv_results_{model_name}.csv` under the folder `results/cv_scores`.
 
+### Check model performance on test data
+
+To score the model on test data, run the following commands at the project root:
+
+```{bash}
+python -m src.test_data_performance
+```
+
+The command does the following 
+    - aggregates and exports the mean of cross validation results as a csv file under 'results/cv_scores_summary.csv'
+    - scores all the models' performance on the test data
+    - exports the scores for all the models as a csv file under 'results/test_data_results.csv'
+
+### Get the final report as PDF
+The final report of the analysis is already included as a PDF under "doc/chocolate_exploration_results_report.pdf". However in case it is not available, you can run the below command to generate a PDF report under "doc/chocolate_exploration_results_report.pdf" :
+
+```{bash}
+Rscript doc/chocolate_exploration_results_pdf_renderer.R --input_file_path = doc/chocolate_exploration_results_report.rmd
+```
+
 ## EDA Analysis
 
 You can run the EDA of this dataset using the chocolate_eda_automated.R script in the'src' folder. Running the command below saves the results of EDA in the src/eda_files folder.

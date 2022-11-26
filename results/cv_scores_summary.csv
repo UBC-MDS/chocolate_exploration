@@ -1,0 +1,5 @@
+,Decision Tree,KNN,Ridge,SVM RBF
+mean_fit_time,95.904,89.93,94.905,159.2
+mean_score_time,24.416,30.15,24.423,31.609
+mean_test_score,11.385,11.282,10.353,11.593
+mean_train_score,6.911,5.098,9.137,6.274
