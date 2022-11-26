@@ -6,10 +6,9 @@
 
 ## About
 
-"Given the characteristics of a new dark chocolate, what will be its predicted rating on a scale of 1 to 5?" This is the predictive research question that we have set out to answer. Using this information, perhaps we can predict how well-received a new chocolate may be.
+"Given the characteristics of a new dark chocolate, what will be its predicted rating on a scale of 1 to 5?" This is the predictive research question that we have set out to answer. Using this information, perhaps we can predict how well-received a new dark chocolate product may be.
 
-Four regression models were used to answer this question. **<summarize how the models did>**
-
+Four regression models were built to answer this question: k-nearest neighbors, RIDGE (linear regression), support vector machines with a radial basis function kernel, and a decision tree. All four models were compared using mean absolute percentage error, and performed fairly well on the test data set. The worst model was the decision tree with 11% error, while the best model was the SVM RBF model with 8.6% error. Although the errors are quite small, because the rating scale only extends from 1 to 5, it would be best to minimize this error as much as possible. Thus, improvements to the model are recommended before it may be put to practical use.
 
 The data set is from [Flavors of Cacao](http://flavorsofcacao.com/chocolate_database.html), where the Manhattan Chocolate Society (headed by Brady Brelinski) has reviewed 2,500+ bars of craft chocolate since 2006. The findings have been compiled into a copy-paste-able table that lists each bar's manufacturer, bean origin, percent cocoa, ingredients, review notes, and numerical rating. The data set we are using is dated 2022-01-12.
 
@@ -89,12 +88,14 @@ For more information, please refer to the [conda documentation](https://conda.io
 Aside from the raw URL mentioned above, you may also use the included `chocolate_data_download.R` to download the dataset, using the following:
 
 ```{bash}
-Rscript src/chocolate_data_download.R --url = https://github.com/rfordatascience/tidytuesday/raw/master/data/2022/2022-01-18/chocolate.csv --download_dir = data/raw --file_name = chocolate.csv```
+Rscript src/chocolate_data_download.R --url = https://github.com/rfordatascience/tidytuesday/raw/master/data/2022/2022-01-18/chocolate.csv --download_dir = data/raw --file_name = chocolate.csv
+```
 
 ### Split the data set
 
 Running the script train_test_split.R in the 'src' folder as shown below processes the `chocolate.csv` into a `train_df.csv` and a `test_df.csv` using a 70%-30% split.
-```bash
+
+```{bash}
 Rscript src/train_test_split.R --input_file = data/raw/chocolate.csv
 ```
 
@@ -121,11 +122,12 @@ python -m src.test_data_performance
 
 The command does the following 
     - aggregates and exports the mean of cross validation results as a csv file under 'results/cv_scores_summary.csv'
-    - scores all the models' performance on the test data
+    - scores all the models' performance on the test data 
     - exports the scores for all the models as a csv file under 'results/test_data_results.csv'
 
 ### Get the final report as PDF
-The final report of the analysis is already included as a PDF under "doc/chocolate_exploration_results_report.pdf". However in case it is not available, you can run the below command to generate a PDF report under "doc/chocolate_exploration_results_report.pdf" :
+
+The final report of the analysis is already included as a PDF, as mentioned above. However in case it is not available, you can run the below command to generate a PDF report under `doc/chocolate_exploration_results_report.pdf`:
 
 ```{bash}
 Rscript doc/chocolate_exploration_results_pdf_renderer.R --input_file_path = doc/chocolate_exploration_results_report.rmd
@@ -146,7 +148,7 @@ EDA Results stored by the above script include:
  - Plots for categorical variables ("Numerical_Plots.png") 
  - Plots for categorical variables ("Categorical_Plots.png")
 
-You can also view the complete EDA summary as a PDF using the below script which renders src/chocolate_eda.Rmd file as a PDF
+You can also view the complete EDA summary as a PDF using the below script which renders the `src/chocolate_eda.Rmd` file as a PDF:
 
 ``` bash
 Rscript src/chocolate_eda_rmd_to_pdf_renderer.R --input_file_path = src/chocolate_eda.Rmd
