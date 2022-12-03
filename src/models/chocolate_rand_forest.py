@@ -22,7 +22,7 @@ from ..preprocessor.chocolate import preprocessor
 from .base_chocolate_model_tuner import BaseChocolateModelTuner
 
 
-class ChocolateDecisionTreeTuner(BaseChocolateModelTuner):
+class ChocolateRandomForestTuner(BaseChocolateModelTuner):
     def __init__(self):
         super().__init__()
         self.tuned_file_name = "tuned_rand_forest.joblib"
@@ -59,7 +59,7 @@ class ChocolateDecisionTreeTuner(BaseChocolateModelTuner):
 opt = docopt(__doc__)
 
 if __name__ == "__main__":
-    tuner = ChocolateDecisionTreeTuner()
+    tuner = ChocolateRandomForestTuner()
     tuner.tune_and_dump(
         train_df_path=opt["--train"], model_dump_dir=opt["--output"],
         cv_score_output_dir=opt["--output-cv"])
