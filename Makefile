@@ -46,9 +46,9 @@ FINAL_REPORT_OUTPUT := ${FINAL_REPORT_DIR}/chocolate_exploration_results.pdf
 
 # Phony targets
 
-.PHONY : all dataset model performance clean
+.PHONY : all dataset model performance report clean
 
-all : dataset model performance
+all : dataset model performance report
 
 dataset : ${DATA_RAW}
 
@@ -60,13 +60,11 @@ model : ${MODEL_ALL}
 
 performance : ${RESULT_SUMMARY_ALL}
 
-# TODO: Implement me!
-# Note: remember to update `.PHONY`, `all`, and `clean` targets, too!
-# report : ${REPORT}
+report : ${FINAL_REPORT_OUTPUT}
 
 clean :
 	@echo "\033[0;37m>> \033[0;33mCleaning up intermediate and final outputs\033[0m"
-	${RM} -rf ${DATA_RAW} ${MODEL_ALL} ${RESULT_CV_ALL}
+	${RM} -rf ${DATA_RAW} ${MODEL_ALL} ${RESULT_CV_ALL} ${FINAL_REPORT_OUTPUT}
 
 # ---------------------------------------------------------------------
 
