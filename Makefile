@@ -18,8 +18,8 @@ DATA_RAW_TRAIN := ${DATA_RAW_DIR}/train_df.csv
 DATA_RAW_TEST := ${DATA_RAW_DIR}/test_df.csv
 DATA_RAW := ${DATA_RAW_ORIG} ${DATA_RAW_TRAIN} ${DATA_RAW_TEST}
 
-#EDA_REPORT_SOURCE := ${EDA_SOURCE_DIR}/chocolate_eda.Rmd
-#EDA_REPORT_OUTPUT := ${EDA_OUTPUT_DIR}/chocolate_eda.pdf
+EDA_REPORT_SOURCE := ${EDA_SOURCE_DIR}/chocolate_eda.Rmd
+EDA_REPORT_OUTPUT := ${EDA_OUTPUT_DIR}/chocolate_eda.pdf
 
 MODEL_DECISION_TREE := ${MODEL_DIR}/tuned_decision_tree.joblib
 MODEL_KNN := ${MODEL_DIR}/tuned_knn.joblib
@@ -46,15 +46,13 @@ FINAL_REPORT_OUTPUT := ${FINAL_REPORT_DIR}/chocolate_exploration_results.pdf
 
 # Phony targets
 
-.PHONY : all dataset model performance report clean
+.PHONY : all dataset eda model performance report clean
 
-all : dataset model performance report
+all : dataset eda model performance report
 
 dataset : ${DATA_RAW}
 
-# TODO: Implement me!
-# Note: remember to update `.PHONY`, `all`, and `clean` targets, too!
-# eda : ${EDA}
+eda : ${EDA_REPORT_OUTPUT}
 
 model : ${MODEL_ALL}
 
@@ -64,8 +62,8 @@ report : ${FINAL_REPORT_OUTPUT}
 
 clean :
 	@echo "\033[0;37m>> \033[0;33mCleaning up intermediate and final outputs\033[0m"
-	${RM} -rf ${DATA_RAW} ${MODEL_ALL} ${RESULT_CV_ALL} ${FINAL_REPORT_OUTPUT}
-
+	${RM} -rf ${DATA_RAW} ${EDA_OUTPUT_DIR} ${MODEL_ALL} ${RESULT_CV_ALL} ${FINAL_REPORT_OUTPUT}
+    
 # ---------------------------------------------------------------------
 
 # Dataset
@@ -84,7 +82,11 @@ ${DATA_RAW_TRAIN} ${DATA_RAW_TEST} : ${DATA_RAW_ORIG}
 
 # EDA
 
-# TODO: Replace me!
+${EDA_REPORT_OUTPUT} : ${DATA_RAW_TRAIN} ${EDA_REPORT_SOURCE}
+	@${ECHO} "\033[0;37m>> \033[0;33mPerforming EDA and storing plots, tables and a PDF report\033[0m"
+	${MKDIR} -p ${EDA_OUTPUT_DIR}
+	${RSCRIPT} src/chocolate_eda_automated.R
+	${RSCRIPT} src/chocolate_eda_rmd_to_pdf_renderer.R --input_file_path = ${EDA_REPORT_SOURCE}
 
 # ---------------------------------------------------------------------
 
@@ -92,27 +94,27 @@ ${DATA_RAW_TRAIN} ${DATA_RAW_TEST} : ${DATA_RAW_ORIG}
 
 ${MODEL_DECISION_TREE} ${RESULT_CV_DECISION_TREE} : ${DATA_RAW_TRAIN}
 	@${ECHO} "\033[0;37m>> \033[0;33mTuning model: Decision Tree\033[0m"
-	${MKDIR} -p ${MODEL_DIR} ${MODEL_CV_DIR}
+	${MKDIR} -p ${MODEL_DIR} ${RESULT_CV_DIR}
 	${PYTHON} -m src.models.chocolate_decision_tree --train=${DATA_RAW_TRAIN} --output=${MODEL_DIR} --output-cv=${RESULT_CV_DIR}
 
 ${MODEL_KNN} ${RESULT_CV_KNN} : ${DATA_RAW_TRAIN}
 	@${ECHO} "\033[0;37m>> \033[0;33mTuning model: kNN\033[0m"
-	${MKDIR} -p ${MODEL_DIR} ${MODEL_CV_DIR}
+	${MKDIR} -p ${MODEL_DIR} ${RESULT_CV_DIR}
 	${PYTHON} -m src.models.chocolate_knn --train=${DATA_RAW_TRAIN} --output=${MODEL_DIR} --output-cv=${RESULT_CV_DIR}
 
 ${MODEL_RIDGE} ${RESULT_CV_RIDGE} : ${DATA_RAW_TRAIN}
 	@${ECHO} "\033[0;37m>> \033[0;33mTuning model: Ridge\033[0m"
-	${MKDIR} -p ${MODEL_DIR} ${MODEL_CV_DIR}
+	${MKDIR} -p ${MODEL_DIR} ${RESULT_CV_DIR}
 	${PYTHON} -m src.models.chocolate_ridge --train=${DATA_RAW_TRAIN} --output=${MODEL_DIR} --output-cv=${RESULT_CV_DIR}
 
 ${MODEL_SVM_RBF} ${RESULT_CV_SVM_RBF} : ${DATA_RAW_TRAIN}
 	@${ECHO} "\033[0;37m>> \033[0;33mTuning model: SVM RBF\033[0m"
-	${MKDIR} -p ${MODEL_DIR} ${MODEL_CV_DIR}
+	${MKDIR} -p ${MODEL_DIR} ${RESULT_CV_DIR}
 	${PYTHON} -m src.models.chocolate_svm_rbf --train=${DATA_RAW_TRAIN} --output=${MODEL_DIR} --output-cv=${RESULT_CV_DIR}
     
 ${MODEL_RANDOM_FOREST} ${RESULT_CV_RANDOM_FOREST} : ${DATA_RAW_TRAIN}
 	@${ECHO} "\033[0;37m>> \033[0;33mTuning model: Random Forest\033[0m"
-	${MKDIR} -p ${MODEL_DIR} ${MODEL_CV_DIR}
+	${MKDIR} -p ${MODEL_DIR} ${RESULT_CV_DIR}
 	${PYTHON} -m src.models.chocolate_rand_forest --train=${DATA_RAW_TRAIN} --output=${MODEL_DIR} --output-cv=${RESULT_CV_DIR}
 
 # ---------------------------------------------------------------------
