@@ -25,13 +25,15 @@ MODEL_DECISION_TREE := ${MODEL_DIR}/tuned_decision_tree.joblib
 MODEL_KNN := ${MODEL_DIR}/tuned_knn.joblib
 MODEL_RIDGE := ${MODEL_DIR}/tuned_ridge.joblib
 MODEL_SVM_RBF := ${MODEL_DIR}/tuned_svm_rbf.joblib
-MODEL_ALL := ${MODEL_DECISION_TREE} ${MODEL_KNN} ${MODEL_RIDGE} ${MODEL_SVM_RBF}
+MODEL_RANDOM_FOREST := ${MODEL_DIR}/tuned_rand_forest.joblib
+MODEL_ALL := ${MODEL_DECISION_TREE} ${MODEL_KNN} ${MODEL_RIDGE} ${MODEL_SVM_RBF} ${MODEL_RANDOM_FOREST}
 
 RESULT_CV_DECISION_TREE := ${RESULT_CV_DIR}/cv_results_decision_tree.csv
 RESULT_CV_KNN := ${RESULT_CV_DIR}/cv_results_knn.csv
 RESULT_CV_RIDGE := ${RESULT_CV_DIR}/cv_results_ridge.csv
 RESULT_CV_SVM_RBF := ${RESULT_CV_DIR}/cv_results_svm_rbf.csv
-RESULT_CV_ALL := ${RESULT_CV_DECISION_TREE} ${RESULT_CV_KNN} ${RESULT_CV_RIDGE} ${RESULT_CV_SVM_RBF}
+RESULT_CV_RANDOM_FOREST := ${RESULT_CV_DIR}/cv_results_rand_forest.csv
+RESULT_CV_ALL := ${RESULT_CV_DECISION_TREE} ${RESULT_CV_KNN} ${RESULT_CV_RIDGE} ${RESULT_CV_SVM_RBF} ${RESULT_CV_RANDOM_FOREST}
 
 RESULT_SUMMARY_SCORE := ${RESULT_DIR}/cv_scores_summary.csv
 RESULT_SUMMARY_TEST := ${RESULT_DIR}/test_data_results.csv
@@ -109,6 +111,11 @@ ${MODEL_SVM_RBF} ${RESULT_CV_SVM_RBF} : ${DATA_RAW_TRAIN}
 	@${ECHO} "\033[0;37m>> \033[0;33mTuning model: SVM RBF\033[0m"
 	${MKDIR} -p ${MODEL_DIR} ${MODEL_CV_DIR}
 	${PYTHON} -m src.models.chocolate_svm_rbf --train=${DATA_RAW_TRAIN} --output=${MODEL_DIR} --output-cv=${RESULT_CV_DIR}
+    
+${MODEL_RANDOM_FOREST} ${RESULT_CV_RANDOM_FOREST} : ${DATA_RAW_TRAIN}
+	@${ECHO} "\033[0;37m>> \033[0;33mTuning model: Random Forest\033[0m"
+	${MKDIR} -p ${MODEL_DIR} ${MODEL_CV_DIR}
+	${PYTHON} -m src.models.chocolate_rand_forest --train=${DATA_RAW_TRAIN} --output=${MODEL_DIR} --output-cv=${RESULT_CV_DIR}
 
 # ---------------------------------------------------------------------
 
