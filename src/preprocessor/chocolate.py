@@ -5,7 +5,8 @@ from sklearn.preprocessing import (
     FunctionTransformer, MultiLabelBinarizer, OneHotEncoder, OrdinalEncoder,
     StandardScaler
 )
-
+import pandas as pd
+import numpy as np
 from .my_multi_label_binarizer import MyMultiLabelBinarizer
 
 # Ingredient list
@@ -62,6 +63,22 @@ preprocessor = make_column_transformer(
         ),
         [
             'cocoa_percent'
+        ]
+    ),
+    (
+        # pipeline-3
+        make_pipeline(
+            # extract number of ingredients in the chocolate
+            FunctionTransformer(lambda df: 
+                                df.apply(
+                                    axis=1, 
+                                    func = lambda x: x.str[0])
+                                .replace(np.nan,'0')
+                                .applymap(ord)-48),
+            StandardScaler()
+        ),
+        [
+            'ingredients'
         ]
     ),
     (
