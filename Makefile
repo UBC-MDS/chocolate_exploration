@@ -37,8 +37,8 @@ RESULT_SUMMARY_SCORE := ${RESULT_DIR}/cv_scores_summary.csv
 RESULT_SUMMARY_TEST := ${RESULT_DIR}/test_data_results.csv
 RESULT_SUMMARY_ALL := ${RESULT_SUMMARY_SCORE} ${RESULT_SUMMARY_TEST}
 
-#FINAL_REPORT_SOURCE := ${FINAL_REPORT_DIR}/chocolate_exploration_results.Rmd
-#FINAL_REPORT_OUTPUT := ${FINAL_REPORT_DIR}/chocolate_exploration_results.pdf
+FINAL_REPORT_SOURCE := ${FINAL_REPORT_DIR}/chocolate_exploration_results.Rmd
+FINAL_REPORT_OUTPUT := ${FINAL_REPORT_DIR}/chocolate_exploration_results.pdf
 
 # ---------------------------------------------------------------------
 
@@ -123,4 +123,7 @@ ${RESULT_CV_SUMMARY} ${RESULT_TEST_RESULTS} : ${MODEL_ALL} ${RESULT_CV_ALL}
 
 # Report
 
-# TODO: Replace me!
+${FINAL_REPORT_OUTPUT} : {FINAL_REPORT_SOURCE}
+	@{ECHO} "\033[0;37m>> \033[0;33mRendering final report\033[0m"
+	${MKDIR} -p ${FINAL_REPORT_DIR}
+	${RSCRIPT} doc/chocolate_exploration_results_pdf_renderer.R --input_file_path=${FINAL_REPORT_SOURCE}
