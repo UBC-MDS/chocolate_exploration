@@ -130,7 +130,7 @@ ${MODEL_SVM_RBF} ${RESULT_CV_SVM_RBF} : ${DATA_RAW_TRAIN}
 
 # Performance
 
-${RESULT_CV_SUMMARY} ${RESULT_TEST_RESULTS} : ${MODEL_ALL} ${RESULT_CV_ALL}
+${RESULT_SUMMARY_SCORE} ${RESULT_SUMMARY_TEST} : ${MODEL_ALL} ${RESULT_CV_ALL}
 	@${ECHO} "\033[0;37m>> \033[0;33mMeasuring performance on test data\033[0m"
 	${MKDIR} -p ${RESULT_DIR}
 	${PYTHON} -m src.test_data_performance

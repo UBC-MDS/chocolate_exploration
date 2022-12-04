@@ -1,5 +1,5 @@
 ,MAPE (%)
-Decision_Tree,10.983
-KNN,10.393
-Ridge,8.65
-SVM RBF,8.575
+Decision_Tree,11.084
+KNN,10.627
+Ridge,8.658
+SVM RBF,8.589

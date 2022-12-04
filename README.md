@@ -57,7 +57,7 @@ cd chocolate_exploration
 The EDA and report texts are written in R, and the packages can be installed by:
 
 ```bash
-R -e 'install.packages(c("caTools","cowplot","docopt","dplyr","kableExtra","knitr","magick","rmarkdown","tidyverse","webshot"))'
+R -e 'install.packages(c("caTools","cowplot","docopt","dplyr","kableExtra","knitr","magick","rmarkdown","tidyverse","webshot"), repos = "http://cran.us.r-project.org")'
 ```
 
 The versions used in the development can be confirmed by:
@@ -112,7 +112,9 @@ To render the full analysis in one step, including downloading and splitting the
 ```bash
 make all
 ```
-Note that it may take a long period of time for all of the models to run. Please also note that`make report` may need to be run separately in R Studio if there are errors with the `pandoc` package.
+Note that it may take a long period of time (~30 mins) for all of the models to run. 
+
+Please also note that the `make eda` and `make report` steps may encounter issues with the `pandoc` package in Jupyter Lab. For example, using `make all` will successfully run `make dataset` but encounter the `pandoc` error with `make eda`. Please run `make eda` separately in R Studio, and then run `make all` again in Jupyter lab, which will run all of the successive scripts. If the error is encountered again in the final step, `make report`, please run `make report` in R Studio.
 
 To reset the repository and clean all of the intermediate and results files, the following command can be run from the root directory:
 ```bash
