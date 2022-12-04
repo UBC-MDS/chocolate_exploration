@@ -1,7 +1,7 @@
-# author: Julie Song ,Kelvin Wong, Manvir Kohli
+# author: Manvir Kohli, Julie Song, Kelvin Wong
 # date: 2022-11-23
 
-"This script creates a  train test split of the entire data.
+"This script creates a train test split of the entire data.
 
 Usage: train_test_split.R --input_file = <input_file>
 

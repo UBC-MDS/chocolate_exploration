@@ -1,4 +1,4 @@
-# author: Julie Song ,Kelvin Wong, Manvir Kohli
+# author: Manvir Kohli, Julie Song, Kelvin Wong
 # date: 2022-11-23
 
 "This script performs EDA on the train data created using .... .

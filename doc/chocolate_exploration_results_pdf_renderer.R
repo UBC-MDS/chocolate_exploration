@@ -1,4 +1,4 @@
-# author: Julie Song ,Kelvin Wong, Manvir Kohli
+# author: Manvir Kohli, Julie Song, Kelvin Wong
 # date: 2022-11-23
 
 "This script takes the path to the rmd file containing analysis results as an input
@@ -15,7 +15,6 @@ library(tidyverse)
 library(dplyr)
 library(knitr)
 library(rmarkdown)
-library(pandoc)
 
 opt <- docopt(doc)
 
