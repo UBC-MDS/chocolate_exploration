@@ -15,7 +15,6 @@ library(tidyverse)
 library(dplyr)
 library(knitr)
 library(rmarkdown)
-library(pandoc)
 
 opt <- docopt(doc)
 

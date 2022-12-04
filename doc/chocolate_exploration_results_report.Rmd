@@ -20,7 +20,6 @@ library(tidyverse)
 library(cowplot)
 library(knitr)
 library(kableExtra)
-library(pandoc)
 ```
 
 # Summary

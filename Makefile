@@ -1,3 +1,6 @@
+# author: Julie Song ,Kelvin Wong, Manvir Kohli
+# date: 2022-12-02
+
 ECHO=echo
 MKDIR=mkdir
 RM=rm
@@ -39,8 +42,8 @@ RESULT_SUMMARY_SCORE := ${RESULT_DIR}/cv_scores_summary.csv
 RESULT_SUMMARY_TEST := ${RESULT_DIR}/test_data_results.csv
 RESULT_SUMMARY_ALL := ${RESULT_SUMMARY_SCORE} ${RESULT_SUMMARY_TEST}
 
-FINAL_REPORT_SOURCE := ${FINAL_REPORT_DIR}/chocolate_exploration_results.Rmd
-FINAL_REPORT_OUTPUT := ${FINAL_REPORT_DIR}/chocolate_exploration_results.pdf
+FINAL_REPORT_SOURCE := ${FINAL_REPORT_DIR}/chocolate_exploration_results_report.Rmd
+FINAL_REPORT_OUTPUT := ${FINAL_REPORT_DIR}/chocolate_exploration_results_report.pdf
 
 # ---------------------------------------------------------------------
 
@@ -102,6 +105,11 @@ ${MODEL_KNN} ${RESULT_CV_KNN} : ${DATA_RAW_TRAIN}
 	${MKDIR} -p ${MODEL_DIR} ${RESULT_CV_DIR}
 	${PYTHON} -m src.models.chocolate_knn --train=${DATA_RAW_TRAIN} --output=${MODEL_DIR} --output-cv=${RESULT_CV_DIR}
 
+${MODEL_RANDOM_FOREST} ${RESULT_CV_RANDOM_FOREST} : ${DATA_RAW_TRAIN}
+	@${ECHO} "\033[0;37m>> \033[0;33mTuning model: Random Forest\033[0m"
+	${MKDIR} -p ${MODEL_DIR} ${RESULT_CV_DIR}
+	${PYTHON} -m src.models.chocolate_random_forest --train=${DATA_RAW_TRAIN} --output=${MODEL_DIR} --output-cv=${RESULT_CV_DIR}
+
 ${MODEL_RIDGE} ${RESULT_CV_RIDGE} : ${DATA_RAW_TRAIN}
 	@${ECHO} "\033[0;37m>> \033[0;33mTuning model: Ridge\033[0m"
 	${MKDIR} -p ${MODEL_DIR} ${RESULT_CV_DIR}
@@ -111,11 +119,6 @@ ${MODEL_SVM_RBF} ${RESULT_CV_SVM_RBF} : ${DATA_RAW_TRAIN}
 	@${ECHO} "\033[0;37m>> \033[0;33mTuning model: SVM RBF\033[0m"
 	${MKDIR} -p ${MODEL_DIR} ${RESULT_CV_DIR}
 	${PYTHON} -m src.models.chocolate_svm_rbf --train=${DATA_RAW_TRAIN} --output=${MODEL_DIR} --output-cv=${RESULT_CV_DIR}
-    
-${MODEL_RANDOM_FOREST} ${RESULT_CV_RANDOM_FOREST} : ${DATA_RAW_TRAIN}
-	@${ECHO} "\033[0;37m>> \033[0;33mTuning model: Random Forest\033[0m"
-	${MKDIR} -p ${MODEL_DIR} ${RESULT_CV_DIR}
-	${PYTHON} -m src.models.chocolate_random_forest --train=${DATA_RAW_TRAIN} --output=${MODEL_DIR} --output-cv=${RESULT_CV_DIR}
 
 # ---------------------------------------------------------------------
 
@@ -130,7 +133,7 @@ ${RESULT_CV_SUMMARY} ${RESULT_TEST_RESULTS} : ${MODEL_ALL} ${RESULT_CV_ALL}
 
 # Report
 
-${FINAL_REPORT_OUTPUT} : {FINAL_REPORT_SOURCE}
-	@{ECHO} "\033[0;37m>> \033[0;33mRendering final report\033[0m"
+${FINAL_REPORT_OUTPUT} : ${RESULT_CV_ALL}
+	@${ECHO} "\033[0;37m>> \033[0;33mRendering final report\033[0m"
 	${MKDIR} -p ${FINAL_REPORT_DIR}
-	${RSCRIPT} doc/chocolate_exploration_results_pdf_renderer.R --input_file_path=${FINAL_REPORT_SOURCE}
+	${RSCRIPT} doc/chocolate_exploration_results_pdf_renderer.R --input_file_path = ${FINAL_REPORT_SOURCE}

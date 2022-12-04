@@ -81,6 +81,8 @@ Which should show:
 [1] "webshot==0.5.4"
 ```
 
+Also, you should make sure your environment has `pandoc` and `pandoc-citeproc` installed. Please consult [the Pandoc documentation](https://pandoc.org/installing.html) for more details.
+
 The actual analyses are written in Python. A [Conda](https://conda.io/) environment file can be found at [`environment.yml`](./environment.yaml).
 
 To create the environment, run this at the project root:
@@ -103,6 +105,8 @@ conda deactivate
 
 For more information, please refer to the [Conda documentation](https://conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html).
 
+**Note**: the following `make` commands assume you are already in a Python environment where the libraries are installed. Before continuing, make sure you have activated the `chocolate_exploration` environment.
+
 ### Download and split the data set
 
 Aside from the raw URL mentioned above, you may run the following at the project root to download and split the raw dataset:
@@ -113,6 +117,25 @@ make dataset
 
 Under the hood, it uses [`src/chocolate_data_download.R`](./src/chocolate_data_download.R) to download the dataset, and uses [`src/train_test_split.R`](./src/train_test_split.R) to process the `chocolate.csv` into a `train_df.csv` and a `test_df.csv` using a 70%-30% split.
 
+
+### EDA Analysis
+
+You can run the EDA of this dataset using the [`src/chocolate_eda_automated.R`](./src/chocolate_eda_automated.R) script in the [`src`](./src) folder. Running the command below saves the results of EDA in the [`src/eda_files`](./src/eda_files) folder.
+
+```bash
+make eda
+```
+
+The scripts generate these files:
+- A complete summary in PDF, [`chocolate_eda.pdf`](src/eda_files/chocolate_eda.pdf)
+- Summary of null values in HTML, [`1.Nulls_table.html`](src/eda_files/1.Nulls_table.html)
+- Summary of final features used for modelling, [`2.Final_Features_Table.html`](./src/eda_files/2.Final_Features_Table.html)
+- View of the final dataset, [`3.Final_Dataset_View.html`](./src/eda_files/3.Final_Dataset_View.html)
+- Plots for numerical variables, [`Numerical_Plots.png`](./src/eda_files/Numeric_Plots.png)
+- Plots for categorical variables, [`Categorical_Plots.png`](./src/eda_files/Categorical_Plots.png)
+
+Under the hood the generation scripts are [`src/chocolate_eda_automated.R`](./src/chocolate_eda_automated.R) and [`src/chocolate_ed_rmd_to_pdf_renderer.R`](./src/chocolate_ed_rmd_to_pdf_renderer.R).
+
 ### Tune the models
 
 To tune the models, run the following command at the project root:
@@ -121,7 +144,7 @@ To tune the models, run the following command at the project root:
 make model
 ```
 
-This command generate `tuned_{model_name}.joblib` under the folder `results/models/` and `cv_results_{model_name}.csv` under the folder `results/cv_scores`.
+This command generate `tuned_{model_name}.joblib` under the folder [`results/models/`](./results/models/) and `cv_results_{model_name}.csv` under the folder [`results/cv_scores`](./results/cv_scores).
 
 The scripts of the model tuning can be found in the [`src/models`](./src/models/) folder.
 
@@ -134,38 +157,19 @@ make performance
 ```
 
 The command does the following:
-- aggregates and exports the mean of cross validation results as a csv file under `results/cv_scores_summary.csv`;
+- aggregates and exports the mean of cross validation results as a csv file as `results/cv_scores_summary.csv`;
 - scores all the models' performance on the test data; and
-- exports the scores for all the models as a csv file under `results/test_data_results.csv`
+- exports the scores for all the models as a csv file at [`results/test_data_results.csv`](./results/test_data_results.csv)
 
 ### Get the final report as PDF
 
-The final report of the analysis is already included as a PDF, as mentioned above. However in case it is not available, you can run the below command to generate a PDF report under `doc/chocolate_exploration_results_report.pdf`:
+The final report of the analysis is already included as a PDF, as mentioned above. However in case it is not available, you can run the below command to generate a PDF report under [`doc/chocolate_exploration_results_report.pdf`](doc/chocolate_exploration_results_report.pdf):
 
 ```bash
-Rscript doc/chocolate_exploration_results_pdf_renderer.R --input_file_path = doc/chocolate_exploration_results_report.rmd
+make report
 ```
 
-## EDA Analysis
-
-You can run the EDA of this dataset using the `chocolate_eda_automated.R` script in the `src` folder. Running the command below saves the results of EDA in the `src/eda_files` folder.
-
-```bash
-Rscript src/chocolate_eda_automated.R
-```
-
-EDA Results stored by the above script include:
-- Summary of null values (`Nulls_table.html`)
-- Summary of final features used for modelling (`Final_Features_Table.html`)
-- View of the final dataset (`Final_Dataset_View.html`)
-- Plots for categorical variables (`Numerical_Plots.png`)
-- Plots for categorical variables (`Categorical_Plots.png`)
-
-You can also view the complete EDA summary as a PDF using the below script which renders the `src/chocolate_eda.Rmd` file as a PDF:
-
-```bash
-Rscript src/chocolate_eda_rmd_to_pdf_renderer.R --input_file_path = src/chocolate_eda.Rmd
-```
+The generation script can be found in [`doc/chocolate_exploration_results_pdf_renderer.R`](doc/chocolate_exploration_results_pdf_renderer.R).
 
 ## Copyright and Licensing
 
