@@ -112,7 +112,7 @@ To render the full analysis in one step, including downloading and splitting the
 ```bash
 make all
 ```
-Note that `make report` may need to be run separately in R Studio if there are errors with the pandoc package.
+Note that it may take a long period of time for all of the models to run. Please also note that`make report` may need to be run separately in R Studio if there are errors with the `pandoc` package.
 
 To reset the repository and clean all of the intermediate and results files, the following command can be run from the root directory:
 ```bash
