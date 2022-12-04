@@ -107,6 +107,18 @@ For more information, please refer to the [Conda documentation](https://conda.io
 
 **Note**: the following `make` commands assume you are already in a Python environment where the libraries are installed. Before continuing, make sure you have activated the `chocolate_exploration` environment.
 
+### Running/cleaning all files
+To render the full analysis in one step, including downloading and splitting the raw data, running the EDA analysis, tuning the models, and rendering the final report, the following command can be run from the root directory:
+```bash
+make all
+```
+Note that `make report` may need to be run separately in R Studio if there are errors with the pandoc package.
+
+To reset the repository and clean all of the intermediate and results files, the following command can be run from the root directory:
+```bash
+make clean
+```
+
 ### Download and split the data set
 
 Aside from the raw URL mentioned above, you may run the following at the project root to download and split the raw dataset:
