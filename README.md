@@ -144,7 +144,7 @@ To tune the models, run the following command at the project root:
 make model
 ```
 
-This command generate `tuned_{model_name}.joblib` under the folder [`results/models/`](./results/models/) and `cv_results_{model_name}.csv` under the folder [`results/cv_scores`](./results/cv_scores).
+This command generates `tuned_{model_name}.joblib` under the folder [`results/models/`](./results/models/) and `cv_results_{model_name}.csv` under the folder [`results/cv_scores`](./results/cv_scores).
 
 The scripts of the model tuning can be found in the [`src/models`](./src/models/) folder.
 

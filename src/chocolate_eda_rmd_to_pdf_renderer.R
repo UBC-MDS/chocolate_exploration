@@ -1,4 +1,4 @@
-# author: Julie Song ,Kelvin Wong, Manvir Kohli
+# author: Manvir Kohli, Julie Song, Kelvin Wong
 # date: 2022-11-23
 
 "This script takes the path to the rmd file containing EDA findings as an input and renders it as a pdf in the same directory as the .Rmd file

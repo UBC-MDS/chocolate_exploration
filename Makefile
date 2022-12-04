@@ -1,11 +1,7 @@
-# author: Julie Song ,Kelvin Wong, Manvir Kohli
+# author: Manvir Kohli, Julie Song, Kelvin Wong
 # date: 2022-12-02
 
-ECHO=echo
-MKDIR=mkdir
-RM=rm
-PYTHON=python
-RSCRIPT=Rscript
+# Source/output paths
 
 DATA_RAW_DIR=data/raw
 DATA_RAW_ORIG_URL=https://github.com/rfordatascience/tidytuesday/raw/master/data/2022/2022-01-18/chocolate.csv
@@ -44,6 +40,16 @@ RESULT_SUMMARY_ALL := ${RESULT_SUMMARY_SCORE} ${RESULT_SUMMARY_TEST}
 
 FINAL_REPORT_SOURCE := ${FINAL_REPORT_DIR}/chocolate_exploration_results_report.Rmd
 FINAL_REPORT_OUTPUT := ${FINAL_REPORT_DIR}/chocolate_exploration_results_report.pdf
+
+# ---------------------------------------------------------------------
+
+# Toolchains
+
+ECHO=echo
+MKDIR=mkdir
+RM=rm
+PYTHON=python
+RSCRIPT=Rscript
 
 # ---------------------------------------------------------------------
 
@@ -133,7 +139,7 @@ ${RESULT_CV_SUMMARY} ${RESULT_TEST_RESULTS} : ${MODEL_ALL} ${RESULT_CV_ALL}
 
 # Report
 
-${FINAL_REPORT_OUTPUT} : ${RESULT_CV_ALL}
+${FINAL_REPORT_OUTPUT} : ${FINAL_REPORT_SOURCE} ${RESULT_CV_ALL}
 	@${ECHO} "\033[0;37m>> \033[0;33mRendering final report\033[0m"
 	${MKDIR} -p ${FINAL_REPORT_DIR}
 	${RSCRIPT} doc/chocolate_exploration_results_pdf_renderer.R --input_file_path = ${FINAL_REPORT_SOURCE}
