@@ -9,7 +9,7 @@ EDA_SOURCE_DIR=src
 EDA_OUTPUT_DIR=src/eda_files
 MODEL_DIR=results/models
 RESULT_DIR=results
-RESULT_CV_DIR=results/cv_scores_summary
+RESULT_CV_DIR=results/cv_scores
 FINAL_REPORT_DIR=doc
 
 DATA_RAW_ORIG := ${DATA_RAW_DIR}/chocolate.csv
