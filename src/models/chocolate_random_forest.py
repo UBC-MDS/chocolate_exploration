@@ -5,7 +5,7 @@
 features from the chocolate exploration dataset. It dumps a tuned random
 forest model.
 
-Usage: src/models/chocolate_rand_forest.py --train=<training_ds> --output=<output_folder> --output-cv=<output_cv_folder>
+Usage: src/models/chocolate_random_forest.py --train=<training_ds> --output=<output_folder> --output-cv=<output_cv_folder>
 
 Options:
 --train=<training_ds>          Path to the training dataset, which is a .csv file
@@ -25,8 +25,8 @@ from .base_chocolate_model_tuner import BaseChocolateModelTuner
 class ChocolateRandomForestTuner(BaseChocolateModelTuner):
     def __init__(self):
         super().__init__()
-        self.tuned_file_name = "tuned_rand_forest.joblib"
-        self.cv_file_name = "cv_results_rand_forest.csv"
+        self.tuned_file_name = "tuned_random_forest.joblib"
+        self.cv_file_name = "cv_results_random_forest.csv"
 
     def create_pipeline(self):
         """
