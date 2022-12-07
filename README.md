@@ -57,28 +57,28 @@ cd chocolate_exploration
 The EDA and report texts are written in R, and the packages can be installed by:
 
 ```bash
-R -e 'install.packages(c("caTools","cowplot","docopt","dplyr","kableExtra","knitr","magick","rmarkdown","tidyverse","webshot"), repos = "http://cran.us.r-project.org")'
+R -e 'install.packages("docopt")' && Rscript deps.R --install
 ```
 
 The versions used in the development can be confirmed by:
 
 ```bash
-R -e 'for (p in c("caTools","cowplot","docopt","dplyr","kableExtra","knitr","magick","rmarkdown","tidyverse","webshot")) { print(paste0(p, "==", packageVersion(p))) }'
+Rscript deps.R --list
 ```
 
 Which should show:
 
 ```
-[1] "caTools==1.18.2"
-[1] "cowplot==1.1.1"
-[1] "docopt==0.7.1"
-[1] "dplyr==1.0.10"
-[1] "kableExtra==1.3.4"
-[1] "knitr==1.41"
-[1] "magick==2.7.3"
-[1] "rmarkdown==2.18"
-[1] "tidyverse==1.3.2"
-[1] "webshot==0.5.4"
+caTools==1.18.2
+cowplot==1.1.1
+docopt==0.7.1
+dplyr==1.0.10
+kableExtra==1.3.4
+knitr==1.41
+magick==2.7.3
+rmarkdown==2.18
+tidyverse==1.3.2
+webshot==0.5.4
 ```
 
 Also, you should make sure your environment has `pandoc` and `pandoc-citeproc` installed. Please consult [the Pandoc documentation](https://pandoc.org/installing.html) for more details.
