@@ -4,7 +4,7 @@
 has_docopt <- require("docopt")
 
 if (!has_docopt) {
-    stop("`docopt` is not installed. Run `install.package('docopt')` first.")
+    stop("`docopt` is not installed. Run `install.packages('docopt')` first.")
 }
 
 "
@@ -32,11 +32,12 @@ dependencies <- c(
     "knitr",
     "magick",
     "rmarkdown",
+    "testthat",
     "tidyverse",
     "webshot"
 )
 
-repos <- "http://cran.us.r-project.org"
+repos <- "https://cran.microsoft.com/snapshot/2022-12-08/"
 
 main <- function(args) {
     if (args$list) {
@@ -45,6 +46,9 @@ main <- function(args) {
         }
     } else if (args$install) {
         install.packages(dependencies, repos = repos)
+        # post-install
+        library(tinytex)
+        tinytex::install_tinytex()
     } else {
         cat(doc)
     }
