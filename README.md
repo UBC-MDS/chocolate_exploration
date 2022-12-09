@@ -8,7 +8,9 @@
 
 "Given the characteristics of a new dark chocolate, what will be its predicted rating on a scale of 1 to 5?" This is the predictive research question that we have set out to answer. Using this information, perhaps we can predict how well-received a new dark chocolate product may be.
 
-Four regression models were built to answer this question: k-nearest neighbors, RIDGE (linear regression), support vector machines with a radial basis function kernel, and a decision tree. All four models were compared using mean absolute percentage error, and performed fairly well on the test data set. The worst model was the decision tree with 11% error, while the best model was the SVM RBF model with 8.6% error. Although the errors are quite small, because the rating scale only extends from 1 to 5, it would be best to minimize this error as much as possible. Thus, improvements to the model are recommended before it may be put to practical use.
+Give regression models were built to answer this question: k-nearest neighbors, RIDGE (linear regression), support vector machines with a radial basis function kernel, a decision tree, and a random forest regressor. All five models were compared using mean absolute percentage error, and performed fairly well on the test data set. The worst model was the decision tree with 11% error, while the best model was the SVM RBF model with 8.6% error. Although the errors are quite small, because the rating scale only extends from 1 to 5, it would be best to minimize this error as much as possible. Thus, improvements to the model are recommended before it may be put to practical use.
+
+The final report can be found [here](doc/chocolate_exploration_results_report.pdf).
 
 The data set is from [Flavors of Cacao](http://flavorsofcacao.com/chocolate_database.html), where the Manhattan Chocolate Society (headed by Brady Brelinski) has reviewed 2,500+ bars of craft chocolate since 2006. The findings have been compiled into a copy-paste-able table that lists each bar's manufacturer, bean origin, percent cocoa, ingredients, review notes, and numerical rating. The data set we are using is dated 2022-01-12.
 
@@ -18,20 +20,35 @@ A copy of the file can be found from [TidyTuesday project from the R4DS Communit
 
 It can also be downloaded using the instructions below.
 
-## Report
-
-The final report can be found [here](doc/chocolate_exploration_results_report.pdf). 
-
 ## Usage
 
-If you are interested in just running the exploration project, you can use [Docker](https://www.docker.com/) or [Podman](https://podman.io), by downloading from the Docker Hub:
+If you are interested in just running the exploration project, you can use [Docker](https://www.docker.com/). Run this command in the project root directory:
 
 ```bash
-# WIP here
-# TODO: implement me!
+docker run -ti --rm -v `pwd`:/app netsgnut/chocolate_exploration make -C /app all
 ```
 
-You may refer to the [`Dockerfile`](./Dockerfile) for more information.
+Or if you use [Podman](https://podman.io):
+
+```bash
+podman run -ti --rm -v `pwd`:/app docker.io/netsgnut/chocolate_exploration make -C /app all
+```
+
+These commands pull the latest `chocolate_exploration` image from [Docker Hub](https://hub.docker.com/) and mount the project files as a volume. The image supports both `linux/amd64` and `linux/arm64` architecture.
+
+To clean up all the built analyses and intermediate files on Docker:
+
+```bash
+docker run -ti --rm -v `pwd`:/app netsgnut/chocolate_exploration make -C /app clean
+```
+
+Or on Podman:
+
+```bash
+podman run -ti --rm -v `pwd`:/app docker.io/netsgnut/chocolate_exploration make -C /app clean
+```
+
+You may refer to the official [Docker](https://docs.docker.com/) and [Podman documentations](https://docs.podman.io/en/latest/) for more information. The [`Dockerfile`](./Dockerfile) used to build is also included.
 
 ## Usage (Advanced)
 
@@ -57,33 +74,33 @@ cd chocolate_exploration
 The EDA and report texts are written in R, and the packages can be installed by:
 
 ```bash
-R -e 'install.packages(c("caTools","cowplot","docopt","dplyr","kableExtra","knitr","magick","rmarkdown","tidyverse","webshot"), repos = "http://cran.us.r-project.org")'
+R -e 'install.packages("docopt")' && Rscript deps.R --install
 ```
 
 The versions used in the development can be confirmed by:
 
 ```bash
-R -e 'for (p in c("caTools","cowplot","docopt","dplyr","kableExtra","knitr","magick","rmarkdown","tidyverse","webshot")) { print(paste0(p, "==", packageVersion(p))) }'
+Rscript deps.R --list
 ```
 
 Which should show:
 
 ```
-[1] "caTools==1.18.2"
-[1] "cowplot==1.1.1"
-[1] "docopt==0.7.1"
-[1] "dplyr==1.0.10"
-[1] "kableExtra==1.3.4"
-[1] "knitr==1.41"
-[1] "magick==2.7.3"
-[1] "rmarkdown==2.18"
-[1] "tidyverse==1.3.2"
-[1] "webshot==0.5.4"
+caTools==1.18.2
+cowplot==1.1.1
+docopt==0.7.1
+dplyr==1.0.10
+kableExtra==1.3.4
+knitr==1.41
+magick==2.7.3
+rmarkdown==2.18
+tidyverse==1.3.2
+webshot==0.5.4
 ```
 
 Also, you should make sure your environment has `pandoc` and `pandoc-citeproc` installed. Please consult [the Pandoc documentation](https://pandoc.org/installing.html) for more details.
 
-The actual analyses are written in Python. A [Conda](https://conda.io/) environment file can be found at [`environment.yml`](./environment.yaml).
+The actual analyses are written in Python. A [Conda](https://conda.io/) environment file can be found at [`environment.yaml`](./environment.yaml).
 
 To create the environment, run this at the project root:
 
