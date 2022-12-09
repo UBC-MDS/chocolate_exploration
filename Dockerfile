@@ -49,7 +49,7 @@ RUN \
     micromamba create -f /tmp/environment.yaml
 RUN \
     micromamba shell init -s bash && \
-    echo "micromamba activate chocolate_exploration" >> /home/mambauser/.bashrc && \
-    echo "cd ~" >> /home/mambauser/.bashrc && \
-    echo "[ -d /app ] && cd /app" >> /home/mambauser/.bashrc && \
-    echo "[ -d app ] && cd app"  >> /home/mambauser/.bashrc
+    echo "micromamba activate chocolate_exploration" >> /home/${MAMBA_USER}/.bashrc && \
+    echo "cd ~" >> /home/${MAMBA_USER}/.bashrc && \
+    echo "[ -d /app ] && cd /app" >> /home/${MAMBA_USER}/.bashrc && \
+    echo "[ -d app ] && cd app"  >> /home/${MAMBA_USER}/.bashrc
