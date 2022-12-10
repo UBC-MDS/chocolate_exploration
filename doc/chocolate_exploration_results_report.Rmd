@@ -29,9 +29,11 @@ Four regression models were built using decision tree, support vector machine, r
 
 # Introduction
 
-Chocolate is one of the most well-known foods in the world. Out of all the different types of chocolates, dark chocolate contains the most cocoa solids and is the closest to the original that was deemed the "Food of the Gods" by the Mayans thousands of years ago (@darkchoco). Indeed, dark chocolate has garnered more interest in recent years due to the many health benefits that it provides (@health).
+Commonly known as the "Food of the Gods", chocolate is a treat that is a world-wide favorite among the people. A recent study on food consumption changes during the COVID-19 pandemic and subsequent lockdown periods in Denmark, Slovania, and Germany revealed an increase in people consuming frozen and canned products, but also an increase in sweets, including chocolate (@choco_pand). In particular, dark chocolate has been gaining attention due to the many health benefits that it provides (@health, @morehealth).
 
-Nevertheless, popularity can vary between products. How well-received a new chocolate may be can depend on a variety of factors. The project presented here is interested in predicting the rating for a type of dark chocolate on a scale of 1 to 5, given some of its characteristics. This information can be useful for product analysis, and may be able to aid in predicting the popularity of a new product.
+There is interest in exploring this growing market of dark chocolate production, but there are a number of factors to consider about the chocolate itself. For example, dark chocolate is characterized by its large percentage of cocoa solids, which can vary between 50%-90% and gives it its signature bitter taste (@darkchoco). The project presented here is interested in predicting the rating for a type of dark chocolate on a scale of 1 to 5, given some of its characteristics, including its ingredients, amount of cocoa solids, manufacturing location, and more. This information can be useful for product analysis, and may be able to aid in predicting the popularity of a new product. 
+
+Our target mean absolute percent error (MAPE) is 5% for the predicted ratings. We chose MAPE because our rating scale is not very large and does not have units, so a relative percentage error is easier to understand for this context.
 
 # Methods
 
@@ -48,9 +50,19 @@ Before the models were built, the data also had to be processed. The information
 Four regression models were built after splitting the original data set into training and testing data sets in a 70%-30% split. Apart from the processing performed above, some features were also dropped due to being practically unique to each observation, such as the reference number and the company manufacturer. Table 1 shows the hyperparameters that were considered for each regression model. Hyperparameter optimization was performed for each model, using 20 iterations of 5-fold cross-validation each.
 
 ```{r hyperparamter table, echo=FALSE, message=FALSE}
-hparams <- tibble(Model = c("KNN","KNN", "KNN", "Ridge", "SVM RBF", "SVM RBF", "Decision Tree"),
-                  Hyperparameter = c("Leaf Size", "Number of Neighbors", "Weights",
-                                     "Alpha", "C", "Gamma", "Max Depth"))
+hparams <- tibble(Model = c("KNN", "KNN", "KNN", "KNN",
+                            "Ridge", "Ridge", 
+                            "SVM RBF", "SVM RBF", "SVM RBF", 
+                            "Decision Tree", "Decision Tree",
+                            "Random Forest", "Random Forest", "Random Forest"
+                            ),
+                  Hyperparameter = c(
+                    "Max Text Features", "Leaf Size", "Number of Neighbors", "Weights",
+                    "Max Text Features", "Alpha",
+                    "Max Text Features", "C", "Gamma",
+                    "Max Text Features", "Max Depth",
+                    "Max Text Features", "Max Depth", "Number of Estimators"
+                    ))
 
 collapse_rows(kable(hparams, format="latex", booktabs=TRUE,
       caption = "Model Hyperparameters")) |>
@@ -67,46 +79,60 @@ The modelling was performed in Python (@Python) using the following packages, av
 
 The distributions for the numerical and categorical features were first analyzed to check for any unreasonable skewness. These distributions are presented in Figures 1 and 2. The top company locations which had at least 20 observations and the top bean origin countries with at least 10 observations were kept, while the remaining categories in each feature were grouped as Other. It is revealed that the manufacturing company feature has an overwhelming number of categories, and even taking into considering only the top 50 companies, the Other category has far more points compared to the others. This feature was considered too unique to the observations, and was omitted from the modelling.
 
-![Categorical feature distributions](../src/eda_files/Categorical_Plots.png){width="70%," height="70%"}
+![Numerical feature distributions](../src/eda_files/Numeric_Plots.png){width="60%," height="60%"}
 
-![Numerical feature distributions](../src/eda_files/Numeric_Plots.png){width="50%," height="50%"}
+![Categorical feature distributions](../src/eda_files/Categorical_Plots.png){width="80%," height="80%"}
 
-Table 2 shows the optimal hyperparameters, their associated values, and the resulting validation scores for each model. The scoring metric was chosen to be the negative mean absolute percentage error. It can be seen that the KNN model may be overfitting, since its training score is 0 (i.e. a perfect model), while its validation score indicates 10.6% error.
+
+Table 2 shows the optimal hyperparameters, their associated values, and the resulting validation scores for each model. The scoring metric was chosen to be based on the mean absolute percentage error. It can be seen that the KNN model may be overfitting, since its training score is 0 (i.e. a perfect model), while its validation score indicates 10.6% error. The decision tree model also had higher validation error compared to the other models, perhaps because decision tree models can be sensitive to feature values, such that slight changes in the values can result in very different results. It is also worth noting that although the random forest model performed better than these two models, it required an extremely long time to actually perform the cross-validation, which is quite undesirable for practical usage of the model. 
 
 ```{r optimized hyperparamter table, echo=FALSE, message=FALSE}
 knn_cv <- read_csv("../results/cv_scores/cv_results_knn.csv")
 ridge_cv <- read_csv("../results/cv_scores/cv_results_ridge.csv")
 svmrbf_cv <- read_csv("../results/cv_scores/cv_results_svm_rbf.csv")
 dt_cv <- read_csv("../results/cv_scores/cv_results_decision_tree.csv")
+rf_cv <- read_csv("../results/cv_scores/cv_results_random_forest.csv")
 
 opt_params <- tibble(Model = c("KNN", "KNN","KNN", "KNN", 
                                "Ridge", "Ridge", 
                                "SVM RBF", "SVM RBF", "SVM RBF",
-                               "Decision Tree", "Decision Tree"),
-                  Hyperparameter = c("Max Text Features", "Leaf Size", "Number of Neighbors", "Weights",
-                                     "Max Text Features", "Alpha", 
-                                     "Max Text Features", "C", "Gamma", 
-                                     "Max Text Features", "Max Depth"),
+                               "Decision Tree", "Decision Tree",
+                               "Random Forest", "Random Forest", "Random Forest"
+                               ),
+                  Hyperparameter = c(
+                    "Max Text Features", "Leaf Size", "Number of Neighbors", "Weights",
+                    "Max Text Features", "Alpha", 
+                    "Max Text Features", "C", "Gamma", 
+                    "Max Text Features", "Max Depth",
+                    "Max Text Features", "Max Depth", "Number of Estimators"
+                    ),
                   "Optimized Value" = c(395, 450, 13, "Distance", 
                                         437, 1,
                                         262, 39.5, 1.4e-03,
-                                        331, 11),
-                  "Mean Validation MAPE (%)" = c(10.9, 10.9, 10.9, 10.9,
+                                        176, 9,
+                                        396, 78, 351
+                                        ),
+                  "Mean Validation MAPE (%)" = c(11.0, 11.0, 11.0, 11.0,
                                          9.1, 9.1,
-                                         8.9, 8.9, 8.9,
-                                         10.9, 10.9), 
+                                         9.0, 9.0, 9.0,
+                                         10.9, 10.9,
+                                         9.5, 9.5, 9.5
+                                         ), 
                   "Mean Training MAPE (%)" = c(0, 0, 0, 0,
-                                       6.8, 6.8,
-                                       6.9, 6.9, 6.9,
-                                       7.9, 7.9))
+                                       6.7, 6.7,
+                                       6.8, 6.8, 6.8,
+                                       8.6, 8.6,
+                                       3.4, 3.4, 3.4
+                                       ))
 
 collapse_rows(kable(opt_params, format="latex", booktabs=TRUE,
       caption = "Optimized Hyperparameters With MAPE Values")) |>
   kable_styling(latex_options=c("HOLD_position"),
-                font_size = 10)
+                font_size = 8)
 ```
 
-The models performed well on the test data sets, with similar results compared to the validation scores, as shown in Table 3. The best-performing model was the SVM RBF model, as it only has an average of 8.6% error for its ratings, while the worst-performing model was the decision tree model, with an average of 11% error. This means, for example, that if the model predicted a rating to be 4, it is possible that the actual rating was around 3.7 or 4.3. Although this is not extremely different, since our rating scale is quite small, we would still prefer to decrease the error if possible.
+The models performed well on the test data sets, with similar results compared to the validation scores, as shown in Table 3. The best-performing model was the SVM RBF model, as it only has an average of 8.6% error for its ratings, while the worst-performing model was the decision tree model, with an average of 11% error. 
+Our best model was close to our target MAPE of 5%, although its error is still a bit high. Although this is not extremely different, since our rating scale is quite small, we would still prefer to decrease the error if possible.
 
 ```{r tests table, echo=FALSE, message=FALSE}
 
