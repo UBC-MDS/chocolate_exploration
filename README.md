@@ -57,13 +57,13 @@ cd chocolate_exploration
 The EDA and report texts are written in R, and the packages can be installed by:
 
 ```bash
-R -e 'install.packages(c("caTools","cowplot","docopt","dplyr","kableExtra","knitr","magick","rmarkdown","tidyverse","webshot"), repos = "http://cran.us.r-project.org")'
+R -e 'install.packages(c("caTools","cowplot","docopt","dplyr","kableExtra","knitr","magick","rmarkdown","tidyverse","webshot","GGally"), repos = "http://cran.us.r-project.org")'
 ```
 
 The versions used in the development can be confirmed by:
 
 ```bash
-R -e 'for (p in c("caTools","cowplot","docopt","dplyr","kableExtra","knitr","magick","rmarkdown","tidyverse","webshot")) { print(paste0(p, "==", packageVersion(p))) }'
+R -e 'for (p in c("caTools","cowplot","docopt","dplyr","kableExtra","knitr","magick","rmarkdown","tidyverse","webshot","GGally")) { print(paste0(p, "==", packageVersion(p))) }'
 ```
 
 Which should show:
@@ -79,6 +79,7 @@ Which should show:
 [1] "rmarkdown==2.18"
 [1] "tidyverse==1.3.2"
 [1] "webshot==0.5.4"
+[1] "GGally==2.1.2"
 ```
 
 Also, you should make sure your environment has `pandoc` and `pandoc-citeproc` installed. Please consult [the Pandoc documentation](https://pandoc.org/installing.html) for more details.
