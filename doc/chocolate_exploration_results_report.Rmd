@@ -84,7 +84,7 @@ The distributions for the numerical and categorical features were first analyzed
 ![Categorical feature distributions](../src/eda_files/Categorical_Plots.png){width="80%," height="80%"}
 
 
-Table 2 shows the optimal hyperparameters, their associated values, and the resulting validation scores for each model. The scoring metric was chosen to be based on the mean absolute percentage error. It can be seen that the KNN model may be overfitting, since its training score is 0 (i.e. a perfect model), while its validation score indicates 10.6% error.
+Table 2 shows the optimal hyperparameters, their associated values, and the resulting validation scores for each model. The scoring metric was chosen to be based on the mean absolute percentage error. It can be seen that the KNN model may be overfitting, since its training score is 0 (i.e. a perfect model), while its validation score indicates 10.6% error. The decision tree model also had higher validation error compared to the other models, perhaps because decision tree models can be sensitive to feature values, such that slight changes in the values can result in very different results. It is also worth noting that although the random forest model performed better than these two models, it required an extremely long time to actually perform the cross-validation, which is quite undesirable for practical usage of the model. 
 
 ```{r optimized hyperparamter table, echo=FALSE, message=FALSE}
 knn_cv <- read_csv("../results/cv_scores/cv_results_knn.csv")
@@ -128,10 +128,11 @@ opt_params <- tibble(Model = c("KNN", "KNN","KNN", "KNN",
 collapse_rows(kable(opt_params, format="latex", booktabs=TRUE,
       caption = "Optimized Hyperparameters With MAPE Values")) |>
   kable_styling(latex_options=c("HOLD_position"),
-                font_size = 10)
+                font_size = 8)
 ```
 
-The models performed well on the test data sets, with similar results compared to the validation scores, as shown in Table 3. The best-performing model was the SVM RBF model, as it only has an average of 8.6% error for its ratings, while the worst-performing model was the decision tree model, with an average of 11% error. Our best model was close to our target MAPE of 5%, although its error is still a bit high. Although this is not extremely different, since our rating scale is quite small, we would still prefer to decrease the error if possible.
+The models performed well on the test data sets, with similar results compared to the validation scores, as shown in Table 3. The best-performing model was the SVM RBF model, as it only has an average of 8.6% error for its ratings, while the worst-performing model was the decision tree model, with an average of 11% error. 
+Our best model was close to our target MAPE of 5%, although its error is still a bit high. Although this is not extremely different, since our rating scale is quite small, we would still prefer to decrease the error if possible.
 
 ```{r tests table, echo=FALSE, message=FALSE}
 
