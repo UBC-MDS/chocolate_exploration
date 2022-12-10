@@ -1,7 +1,7 @@
 # author: Manvir Kohli, Julie Song, Kelvin Wong
 # date: 2022-11-23
 
-"This script performs EDA on the train data created using .... .
+"This script performs EDA on the train data created using train_test_split.R
 
 Usage: chocolate_eda_automated.R
 
@@ -87,40 +87,40 @@ main <- function() {
                       caption = "Null Count by Feature") |> kable_classic_2()
   
   save_kable(x = null_table,file = 'src/eda_files/1.Nulls_table.html')   
-   
+  
   ## Exploring Categorical Columns Further
   
   manufacturer_groups <- eda_data_converted |> 
-                        group_by(company_manufacturer) |> 
-                        summarize(count = n()) |> arrange(-count) 
+    group_by(company_manufacturer) |> 
+    summarize(count = n()) |> arrange(-count) 
   
   location_groups <- eda_data_converted |> 
-                      group_by(company_location) |> 
-                      summarize(count = n()) |> 
-                      arrange(-count)
-                    
+    group_by(company_location) |> 
+    summarize(count = n()) |> 
+    arrange(-count)
+  
   bean_origin_groups <- eda_data_converted |> 
-                      group_by(country_of_bean_origin) |>
-                      summarize(count = n()) |> 
-                      arrange(-count)
+    group_by(country_of_bean_origin) |>
+    summarize(count = n()) |> 
+    arrange(-count)
   
   top_locations <-  eda_data_converted |> 
-                    group_by(company_location) |> 
-                    summarize(count = n()) |>
-                    filter(count >=20) |> pull(company_location)
-                  
+    group_by(company_location) |> 
+    summarize(count = n()) |>
+    filter(count >=20) |> pull(company_location)
+  
   top_countries <-  eda_data_converted |> 
-                    group_by(country_of_bean_origin) |> 
-                    summarize(count = n()) |> 
-                    filter(count >=10) |> 
-                    pull(country_of_bean_origin)
-                                        
+    group_by(country_of_bean_origin) |> 
+    summarize(count = n()) |> 
+    filter(count >=10) |> 
+    pull(country_of_bean_origin)
+  
   
   top_50_manufacturers <-  eda_data_converted |> 
-                          group_by(company_manufacturer) |> 
-                          summarize(count = n()) |> arrange(-count) |> 
-                          top_n(50) |> pull(company_manufacturer)
-                        
+    group_by(company_manufacturer) |> 
+    summarize(count = n()) |> arrange(-count) |> 
+    top_n(50) |> pull(company_manufacturer)
+  
   
   top_locations <-  as.vector(top_locations)
   top_countries <-  as.vector(top_countries)
@@ -128,14 +128,14 @@ main <- function() {
   
   
   eda_data_converted <- eda_data_converted |>
-                      mutate(
-    company_location = case_when(!company_location %in% top_locations ~ "Other",
-                                 TRUE ~ company_location) ,
-    country_of_bean_origin = case_when(!country_of_bean_origin %in% top_countries ~ "Other",
-                                   TRUE ~ country_of_bean_origin),
-    company_manufacturer = case_when(!company_manufacturer 
-                                     %in% top_50_manufacturers ~ "Other",
-                                     TRUE ~ company_manufacturer)) 
+    mutate(
+      company_location = case_when(!company_location %in% top_locations ~ "Other",
+                                   TRUE ~ company_location) ,
+      country_of_bean_origin = case_when(!country_of_bean_origin %in% top_countries ~ "Other",
+                                         TRUE ~ country_of_bean_origin),
+      company_manufacturer = case_when(!company_manufacturer 
+                                       %in% top_50_manufacturers ~ "Other",
+                                       TRUE ~ company_manufacturer)) 
   
   ## Converting Data Types
   
@@ -160,48 +160,63 @@ main <- function() {
   ## Numerical and Discrete Features
   
   cocoa_plot <- eda_data_final |>
-    ggplot(aes(x=cocoa_percent)) +
-    geom_histogram(bins=25) +
+    ggplot(aes(x=cocoa_percent,color = 'white')) +
+    geom_histogram(bins=25, fill = "green") +
     theme_bw() +
     labs(x="Amount of Cocoa (%)", 
-         y= "Count")
+         y= "Count")+
+    theme(legend.position = 'none')
+  
   
   rating_plot <- eda_data_final |>
     ggplot(aes(x=rating)) +
-    geom_bar() +
+    geom_bar(fill = "red") +
     theme_bw() +
     labs(x="Rating", 
          y= "Count")
   
   num_ingred_plot <- eda_data_final |>
     ggplot(aes(x=num_of_ingredients)) +
-    geom_bar() +
+    geom_bar(fill="aquamarine") +
     theme_bw() +
     labs(x="Number of Ingredients", 
          y= "Count")
   
   year_plot <- eda_data_final |>
     ggplot(aes(x=review_date)) +
-    geom_bar() +
+    geom_bar(fill= "lightblue") +
     theme_bw() +
     labs(x="Review Date", 
          y= "Count")
+  
   
   num_title <- ggdraw(ylim = c(1,1)) + 
     draw_label("Figure 1: Numeric Plots", fontface='bold',size = 15)
   
   numeric_plots <- plot_grid(num_title,plot_grid(cocoa_plot, rating_plot, 
-                     num_ingred_plot, year_plot),ncol=1,rel_heights = c(0.2,1))
+                                                 num_ingred_plot, year_plot),ncol=1,rel_heights = c(0.2,1))
   
   
   ggsave(filename="src/eda_files/Numeric_Plots.png", plot=numeric_plots)
+  
+  ## scatter plots
+  eda_data_final$num_of_ingredients <- as.numeric(eda_data_final$num_of_ingredients)
+  
+  numeric_data <-  eda_data_final |> select_if(is.numeric)
+  
+  scatter_plots <-  GGally::ggpairs(numeric_data, progress=FALSE) +
+    ggtitle("Figure 2: Pairwise Scatter Plots") +
+    theme(plot.title = element_text(hjust = 0.5))
+  
+  ggsave(filename="src/eda_files/Scatter_Plots.png", plot=scatter_plots,
+         width = 8, height = 10, units = "in")
   
   ##Categorical Features
   
   location_plot <- eda_data_final |>
     add_count(company_location) |>
     ggplot(aes(y=reorder(company_location, -n))) +
-    geom_bar() +
+    geom_bar(fill = "orange",color = 'white') +
     theme_bw() +
     labs(y="Company Location", 
          x= "Count")
@@ -209,7 +224,7 @@ main <- function() {
   bean_origin_plot <- eda_data_final |>
     add_count(country_of_bean_origin) |>
     ggplot(aes(y=reorder(country_of_bean_origin, -n))) +
-    geom_bar() +
+    geom_bar(fill = "red",color = 'white') +
     theme_bw() +
     labs(y="Country of Bean Origin", 
          x= "Count")
@@ -218,7 +233,7 @@ main <- function() {
   manufactuer_plot <- eda_data_final |>
     add_count(company_manufacturer) |>
     ggplot(aes(y=reorder(company_manufacturer, -n))) +
-    geom_bar() +
+    geom_bar(fill = 'violet',color = 'white') +
     theme_bw() +
     labs(y="Manufacturer", 
          x= "Count")
@@ -234,7 +249,89 @@ main <- function() {
   
   
   ggsave(filename="src/eda_files/Categorical_Plots.png", plot=categ_plots,
+         width = 8, height = 15, units = "in")
+  
+  ## boxplots
+  boxplot_beans <- 
+    eda_data_final |> ggplot(aes(x = beans, y = rating,color = beans)) +
+    geom_boxplot()  + ggtitle('Chocolate rating based on beans as an ingredient ') +
+    theme(legend.position="none") +
+    labs(x = "Beans", y = "Rating")
+  
+  
+  boxplot_sugar <- 
+    eda_data_final |> ggplot(aes(x = sugar, y = rating,color = sugar)) +
+    geom_boxplot()  + ggtitle('Chocolate rating based on sugar as an ingredient ') +
+    theme(legend.position="none") +
+    labs(x = "Sugar", y = "Rating")
+  
+  boxplot_sweet_oth <- 
+    eda_data_final |> 
+    ggplot(aes(x = sweetener_other, y = rating,color = sweetener_other)) +
+    geom_boxplot()  + 
+    ggtitle('Chocolate rating based on other sweeteners as an ingredient ') +
+    theme(legend.position="none") +
+    labs(x = "Sweetener (Other)", y = "Rating")
+  
+  boxplot_cocoa_butter <- 
+    eda_data_final |> 
+    ggplot(aes(x = cocoa_butter,y = rating,color = cocoa_butter)) +
+    geom_boxplot()  + 
+    ggtitle('Chocolate rating based on cocoa butter as an ingredient ') +
+    theme(legend.position="none") +
+    labs(x = "Cocoa Butter", y = "Rating")
+  
+  
+  boxplot_vanilla <- 
+    eda_data_final |> 
+    ggplot(aes(x = vanilla,y = rating,color = vanilla)) +
+    geom_boxplot()  + 
+    ggtitle('Chocolate rating based on vanilla as an ingredient ') +
+    theme(legend.position="none") +
+    labs(x = "Vanilla", y = "Rating")
+  
+  
+  boxplot_lecithin <- 
+    eda_data_final |> 
+    ggplot(aes(x = lecithin,y = rating,color = lecithin)) +
+    geom_boxplot()  + 
+    ggtitle('Chocolate rating based on lecithin as an ingredient ') +
+    theme(legend.position="none") +
+    labs(x = "Lecithin", y = "Rating")
+  
+  boxplot_salt <- 
+    eda_data_final |> 
+    ggplot(aes(x = salt,y = rating,color = salt)) +
+    geom_boxplot()  + 
+    ggtitle('Chocolate rating based on salt as an ingredient ') +
+    theme(legend.position="none") +
+    labs(x = "Salt", y = "Rating")
+  
+  boxplot_company_location <-  eda_data_final |> 
+    ggplot(aes(x = company_location,y = rating,color = company_location)) +
+    geom_boxplot()  + 
+    ggtitle('Chocolate rating by Company Location ') +
+    labs(x = "Company Location", y = "Rating") +
+    theme(legend.position="none",
+          axis.text.x = element_text(angle = 90, vjust = 0.5))
+  
+  box_title <- ggdraw(ylim = c(1,1)) + 
+    draw_label("Figure 4: Boxplots by Rating", fontface='bold',size = 15)
+  
+  boxplots <- plot_grid( boxplot_beans,boxplot_cocoa_butter,
+                         boxplot_sugar, boxplot_lecithin,
+                         boxplot_salt, boxplot_sweet_oth,boxplot_vanilla,
+                         boxplot_company_location,
+                         
+                         ncol=2,nrow = 4,rel_heights = c(1,1,1,1.5))
+  
+  
+  boxplots_final <- plot_grid( box_title,boxplots, 
+                               ncol=1,rel_heights = c(0.1,1))
+  
+  ggsave(filename="src/eda_files/Boxplots.png", plot=boxplots_final,
          width = 8, height = 10, units = "in")
+  
   
   ## final results
   eda_data_final <- eda_data_final |> select(-company_manufacturer)
@@ -248,16 +345,16 @@ main <- function() {
   
   
   final_features_table <- kable(ftypes, format="html", booktabs=TRUE, 
-        col.names = c("Feature", "Type"), table.attr = "style='width:30%;'",
-        caption = "Final Features and Data Types") |> kable_classic_2()
-    
+                                col.names = c("Feature", "Type"), table.attr = "style='width:30%;'",
+                                caption = "Final Features and Data Types") |> kable_classic_2()
+  
   
   save_kable(x = final_features_table,file = 'src/eda_files/2.Final_Features_Table.html')   
   
   
   final_dataset_table <- kable(head(eda_data_final,10), format="html", booktabs=TRUE, 
-        col.names = colnames(eda_data_final), table.attr = "style='width:70%;'",
-        caption = "Preview of final train_data")|> kable_classic_2()
+                               col.names = colnames(eda_data_final), table.attr = "style='width:70%;'",
+                               caption = "Preview of final train_data")|> kable_classic_2()
   
   save_kable(x = final_dataset_table,file = 'src/eda_files/3.Final_Dataset_View.html')
   

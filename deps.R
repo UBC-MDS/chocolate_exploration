@@ -34,7 +34,8 @@ dependencies <- c(
     "rmarkdown",
     "testthat",
     "tidyverse",
-    "webshot"
+    "webshot",
+    'GGally'
 )
 
 repos <- "https://cran.microsoft.com/snapshot/2022-12-08/"

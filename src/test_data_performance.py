@@ -7,7 +7,20 @@ on test data based on R^2 score and Mean Absolute Percentage Error
 Usage: ./src/test_data_performance.py
 
 """
-
+import numpy as np
+import pandas as pd
+from docopt import docopt
+from scipy.stats import uniform
+from sklearn.pipeline import make_pipeline
+from sklearn.neighbors import KNeighborsRegressor
+from sklearn.svm import SVR
+from sklearn.tree import DecisionTreeRegressor
+from sklearn.linear_model import Ridge
+from joblib import dump, load
+import pickle
+import os
+from sklearn.metrics import mean_absolute_percentage_error,r2_score
+    
 def main():
     """
     Checks model performance on test data for 
@@ -26,19 +39,6 @@ def main():
     --------
     >>> main()
     """
-    import numpy as np
-    import pandas as pd
-    from docopt import docopt
-    from scipy.stats import uniform
-    from sklearn.pipeline import make_pipeline
-    from sklearn.neighbors import KNeighborsRegressor
-    from sklearn.svm import SVR
-    from sklearn.tree import DecisionTreeRegressor
-    from sklearn.linear_model import Ridge
-    from joblib import dump, load
-    import pickle
-    import os
-    from sklearn.metrics import mean_absolute_percentage_error,r2_score
     
     ## Loading,aggregating and exporting CV Scores
     
@@ -46,11 +46,15 @@ def main():
     knn_cv = pd.read_csv('results/cv_scores/cv_results_knn.csv')
     ridge_cv = pd.read_csv('results/cv_scores/cv_results_ridge.csv')
     svm_cv = pd.read_csv('results/cv_scores/cv_results_svm_rbf.csv')
+    rf_cv = pd.read_csv('results/cv_scores/cv_results_random_forest.csv')
+    
     
     dt_cv = pd.DataFrame(dt_cv[[i for i in dt_cv.columns if "mean" in i]].mean(),columns=["Decision Tree"])
     knn_cv = pd.DataFrame(knn_cv[[i for i in knn_cv.columns if "mean" in i]].mean(),columns=["KNN"])
     ridge_cv = pd.DataFrame(ridge_cv[[i for i in ridge_cv.columns if "mean" in i]].mean(),columns=["Ridge"])
     svm_cv = pd.DataFrame(svm_cv[[i for i in svm_cv.columns if "mean" in i]].mean(),columns=["SVM RBF"])
+    rf_cv = pd.DataFrame(rf_cv[[i for i in rf_cv.columns if "mean" in i]].mean(),columns=["Random Forest"])
+    
     
     cv_results_summary = pd.concat([dt_cv,knn_cv,ridge_cv,svm_cv],axis=1)
     cv_results_summary = (abs(cv_results_summary*100)).round(3)
@@ -64,6 +68,8 @@ def main():
     knn_model = load('results/models/tuned_knn.joblib')
     ridge_model = load('results/models/tuned_ridge.joblib')
     svr_model = load('results/models/tuned_svm_rbf.joblib')
+    rf_model = load('results/models/tuned_random_forest.joblib')
+    
 
     ## checking test R^2 scores
 #     test_r2_scores = {}
@@ -85,12 +91,14 @@ def main():
     dt_mape =  mean_absolute_percentage_error(y_test,dt_model.predict(X_test))
     knn_mape = mean_absolute_percentage_error(y_test,knn_model.predict(X_test))
     ridge_mape = mean_absolute_percentage_error(y_test,ridge_model.predict(X_test))
-    svr_mape= mean_absolute_percentage_error(y_test,svr_model.predict(X_test))
+    svr_mape = mean_absolute_percentage_error(y_test,svr_model.predict(X_test))
+    rf_mape = mean_absolute_percentage_error(y_test,rf_model.predict(X_test))
 
     test_mapes['Decision_Tree'] = dt_mape
     test_mapes['KNN'] = knn_mape
     test_mapes['Ridge'] = ridge_mape
     test_mapes['SVM RBF'] = svr_mape
+    test_mapes['Random Forest'] = rf_mape                    
 
     # scores_df = pd.DataFrame(test_r2_scores,index=['R^2 (%)'])
     mape_df = pd.DataFrame(test_mapes,index=['MAPE (%)']).T

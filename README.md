@@ -103,6 +103,7 @@ rmarkdown==2.18
 testthat==3.1.5
 tidyverse==1.3.2
 webshot==0.5.4
+GGally==2.1.2
 ```
 
 Also, you should make sure your environment has `texlive`, `pandoc` and `pandoc-citeproc` installed. Please consult [the Pandoc documentation](https://pandoc.org/installing.html) for more details.

@@ -85,7 +85,7 @@ ${DATA_RAW_ORIG} :
 ${DATA_RAW_TRAIN} ${DATA_RAW_TEST} : ${DATA_RAW_ORIG}
 	@${ECHO} "\033[0;37m>> \033[0;33mSplitting dataset into training and test splits\033[0m"
 	${MKDIR} -p ${DATA_RAW_DIR}
-	${RSCRIPT} src/train_test_split.R --input_file = ${DATA_RAW_ORIG}
+	${RSCRIPT} src/train_test_split.R --input_file_path = ${DATA_RAW_ORIG} --output_file_dir = ${DATA_RAW_DIR}
 
 # ---------------------------------------------------------------------
 

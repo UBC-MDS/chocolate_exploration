@@ -15,6 +15,7 @@ library(tidyverse)
 library(cowplot)
 library(knitr)
 library(kableExtra)
+library(GGally)
 ```
 
 ### Summary of the Data Set
@@ -198,29 +199,31 @@ The only numerical feature we have is `percent_cocoa`. The `num_of_ingredients` 
 
 ```{r numeric_plotgrid, echo=FALSE, message=FALSE,fig.height=8}
 cocoa_plot <- eda_data_final |>
-  ggplot(aes(x=cocoa_percent)) +
-  geom_histogram(bins=25) +
+  ggplot(aes(x=cocoa_percent,color = 'white')) +
+  geom_histogram(bins=25, fill = "green") +
   theme_bw() +
   labs(x="Amount of Cocoa (%)", 
-       y= "Count")
+       y= "Count")+
+  theme(legend.position = 'none')
+  
 
 rating_plot <- eda_data_final |>
   ggplot(aes(x=rating)) +
-  geom_bar() +
+  geom_bar(fill = "red") +
   theme_bw() +
   labs(x="Rating", 
        y= "Count")
 
 num_ingred_plot <- eda_data_final |>
   ggplot(aes(x=num_of_ingredients)) +
-  geom_bar() +
+  geom_bar(fill="aquamarine") +
   theme_bw() +
   labs(x="Number of Ingredients", 
        y= "Count")
 
 year_plot <- eda_data_final |>
   ggplot(aes(x=review_date)) +
-  geom_bar() +
+  geom_bar(fill= "lightblue") +
   theme_bw() +
   labs(x="Review Date", 
        y= "Count")
@@ -234,7 +237,16 @@ numeric_plots
 
 ```
 
-It seems that these numerical features are fairly well-distributed, and suitable for modelling.
+```{r scatterplot, echo=FALSE, message=FALSE}
+eda_data_final$num_of_ingredients <- as.numeric(eda_data_final$num_of_ingredients)
+numeric_data <-  eda_data_final |> select_if(is.numeric)
+scatter_plots <-  GGally::ggpairs(numeric_data, progress=FALSE) +
+  ggtitle("Figure 2: Pairwise Scatter Plots") +
+   theme(plot.title = element_text(hjust = 0.5))
+
+
+scatter_plots
+```
 
 #### Categorical Features
 
@@ -244,7 +256,7 @@ The `company_manufacturer`, `company_location`, `country_of_bean_origin`, and `i
 location_plot <- eda_data_final |>
     add_count(company_location) |>
     ggplot(aes(y=reorder(company_location, -n))) +
-    geom_bar() +
+    geom_bar(fill = "orange",color = 'white') +
     theme_bw() +
     labs(y="Company Location", 
          x= "Count")
@@ -252,7 +264,7 @@ location_plot <- eda_data_final |>
 bean_origin_plot <- eda_data_final |>
   add_count(country_of_bean_origin) |>
   ggplot(aes(y=reorder(country_of_bean_origin, -n))) +
-  geom_bar() +
+  geom_bar(fill = "red",color = 'white') +
   theme_bw() +
   labs(y="Country of Bean Origin", 
        x= "Count")
@@ -261,7 +273,7 @@ bean_origin_plot <- eda_data_final |>
 manufactuer_plot <- eda_data_final |>
   add_count(company_manufacturer) |>
   ggplot(aes(y=reorder(company_manufacturer, -n))) +
-  geom_bar() +
+  geom_bar(fill = 'violet',color = 'white') +
   theme_bw() +
   labs(y="Manufacturer", 
        x= "Count")
@@ -269,7 +281,7 @@ manufactuer_plot <- eda_data_final |>
 
                          
 cat_title <- ggdraw(ylim = c(1,1)) + 
-draw_label("Figure 2: Categorical Plots", fontface='bold',size = 15)
+draw_label("Figure 3: Categorical Plots", fontface='bold',size = 15)
 
 categ_plots <- plot_grid( cat_title,location_plot, 
                          bean_origin_plot, manufactuer_plot, ncol=1,nrow = 4, 
@@ -280,7 +292,101 @@ categ_plots
 
 ```
 
-Based on the last plot above, it seems that there many distinct companies that manufacture chocolate in this data set, such that this feature acts more like an identifier. Therefore we can choose to drop this feature column, as the values are too unique, and we would have an overwhelming Other category even if we considered the top 50 companies.
+```{r boxplots, echo=FALSE, message=FALSE,  fig.height=12, fig.width= 10}
+boxplot_beans <- 
+  eda_data_final |> ggplot(aes(x = beans, y = rating,color = beans)) +
+  geom_boxplot()  + ggtitle('Chocolate rating based on beans as an ingredient ') +
+  theme(legend.position="none") +
+    labs(x = "Beans", y = "Rating")
+
+
+boxplot_sugar <- 
+  eda_data_final |> ggplot(aes(x = sugar, y = rating,color = sugar)) +
+  geom_boxplot()  + ggtitle('Chocolate rating based on sugar as an ingredient ') +
+  theme(legend.position="none") +
+    labs(x = "Sugar", y = "Rating")
+  
+boxplot_sweet_oth <- 
+  eda_data_final |> 
+  ggplot(aes(x = sweetener_other, y = rating,color = sweetener_other)) +
+      geom_boxplot()  + 
+      ggtitle('Chocolate rating based on other sweeteners as an ingredient ') +
+      theme(legend.position="none") +
+        labs(x = "Sweetener (Other)", y = "Rating")
+      
+boxplot_cocoa_butter <- 
+  eda_data_final |> 
+  ggplot(aes(x = cocoa_butter,y = rating,color = cocoa_butter)) +
+  geom_boxplot()  + 
+  ggtitle('Chocolate rating based on cocoa butter as an ingredient ') +
+  theme(legend.position="none") +
+    labs(x = "Cocoa Butter", y = "Rating")
+  
+
+boxplot_vanilla <- 
+  eda_data_final |> 
+  ggplot(aes(x = vanilla,y = rating,color = vanilla)) +
+  geom_boxplot()  + 
+  ggtitle('Chocolate rating based on vanilla as an ingredient ') +
+  theme(legend.position="none") +
+    labs(x = "Vanilla", y = "Rating")
+
+
+boxplot_lecithin <- 
+  eda_data_final |> 
+  ggplot(aes(x = lecithin,y = rating,color = lecithin)) +
+  geom_boxplot()  + 
+  ggtitle('Chocolate rating based on lecithin as an ingredient ') +
+  theme(legend.position="none") +
+    labs(x = "Lecithin", y = "Rating")
+
+boxplot_salt <- 
+  eda_data_final |> 
+  ggplot(aes(x = salt,y = rating,color = salt)) +
+  geom_boxplot()  + 
+  ggtitle('Chocolate rating based on salt as an ingredient ') +
+  theme(legend.position="none") +
+    labs(x = "Salt", y = "Rating")
+
+boxplot_company_location <-  eda_data_final |> 
+  ggplot(aes(x = company_location,y = rating,color = company_location)) +
+  geom_boxplot()  + 
+  ggtitle('Chocolate rating by Company Location ') +
+    labs(x = "Company Location", y = "Rating") +
+  theme(legend.position="none",
+        axis.text.x = element_text(angle = 90, vjust = 0.5)) 
+  
+
+box_title <- ggdraw(ylim = c(1,1)) + 
+  draw_label("Figure 4: Boxplots by Rating", fontface='bold',size = 15)
+
+boxplots <- plot_grid( boxplot_beans,boxplot_cocoa_butter,
+                          boxplot_sugar, boxplot_lecithin,
+                          boxplot_salt, boxplot_sweet_oth,boxplot_vanilla,
+                          boxplot_company_location,
+
+                         ncol=2,nrow = 4,rel_heights = c(1,1,1,1.5))
+
+
+boxplots_final <- plot_grid( box_title,boxplots, 
+                          ncol=1,rel_heights = c(0.1,1))
+
+boxplots_final
+```
+
+### EDA Findings:
+
+-   The distributions of our numerical plots are not heavily skewed which suggests that our numerical features do not have a lot of outliers and hence are suitable for modeling
+
+-   The pairwise scatter plots show that there is no strong relationship between any of our numerical features.
+
+-   The categorical plots show that most of the companies manufacturing chocolates in our dataset are located in USA,. The top 3 countries where beans are sourced from are Peru, Venezuela and Dominican Republic.
+
+-   The last categorical plot showing the count of manufacturers suggests that there many distinct chocolate manufactures in this data set, such that this feature acts more like an identifier. Therefore we can choose to drop this feature column, as the values are too unique, and we would have an overwhelming Other category even if we considered the top 50 companies.
+
+-   From the boxplots we can infer that chocolates which have beans are rated better on average than chocolates without beans. The same is true for chocolates that have sugar as the sweetener. On the other hand chocolates that do not contain Vanilla or any other sweeteners are rated better which suggests that using Sugar as the sweetener is likely to result in the chocolate getting a better rating,
+
+-   The last boxlot showing chocolate rating by company location shows that chocolates produced by companies in Austria and Denmark tend to have higher ratings on average whereas chocolates produced by companies in Venezuela, Ecuador and the UK have lower ratings on average than the rest of the group
 
 ```{r drop_manufacturers, echo = FALSE}
 eda_data_final <- eda_data_final |> select(-company_manufacturer)
