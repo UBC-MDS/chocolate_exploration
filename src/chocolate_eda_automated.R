@@ -254,14 +254,14 @@ main <- function() {
   ## boxplots
   boxplot_beans <- 
     eda_data_final |> ggplot(aes(x = beans, y = rating,color = beans)) +
-    geom_boxplot()  + ggtitle('Chocolate rating based on beans as an ingredient ') +
+    geom_boxplot()  + ggtitle('Chocolate rating based on \n beans as an ingredient ') +
     theme(legend.position="none") +
     labs(x = "Beans", y = "Rating")
   
   
   boxplot_sugar <- 
     eda_data_final |> ggplot(aes(x = sugar, y = rating,color = sugar)) +
-    geom_boxplot()  + ggtitle('Chocolate rating based on sugar as an ingredient ') +
+    geom_boxplot()  + ggtitle('Chocolate rating based on \n sugar as an ingredient ') +
     theme(legend.position="none") +
     labs(x = "Sugar", y = "Rating")
   
@@ -269,7 +269,7 @@ main <- function() {
     eda_data_final |> 
     ggplot(aes(x = sweetener_other, y = rating,color = sweetener_other)) +
     geom_boxplot()  + 
-    ggtitle('Chocolate rating based on other sweeteners as an ingredient ') +
+    ggtitle('Chocolate rating based on \n other sweeteners as an ingredient ') +
     theme(legend.position="none") +
     labs(x = "Sweetener (Other)", y = "Rating")
   
@@ -277,7 +277,7 @@ main <- function() {
     eda_data_final |> 
     ggplot(aes(x = cocoa_butter,y = rating,color = cocoa_butter)) +
     geom_boxplot()  + 
-    ggtitle('Chocolate rating based on cocoa butter as an ingredient ') +
+    ggtitle('Chocolate rating based on \n cocoa butter as an ingredient ') +
     theme(legend.position="none") +
     labs(x = "Cocoa Butter", y = "Rating")
   
@@ -286,7 +286,7 @@ main <- function() {
     eda_data_final |> 
     ggplot(aes(x = vanilla,y = rating,color = vanilla)) +
     geom_boxplot()  + 
-    ggtitle('Chocolate rating based on vanilla as an ingredient ') +
+    ggtitle('Chocolate rating based on \n vanilla as an ingredient ') +
     theme(legend.position="none") +
     labs(x = "Vanilla", y = "Rating")
   
@@ -295,7 +295,7 @@ main <- function() {
     eda_data_final |> 
     ggplot(aes(x = lecithin,y = rating,color = lecithin)) +
     geom_boxplot()  + 
-    ggtitle('Chocolate rating based on lecithin as an ingredient ') +
+    ggtitle('Chocolate rating based on \n lecithin as an ingredient ') +
     theme(legend.position="none") +
     labs(x = "Lecithin", y = "Rating")
   
@@ -303,7 +303,7 @@ main <- function() {
     eda_data_final |> 
     ggplot(aes(x = salt,y = rating,color = salt)) +
     geom_boxplot()  + 
-    ggtitle('Chocolate rating based on salt as an ingredient ') +
+    ggtitle('Chocolate rating based on \n salt as an ingredient ') +
     theme(legend.position="none") +
     labs(x = "Salt", y = "Rating")
   
