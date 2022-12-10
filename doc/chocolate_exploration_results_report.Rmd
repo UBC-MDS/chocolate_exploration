@@ -29,9 +29,9 @@ Four regression models were built using decision tree, support vector machine, r
 
 # Introduction
 
-Chocolate is one of the most well-known foods in the world. Out of all the different types of chocolates, dark chocolate contains the most cocoa solids and is the closest to the original that was deemed the "Food of the Gods" by the Mayans thousands of years ago (@darkchoco). Indeed, dark chocolate has garnered more interest in recent years due to the many health benefits that it provides (@health).
+Commonly known as the "Food of the Gods", chocolate is a treat that is a world-wide favorite among the people. A recent study on food consumption changes during the COVID-19 pandemic and subsequent lockdown periods in Denmark, Slovania, and Germany revealed an increase in people consuming frozen and canned products, but also an increase in sweets, including chocolate (@choco_pand). In particular, dark chocolate has been gaining attention due to the many health benefits that it provides (@health, @morehealth).
 
-Nevertheless, popularity can vary between products. How well-received a new chocolate may be can depend on a variety of factors. The project presented here is interested in predicting the rating for a type of dark chocolate on a scale of 1 to 5, given some of its characteristics. This information can be useful for product analysis, and may be able to aid in predicting the popularity of a new product.
+There is interest in exploring this growing market of dark chocolate production, but there are a number of factors to consider about the chocolate itself. For example, dark chocolate is characterized by its large percentage of cocoa solids, which can vary between 50%-90% and gives it its signature bitter taste (@darkchoco). The project presented here is interested in predicting the rating for a type of dark chocolate on a scale of 1 to 5, given some of its characteristics, including its ingredients, amount of cocoa solids, manufacturing location, and more. This information can be useful for product analysis, and may be able to aid in predicting the popularity of a new product.
 
 # Methods
 
