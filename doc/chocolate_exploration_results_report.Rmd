@@ -31,7 +31,9 @@ Four regression models were built using decision tree, support vector machine, r
 
 Commonly known as the "Food of the Gods", chocolate is a treat that is a world-wide favorite among the people. A recent study on food consumption changes during the COVID-19 pandemic and subsequent lockdown periods in Denmark, Slovania, and Germany revealed an increase in people consuming frozen and canned products, but also an increase in sweets, including chocolate (@choco_pand). In particular, dark chocolate has been gaining attention due to the many health benefits that it provides (@health, @morehealth).
 
-There is interest in exploring this growing market of dark chocolate production, but there are a number of factors to consider about the chocolate itself. For example, dark chocolate is characterized by its large percentage of cocoa solids, which can vary between 50%-90% and gives it its signature bitter taste (@darkchoco). The project presented here is interested in predicting the rating for a type of dark chocolate on a scale of 1 to 5, given some of its characteristics, including its ingredients, amount of cocoa solids, manufacturing location, and more. This information can be useful for product analysis, and may be able to aid in predicting the popularity of a new product.
+There is interest in exploring this growing market of dark chocolate production, but there are a number of factors to consider about the chocolate itself. For example, dark chocolate is characterized by its large percentage of cocoa solids, which can vary between 50%-90% and gives it its signature bitter taste (@darkchoco). The project presented here is interested in predicting the rating for a type of dark chocolate on a scale of 1 to 5, given some of its characteristics, including its ingredients, amount of cocoa solids, manufacturing location, and more. This information can be useful for product analysis, and may be able to aid in predicting the popularity of a new product. 
+
+Our target mean absolute percent error (MAPE) is 5% for the predicted ratings. We chose MAPE because our rating scale is not very large and does not have units, so a relative percentage error is easier to understand for this context.
 
 # Methods
 
@@ -129,7 +131,7 @@ collapse_rows(kable(opt_params, format="latex", booktabs=TRUE,
                 font_size = 10)
 ```
 
-The models performed well on the test data sets, with similar results compared to the validation scores, as shown in Table 3. The best-performing model was the SVM RBF model, as it only has an average of 8.6% error for its ratings, while the worst-performing model was the decision tree model, with an average of 11% error. This means, for example, that if the model predicted a rating to be 4, it is possible that the actual rating was around 3.7 or 4.3. Although this is not extremely different, since our rating scale is quite small, we would still prefer to decrease the error if possible.
+The models performed well on the test data sets, with similar results compared to the validation scores, as shown in Table 3. The best-performing model was the SVM RBF model, as it only has an average of 8.6% error for its ratings, while the worst-performing model was the decision tree model, with an average of 11% error. Our best model was close to our target MAPE of 5%, although its error is still a bit high. Although this is not extremely different, since our rating scale is quite small, we would still prefer to decrease the error if possible.
 
 ```{r tests table, echo=FALSE, message=FALSE}
 
