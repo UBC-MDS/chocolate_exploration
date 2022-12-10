@@ -27,6 +27,11 @@ RUN \
         libmagick++-dev \
         libssl-dev \
         libxml2-dev \
+        lmodern \
+        texlive \
+        texlive-fonts-extra \
+        texlive-latex-extra \
+        texlive-plain-generic \
         pandoc \
         pandoc-citeproc \
         && \
