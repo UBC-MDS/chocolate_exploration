@@ -24,13 +24,13 @@ It can also be downloaded using the instructions below.
 
 If you are interested in just running the exploration project, you can use [Docker](https://www.docker.com/). Run this command in the project root directory:
 
-```bash
+``` bash
 docker run -ti --rm -v `pwd`:/app netsgnut/chocolate_exploration make -C /app all
 ```
 
 Or if you use [Podman](https://podman.io):
 
-```bash
+``` bash
 podman run -ti --rm -v `pwd`:/app docker.io/netsgnut/chocolate_exploration make -C /app all
 ```
 
@@ -38,13 +38,13 @@ These commands pull the latest `chocolate_exploration` image from [Docker Hub](h
 
 To clean up all the built analyses and intermediate files on Docker:
 
-```bash
+``` bash
 docker run -ti --rm -v `pwd`:/app netsgnut/chocolate_exploration make -C /app clean
 ```
 
 Or on Podman:
 
-```bash
+``` bash
 podman run -ti --rm -v `pwd`:/app docker.io/netsgnut/chocolate_exploration make -C /app clean
 ```
 
@@ -52,7 +52,7 @@ You may refer to the official [Docker](https://docs.docker.com/) and [Podman doc
 
 ## Usage (Advanced)
 
-Alternatively, if you are interested in contributing, hacking, or simply running locally without using VMs, make sure your computer has R _and_ Python development environment set up. IDEs like [R Studio](https://posit.co/products/open-source/rstudio/) and [Visual Studio Code](https://code.visualstudio.com/) are optional but recommended.
+Alternatively, if you are interested in contributing, hacking, or simply running locally without using VMs, make sure your computer has R *and* Python development environment set up. IDEs like [R Studio](https://posit.co/products/open-source/rstudio/) and [Visual Studio Code](https://code.visualstudio.com/) are optional but recommended.
 
 It is highly recommended to have GNU toolchain configured and set up, in particular [GNU Make](https://www.gnu.org/software/make/).
 
@@ -60,11 +60,15 @@ The following flowchart gives an overview for the script workflow:
 
 ![Figure 1, Flowchart for scripts and workflow](flowchart.png)
 
+The following dependency diagram, also available in the project root directory, also illustrates how the various scripts and their outputs are related to each other:
+
+![Figure 2, Makefile dependency diagram](Makefile.png)
+
 ### Download the code
 
 The latest copy of this code can be downloaded by:
 
-```bash
+``` bash
 git clone https://github.com/UBC-MDS/chocolate_exploration.git
 cd chocolate_exploration
 ```
@@ -73,30 +77,28 @@ cd chocolate_exploration
 
 The EDA and report texts are written in R, and the packages can be installed by:
 
-```bash
+``` bash
 R -e 'install.packages("docopt")' && Rscript deps.R --install
 ```
 
 The versions used in the development can be confirmed by:
 
-```bash
+``` bash
 Rscript deps.R --list
 ```
 
 Which should show:
 
-```
-caTools==1.18.2
-cowplot==1.1.1
-docopt==0.7.1
-dplyr==1.0.10
-kableExtra==1.3.4
-knitr==1.41
-magick==2.7.3
-rmarkdown==2.18
-tidyverse==1.3.2
-webshot==0.5.4
-```
+    caTools==1.18.2
+    cowplot==1.1.1
+    docopt==0.7.1
+    dplyr==1.0.10
+    kableExtra==1.3.4
+    knitr==1.41
+    magick==2.7.3
+    rmarkdown==2.18
+    tidyverse==1.3.2
+    webshot==0.5.4
 
 Also, you should make sure your environment has `pandoc` and `pandoc-citeproc` installed. Please consult [the Pandoc documentation](https://pandoc.org/installing.html) for more details.
 
@@ -104,19 +106,19 @@ The actual analyses are written in Python. A [Conda](https://conda.io/) environm
 
 To create the environment, run this at the project root:
 
-```bash
+``` bash
 conda env create -f environment.yaml
 ```
 
 To activate the environment:
 
-```bash
+``` bash
 conda activate chocolate_exploration
 ```
 
 To deactivate the environment:
 
-```bash
+``` bash
 conda deactivate
 ```
 
@@ -125,16 +127,20 @@ For more information, please refer to the [Conda documentation](https://conda.io
 **Note**: the following `make` commands assume you are already in a Python environment where the libraries are installed. Before continuing, make sure you have activated the `chocolate_exploration` environment.
 
 ### Running/cleaning all files
+
 To render the full analysis in one step, including downloading and splitting the raw data, running the EDA analysis, tuning the models, and rendering the final report, the following command can be run from the root directory:
-```bash
+
+``` bash
 make all
 ```
-Note that it may take a long period of time (~30 mins) for all of the models to run. 
+
+Note that it may take a long period of time (\~30 mins) for all of the models to run.
 
 Please also note that the `make eda` and `make report` steps may encounter issues with the `pandoc` package in Jupyter Lab. For example, using `make all` will successfully run `make dataset` but encounter the `pandoc` error with `make eda`. Please run `make eda` separately in R Studio, and then run `make all` again in Jupyter lab, which will run all of the successive scripts. If the error is encountered again in the final step, `make report`, please run `make report` in R Studio.
 
 To reset the repository and clean all of the intermediate and results files, the following command can be run from the root directory:
-```bash
+
+``` bash
 make clean
 ```
 
@@ -142,28 +148,21 @@ make clean
 
 Aside from the raw URL mentioned above, you may run the following at the project root to download and split the raw dataset:
 
-```bash
+``` bash
 make dataset
 ```
 
 Under the hood, it uses [`src/chocolate_data_download.R`](./src/chocolate_data_download.R) to download the dataset, and uses [`src/train_test_split.R`](./src/train_test_split.R) to process the `chocolate.csv` into a `train_df.csv` and a `test_df.csv` using a 70%-30% split.
 
-
 ### EDA Analysis
 
 You can run the EDA of this dataset using the [`src/chocolate_eda_automated.R`](./src/chocolate_eda_automated.R) script in the [`src`](./src) folder. Running the command below saves the results of EDA in the [`src/eda_files`](./src/eda_files) folder.
 
-```bash
+``` bash
 make eda
 ```
 
-The scripts generate these files:
-- A complete summary in PDF, [`chocolate_eda.pdf`](src/eda_files/chocolate_eda.pdf)
-- Summary of null values in HTML, [`1.Nulls_table.html`](src/eda_files/1.Nulls_table.html)
-- Summary of final features used for modelling, [`2.Final_Features_Table.html`](./src/eda_files/2.Final_Features_Table.html)
-- View of the final dataset, [`3.Final_Dataset_View.html`](./src/eda_files/3.Final_Dataset_View.html)
-- Plots for numerical variables, [`Numerical_Plots.png`](./src/eda_files/Numeric_Plots.png)
-- Plots for categorical variables, [`Categorical_Plots.png`](./src/eda_files/Categorical_Plots.png)
+The scripts generate these files: - A complete summary in PDF, [`chocolate_eda.pdf`](src/eda_files/chocolate_eda.pdf) - Summary of null values in HTML, [`1.Nulls_table.html`](src/eda_files/1.Nulls_table.html) - Summary of final features used for modelling, [`2.Final_Features_Table.html`](./src/eda_files/2.Final_Features_Table.html) - View of the final dataset, [`3.Final_Dataset_View.html`](./src/eda_files/3.Final_Dataset_View.html) - Plots for numerical variables, [`Numerical_Plots.png`](./src/eda_files/Numeric_Plots.png) - Plots for categorical variables, [`Categorical_Plots.png`](./src/eda_files/Categorical_Plots.png)
 
 Under the hood the generation scripts are [`src/chocolate_eda_automated.R`](./src/chocolate_eda_automated.R) and [`src/chocolate_ed_rmd_to_pdf_renderer.R`](./src/chocolate_ed_rmd_to_pdf_renderer.R).
 
@@ -171,7 +170,7 @@ Under the hood the generation scripts are [`src/chocolate_eda_automated.R`](./sr
 
 To tune the models, run the following command at the project root:
 
-```bash
+``` bash
 make model
 ```
 
@@ -183,20 +182,17 @@ The scripts of the model tuning can be found in the [`src/models`](./src/models/
 
 To score the model on test data, run the following commands at the project root:
 
-```bash
+``` bash
 make performance
 ```
 
-The command does the following:
-- aggregates and exports the mean of cross validation results as a csv file as `results/cv_scores_summary.csv`;
-- scores all the models' performance on the test data; and
-- exports the scores for all the models as a csv file at [`results/test_data_results.csv`](./results/test_data_results.csv)
+The command does the following: - aggregates and exports the mean of cross validation results as a csv file as `results/cv_scores_summary.csv`; - scores all the models' performance on the test data; and - exports the scores for all the models as a csv file at [`results/test_data_results.csv`](./results/test_data_results.csv)
 
 ### Get the final report as PDF
 
 The final report of the analysis is already included as a PDF, as mentioned above. However in case it is not available, you can run the below command to generate a PDF report under [`doc/chocolate_exploration_results_report.pdf`](doc/chocolate_exploration_results_report.pdf):
 
-```bash
+``` bash
 make report
 ```
 
