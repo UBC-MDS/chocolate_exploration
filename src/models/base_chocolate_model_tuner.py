@@ -53,6 +53,10 @@ class BaseChocolateModelTuner():
 
         # Load data and split into features and target
         train_df = pd.read_csv(train_df_path)
+        
+        # Check if target column exists in the dataframe
+        assert TARGET in train_df, "Please make sure the file contains the Ratings column"
+        
         X_train = train_df.drop(columns=[TARGET])
         y_train = train_df[TARGET]
 
