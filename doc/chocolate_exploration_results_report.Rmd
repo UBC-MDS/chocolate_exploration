@@ -77,11 +77,15 @@ The modelling was performed in Python (@Python) using the following packages, av
 
 ## Results and Discussions
 
-The distributions for the numerical and categorical features were first analyzed to check for any unreasonable skewness. These distributions are presented in Figures 1 and 2. The top company locations which had at least 20 observations and the top bean origin countries with at least 10 observations were kept, while the remaining categories in each feature were grouped as Other. It is revealed that the manufacturing company feature has an overwhelming number of categories, and even taking into considering only the top 50 companies, the Other category has far more points compared to the others. This feature was considered too unique to the observations, and was omitted from the modelling.
+The distributions for the numerical features and their pairwise correlations are shown in Figures 1 and 2, which reveals the that there are no strong relationship between any of our numerical features. Figure 3 shows the distributions for the categorical features. The top company locations which had at least 20 observations and the top bean origin countries with at least 10 observations were kept, while the remaining categories in each feature were grouped as Other. It is revealed that the manufacturing company feature has an overwhelming number of categories, and even taking into considering only the top 50 companies, the Other category has far more points compared to the others. This feature was considered too unique to the observations, and was omitted from the modelling. The boxplots in Figure 4 highlight some of the categories that have tendencies towards higher ratings, such as the presence of different ingredients or the company location. For example, chocolates produced in Austria and Denmark appear to have higher ratings on average compared to the rest of the group.
 
-![Numerical feature distributions](../src/eda_files/Numeric_Plots.png){width="60%," height="60%"}
+![Numerical feature distributions](../src/eda_files/Numeric_Plots.png){width="50%," height="50%"}
 
-![Categorical feature distributions](../src/eda_files/Categorical_Plots.png){width="90%," height="90%"}
+![Numerical feature scatterplots](../src/eda_files/Scatter_Plots.png){width="80%," height="80%"}
+
+![Categorical feature distributions](../src/eda_files/Categorical_Plots.png){width="95%," height="95%"}
+
+![Categorical feature boxplots](../src/eda_files/Boxplots.png){width="80%," height="80%"}
 
 
 Table 2 shows the optimal hyperparameters, their associated values, and the resulting validation scores for each model. The scoring metric was chosen to be based on the mean absolute percentage error. It can be seen that the KNN model may be overfitting, since its training score is 0 (i.e. a perfect model), while its validation score indicates 10.6% error. The decision tree model also had higher validation error compared to the other models, perhaps because decision tree models can be sensitive to feature values, such that slight changes in the values can result in very different results. It is also worth noting that although the random forest model performed better than these two models, it required a much longer amount of time to run, which is quite undesirable for practical usage of the model. 
