@@ -22,33 +22,35 @@ It can also be downloaded using the instructions below.
 
 ## Usage
 
-If you are interested in just running the exploration project, you can use [Docker](https://www.docker.com/). Run this command in the project root directory:
+While we have included the results on our end, you may also want to verify our findings. The simplest way is to use [Docker](https://www.docker.com/) or [Podman](https://www.podman.io/).
 
-``` bash
-docker run -ti --rm -v `pwd`:/app netsgnut/chocolate_exploration make -C /app all
+If you decide to do so, you can clean up our generated files first by running this command in the project root directory ([Docker](https://www.docker.com/) required):
+
+```bash
+docker run -ti --rm -v `pwd`:/app netsgnut/chocolate_exploration -- bash -ic 'make -C /app clean'
 ```
 
-Or if you use [Podman](https://podman.io):
+Then run this generate all the files:
 
-``` bash
-podman run -ti --rm -v `pwd`:/app docker.io/netsgnut/chocolate_exploration make -C /app all
+```bash
+docker run -ti --rm -v `pwd`:/app netsgnut/chocolate_exploration -- bash -ic 'make -C /app all'
+```
+
+Alternatively, if you use [Podman](https://podman.io), to clean:
+
+```bash
+podman run -ti --rm -v `pwd`:/app docker.io/netsgnut/chocolate_exploration -- bash -ic 'make -C /app clean'
+```
+
+And to build:
+
+```bash
+podman run -ti --rm -v `pwd`:/app docker.io/netsgnut/chocolate_exploration -- bash -ic 'make -C /app all'
 ```
 
 These commands pull the latest `chocolate_exploration` image from [Docker Hub](https://hub.docker.com/) and mount the project files as a volume. The image supports both `linux/amd64` and `linux/arm64` architecture.
 
-To clean up all the built analyses and intermediate files on Docker:
-
-``` bash
-docker run -ti --rm -v `pwd`:/app netsgnut/chocolate_exploration make -C /app clean
-```
-
-Or on Podman:
-
-``` bash
-podman run -ti --rm -v `pwd`:/app docker.io/netsgnut/chocolate_exploration make -C /app clean
-```
-
-You may refer to the official [Docker](https://docs.docker.com/) and [Podman documentations](https://docs.podman.io/en/latest/) for more information. The [`Dockerfile`](./Dockerfile) used to build is also included.
+You may refer to the official [Docker](https://docs.docker.com/) and [Podman documentations](https://docs.podman.io/en/latest/) for more information. The [`Dockerfile`](./Dockerfile) and [`Makefile`](./Makefile) used to build is also included.
 
 ## Usage (Advanced)
 
@@ -89,18 +91,21 @@ Rscript deps.R --list
 
 Which should show:
 
-    caTools==1.18.2
-    cowplot==1.1.1
-    docopt==0.7.1
-    dplyr==1.0.10
-    kableExtra==1.3.4
-    knitr==1.41
-    magick==2.7.3
-    rmarkdown==2.18
-    tidyverse==1.3.2
-    webshot==0.5.4
+```
+caTools==1.18.2
+cowplot==1.1.1
+docopt==0.7.1
+dplyr==1.0.10
+kableExtra==1.3.4
+knitr==1.41
+magick==2.7.3
+rmarkdown==2.18
+testthat==3.1.5
+tidyverse==1.3.2
+webshot==0.5.4
+```
 
-Also, you should make sure your environment has `pandoc` and `pandoc-citeproc` installed. Please consult [the Pandoc documentation](https://pandoc.org/installing.html) for more details.
+Also, you should make sure your environment has `texlive`, `pandoc` and `pandoc-citeproc` installed. Please consult [the Pandoc documentation](https://pandoc.org/installing.html) for more details.
 
 The actual analyses are written in Python. A [Conda](https://conda.io/) environment file can be found at [`environment.yaml`](./environment.yaml).
 

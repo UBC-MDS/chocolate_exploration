@@ -46,9 +46,6 @@ main <- function(args) {
         }
     } else if (args$install) {
         install.packages(dependencies, repos = repos)
-        # post-install
-        library(tinytex)
-        tinytex::install_tinytex()
     } else {
         cat(doc)
     }
