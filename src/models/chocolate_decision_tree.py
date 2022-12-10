@@ -17,6 +17,7 @@ from docopt import docopt
 from scipy.stats import randint
 from sklearn.pipeline import make_pipeline
 from sklearn.tree import DecisionTreeRegressor
+import os
 
 from ..preprocessor.chocolate import preprocessor
 from .base_chocolate_model_tuner import BaseChocolateModelTuner
@@ -58,7 +59,10 @@ class ChocolateDecisionTreeTuner(BaseChocolateModelTuner):
 opt = docopt(__doc__)
 
 if __name__ == "__main__":
+    # Check if input filepath is correct
+    train_df_path = opt["--train"]
+    assert os.path.isfile(train_df_path), "Please check the input filepath"
     tuner = ChocolateDecisionTreeTuner()
     tuner.tune_and_dump(
-        train_df_path=opt["--train"], model_dump_dir=opt["--output"],
+        train_df_path=train_df_path, model_dump_dir=opt["--output"],
         cv_score_output_dir=opt["--output-cv"])
