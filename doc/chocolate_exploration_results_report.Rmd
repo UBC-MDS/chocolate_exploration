@@ -51,12 +51,16 @@ Four regression models were built after splitting the original data set into tra
 hparams <- tibble(Model = c("KNN", "KNN", "KNN", "KNN",
                             "Ridge", "Ridge", 
                             "SVM RBF", "SVM RBF", "SVM RBF", 
-                            "Decision Tree", "Decision Tree"),
+                            "Decision Tree", "Decision Tree",
+                            "Random Forest", "Random Forest", "Random Forest"
+                            ),
                   Hyperparameter = c(
                     "Max Text Features", "Leaf Size", "Number of Neighbors", "Weights",
                     "Max Text Features", "Alpha",
                     "Max Text Features", "C", "Gamma",
-                    "Max Text Features", "Max Depth"))
+                    "Max Text Features", "Max Depth",
+                    "Max Text Features", "Max Depth", "Number of Estimators"
+                    ))
 
 collapse_rows(kable(hparams, format="latex", booktabs=TRUE,
       caption = "Model Hyperparameters")) |>
@@ -73,9 +77,10 @@ The modelling was performed in Python (@Python) using the following packages, av
 
 The distributions for the numerical and categorical features were first analyzed to check for any unreasonable skewness. These distributions are presented in Figures 1 and 2. The top company locations which had at least 20 observations and the top bean origin countries with at least 10 observations were kept, while the remaining categories in each feature were grouped as Other. It is revealed that the manufacturing company feature has an overwhelming number of categories, and even taking into considering only the top 50 companies, the Other category has far more points compared to the others. This feature was considered too unique to the observations, and was omitted from the modelling.
 
-![Categorical feature distributions](../src/eda_files/Categorical_Plots.png){width="70%," height="70%"}
+![Numerical feature distributions](../src/eda_files/Numeric_Plots.png){width="60%," height="60%"}
 
-![Numerical feature distributions](../src/eda_files/Numeric_Plots.png){width="50%," height="50%"}
+![Categorical feature distributions](../src/eda_files/Categorical_Plots.png){width="80%," height="80%"}
+
 
 Table 2 shows the optimal hyperparameters, their associated values, and the resulting validation scores for each model. The scoring metric was chosen to be based on the mean absolute percentage error. It can be seen that the KNN model may be overfitting, since its training score is 0 (i.e. a perfect model), while its validation score indicates 10.6% error.
 
@@ -84,27 +89,39 @@ knn_cv <- read_csv("../results/cv_scores/cv_results_knn.csv")
 ridge_cv <- read_csv("../results/cv_scores/cv_results_ridge.csv")
 svmrbf_cv <- read_csv("../results/cv_scores/cv_results_svm_rbf.csv")
 dt_cv <- read_csv("../results/cv_scores/cv_results_decision_tree.csv")
+rf_cv <- read_csv("../results/cv_scores/cv_results_random_forest.csv")
 
 opt_params <- tibble(Model = c("KNN", "KNN","KNN", "KNN", 
                                "Ridge", "Ridge", 
                                "SVM RBF", "SVM RBF", "SVM RBF",
-                               "Decision Tree", "Decision Tree"),
-                  Hyperparameter = c("Max Text Features", "Leaf Size", "Number of Neighbors", "Weights",
-                                     "Max Text Features", "Alpha", 
-                                     "Max Text Features", "C", "Gamma", 
-                                     "Max Text Features", "Max Depth"),
+                               "Decision Tree", "Decision Tree",
+                               "Random Forest", "Random Forest", "Random Forest"
+                               ),
+                  Hyperparameter = c(
+                    "Max Text Features", "Leaf Size", "Number of Neighbors", "Weights",
+                    "Max Text Features", "Alpha", 
+                    "Max Text Features", "C", "Gamma", 
+                    "Max Text Features", "Max Depth",
+                    "Max Text Features", "Max Depth", "Number of Estimators"
+                    ),
                   "Optimized Value" = c(395, 450, 13, "Distance", 
                                         437, 1,
                                         262, 39.5, 1.4e-03,
-                                        176, 9),
+                                        176, 9,
+                                        396, 78, 351
+                                        ),
                   "Mean Validation MAPE (%)" = c(11.0, 11.0, 11.0, 11.0,
                                          9.1, 9.1,
                                          9.0, 9.0, 9.0,
-                                         10.9, 10.9), 
+                                         10.9, 10.9,
+                                         9.5, 9.5, 9.5
+                                         ), 
                   "Mean Training MAPE (%)" = c(0, 0, 0, 0,
                                        6.7, 6.7,
                                        6.8, 6.8, 6.8,
-                                       8.6, 8.6))
+                                       8.6, 8.6,
+                                       3.4, 3.4, 3.4
+                                       ))
 
 collapse_rows(kable(opt_params, format="latex", booktabs=TRUE,
       caption = "Optimized Hyperparameters With MAPE Values")) |>
