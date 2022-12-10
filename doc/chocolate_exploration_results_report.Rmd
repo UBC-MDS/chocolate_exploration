@@ -81,10 +81,10 @@ The distributions for the numerical and categorical features were first analyzed
 
 ![Numerical feature distributions](../src/eda_files/Numeric_Plots.png){width="60%," height="60%"}
 
-![Categorical feature distributions](../src/eda_files/Categorical_Plots.png){width="80%," height="80%"}
+![Categorical feature distributions](../src/eda_files/Categorical_Plots.png){width="90%," height="90%"}
 
 
-Table 2 shows the optimal hyperparameters, their associated values, and the resulting validation scores for each model. The scoring metric was chosen to be based on the mean absolute percentage error. It can be seen that the KNN model may be overfitting, since its training score is 0 (i.e. a perfect model), while its validation score indicates 10.6% error. The decision tree model also had higher validation error compared to the other models, perhaps because decision tree models can be sensitive to feature values, such that slight changes in the values can result in very different results. It is also worth noting that although the random forest model performed better than these two models, it required an extremely long time to actually perform the cross-validation, which is quite undesirable for practical usage of the model. 
+Table 2 shows the optimal hyperparameters, their associated values, and the resulting validation scores for each model. The scoring metric was chosen to be based on the mean absolute percentage error. It can be seen that the KNN model may be overfitting, since its training score is 0 (i.e. a perfect model), while its validation score indicates 10.6% error. The decision tree model also had higher validation error compared to the other models, perhaps because decision tree models can be sensitive to feature values, such that slight changes in the values can result in very different results. It is also worth noting that although the random forest model performed better than these two models, it required a much longer amount of time to run, which is quite undesirable for practical usage of the model. 
 
 ```{r optimized hyperparamter table, echo=FALSE, message=FALSE}
 knn_cv <- read_csv("../results/cv_scores/cv_results_knn.csv")
@@ -141,7 +141,7 @@ test_results <- read_csv("../results/test_data_results.csv") |>
   mutate(Model = replace(Model, Model == "Decision_Tree", "Decision Tree")) |>
   mutate(`MAPE (%)` = round(`MAPE (%)`, 1))
 
-order_m <- c("KNN", "Ridge", "SVM RBF", "Decision Tree") 
+order_m <- c("KNN", "Ridge", "SVM RBF", "Decision Tree", "Random Forest")
 
 test_results <- test_results |>
   slice(match(order_m, Model))

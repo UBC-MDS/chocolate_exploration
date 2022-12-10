@@ -1,6 +1,6 @@
 ,MAPE (%)
 Decision_Tree,11.084
-KNN,10.629
+KNN,10.627
 Ridge,8.658
 SVM RBF,8.589
 Random Forest,9.192
